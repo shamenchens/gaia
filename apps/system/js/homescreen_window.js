@@ -1,4 +1,7 @@
-(function(window) {
+/* global AppWindow, Applications, BrowserConfigHelper, widgetManager */
+'use strict';
+
+(function(exports) {
   /**
    * HomescreenWindow creates a instance of homescreen by give manifestURL.
    *
@@ -152,15 +155,61 @@
   HomescreenWindow.prototype.view = function hw_view() {
     return '<div class="appWindow homescreen" id="homescreen">' +
               '<div class="fade-overlay"></div>' +
+              '<div class="widget-overlay"></div>' +
            '</div>';
+  };
+
+  HomescreenWindow.prototype._fetchElements = function hw_fetchElements() {
+    AppWindow.prototype._fetchElements.call(this);
+    this.widgetOverlay = this.element.querySelector('.widget-overlay');
+  };
+
+  HomescreenWindow.prototype.render = function hw_render() {
+    AppWindow.prototype.render.call(this);
+
+    // XXX: For testing widget only. Remove when widget IAC is completed.
+    setTimeout(function() {
+
+      function getAppURL(origin, path) {
+        path = path ? path : '/';
+        return window.location.protocol + '//' + origin +
+              (window.location.port ? (':' + window.location.port) : '') + path;
+      }
+
+      console.log(widgetManager.draw([{
+        requestId: 'w001',
+        action: 'add',
+        args: {
+          x: 150,
+          y: 10,
+          w: 100,
+          h: 100,
+          opacity: 0.5,
+          origin: getAppURL('clock.gaiamobile.org')
+        }
+      },
+      {
+        requestId: 'w002',
+        action: 'add',
+        args: {
+          x: 150,
+          y: 230,
+          w: 100,
+          h: 150,
+          opacity: 0.5,
+          origin: getAppURL('calendar.gaiamobile.org')
+        }
+      }]));
+    }.bind(this), 5000);
   };
 
   HomescreenWindow.prototype.eventPrefix = 'homescreen';
 
   HomescreenWindow.prototype.toggle = function hw_toggle(visible) {
     this.ensure();
-    if (this.browser.element)
+    if (this.browser.element) {
       this.setVisible(visible);
+    }
   };
 
   // Ensure the homescreen is loaded and return its frame.  Restarts
@@ -178,5 +227,5 @@
     return this.element;
   };
 
-  window.HomescreenWindow = HomescreenWindow;
-}(this));
+  exports.HomescreenWindow = HomescreenWindow;
+}(window));
