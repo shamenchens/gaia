@@ -62,5 +62,11 @@
       "access": "readwrite",
       "description": "Stores Everything.me data"
     }
+  },
+  "connections": {
+    "system-response": {
+      "description": "Communication from System to Homescreen",
+      "rules": {}
+    }
   }
 }
