@@ -4,7 +4,9 @@
   var HIDDEN_ROLES = ['system', 'input', 'homescreen', 'search'];
 
   var apps = {};
-  var ready = false;
+
+  var _ready = false;
+  var _readyCallbacks = [];
 
   function init(callback) {
     var linkList = document.createElement('ul');
@@ -13,66 +15,86 @@
     navigator.mozApps.mgmt.getAll().onsuccess = function onsuccess(event) {
       event.target.result.forEach(function eachApp(app) {
         var manifest = app.manifest;
-
         if (!app.launch || !manifest || !manifest.launch_path ||
             !manifest.icons || isHiddenApp(manifest.role)) {
           return;
         }
-
-        var entryPoints = manifest.entry_points;
-        if (!entryPoints || manifest.type !== 'certified') {
-          linkList.appendChild(createLinkNode(app, null));
-        } else {
-          for (var entryPoint in entryPoints) {
-            if (entryPoints[entryPoint].icons) {
-              linkList.appendChild(createLinkNode(app, entryPoint));
-            }
-          }
-        }
-
         apps[app.origin] = app;
       });
 
       ready = true;
 
       if (callback) {
-        callback(linkList);
+        callback();
+      }
+
+      while(_readyCallbacks.length) {
+        setTimeout(_readyCallbacks.shift());
       }
     };
   }
 
-  function createLinkNode(app, entryPoint) {
-    var iconsAndNameHolder =
-      entryPoint ? app.manifest.entry_points[entryPoint] : app.manifest;
+  function getAppEntries() {
+    if (!ready) {
+      return null;
+    }
 
-    var li = document.createElement('li');
-    var link = document.createElement('a');
-    var imgIcon = new Image();
+    var entries = [];
 
-    imgIcon.className = 'icon';
-    imgIcon.src = '/style/images/default.png';
-    link.href = app.origin;
-    link.className = 'app_link';
-    link.dataset.origin = app.origin;
-    link.dataset.entry_point = entryPoint || '';
-    link.appendChild(imgIcon);
-    link.appendChild(document.createTextNode(iconsAndNameHolder.name));
-    link.addEventListener('click', iconTapHandler);
-    li.appendChild(link);
+    for (var origin in apps) {
+      var manifest = apps[origin].manifest;
+      var entryPoints = manifest.entry_points;
 
-    loadIcon({
-      url: bestMatchingIcon(app, iconsAndNameHolder),
-      onsuccess: function(blob) {
-        imgIcon.src = window.URL.createObjectURL(blob);
+      if (!entryPoints || manifest.type !== 'certified') {
+        entries.push({
+          origin: origin,
+          entry_point: '',
+          name: manifest.name
+        });
+      } else {
+        for (var entryPoint in entryPoints) {
+          if (entryPoints[entryPoint].icons) {
+            entries.push({
+              origin: origin,
+              entry_point: entryPoint,
+              name: entryPoints[entryPoint].name
+            });
+          }
+        }
       }
-    });
+    }
 
-    return li;
+    return entries;
   }
 
-  function iconTapHandler(evt) {
-    evt.preventDefault();
-    apps[this.dataset.origin].launch(this.dataset.entry_point);
+  function launch(origin, entryPoint) {
+    if (!origin || !apps[origin] || !apps[origin].launch) {
+      return false;
+    }
+
+    entryPoint = entryPoint || '';
+    apps[origin].launch(entryPoint);
+
+    return true;
+  }
+
+  function getIconURL(origin, entryPoint, callback) {
+    var manifest = apps[origin].manifest;
+    var iconsHolder = entryPoint ? manifest.entry_points[entryPoint] : manifest;
+
+    loadIcon({
+      url: bestMatchingIcon(apps[origin], iconsHolder),
+      onsuccess: function(blob) {
+        if (callback) {
+          callback(window.URL.createObjectURL(blob));
+        }
+      },
+      onerror: function() {
+        if (callback) {
+          callback('');
+        }
+      }
+    });
   }
 
   function loadIcon(request) {
@@ -164,10 +186,19 @@
     return (HIDDEN_ROLES.indexOf(role) !== -1);
   }
 
+  function ready(callback) {
+    if (_ready) {
+      window.setTimeout(callback);
+    } else {
+      _readyCallbacks.push(callback);
+    }
+  }
+
   window.AppList = {
     init: init,
-    ready: function() {
-      return ready;
-    }
+    getAppEntries: getAppEntries,
+    launch: launch,
+    getIconURL: getIconURL,
+    ready: ready
   };
 })();
