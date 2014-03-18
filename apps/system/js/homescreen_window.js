@@ -172,7 +172,7 @@
       this.render();
     } else if (reset) {
       this.browser.element.src = this.browser_config.url +
-        (this.browser_config.url.indexOf('#') < 0 ? '#' : '?') + new Date();
+        (this.browser_config.url.indexOf('#') < 0 ? '#' : '') + new Date();
     }
 
     return this.element;
