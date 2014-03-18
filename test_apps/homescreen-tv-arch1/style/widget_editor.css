@@ -1,0 +1,47 @@
+#widget-editor {
+  width: calc(100% - 2rem);
+  height: calc(100% - 2rem);
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.9);
+  box-shadow: 0 0 1rem 0.2rem #000;
+}
+
+#widget-editor > header {
+  height: 2rem;
+}
+
+#widget-view {
+  position: absolute;
+  top: 2rem; /* leave place for header */
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.place-holder {
+  background-color: #66FFFF;
+  border: solid 0.1rem blue;
+  position: absolute;
+  display: inline-block;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.place-holder:after {
+  content: attr(data-app-name); /* app-name will be defined in js */
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+}
+
+.static-place-holder {
+  background-color: #FFFFFF;
+  border: solid 0.1rem black;
+}
+
+.place-holder.selected {
+  border: solid 0.2rem yellow;
+}
