@@ -62,6 +62,7 @@ GameManager.prototype.actuate = function () {
 GameManager.prototype.move = function(direction) {
   var self = this;
   var result = this.grid.move(direction);
+  var restartDelay = 3000;
   this.score += result.score;
 
   if (!result.won) {
@@ -91,7 +92,7 @@ GameManager.prototype.move = function(direction) {
 GameManager.prototype.run = function() {
   var best = this.ai.getBest();
   this.move(best.move);
-  var timeout = animationDelay;
+  var animationDelay = 300;
   if (this.running && !this.over && !this.won) {
     var self = this;
     setTimeout(function(){
