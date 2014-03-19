@@ -4,6 +4,8 @@
 (function(exports) {
   'use strict';
 
+  const DEFAULT_ICON = '/style/images/default.png';
+
   function WidgetEditor(dom, appList) {
     this.dom = dom;
     this.appList = appList;
@@ -14,6 +16,10 @@
   }
 
   WidgetEditor.prototype.setVisible = function we_visible(visible) {
+    if (this.dom.hidden !== visible) {
+      return;
+    }
+
     this.dom.hidden = !visible;
 
     if (visible && !this.editor) {
@@ -29,7 +35,7 @@
   };
 
   WidgetEditor.prototype.handleKeyPress = function we_handleKeyPress(e) {
-    if (this.dom.hidden) {
+    if (this.dom.hidden || this.appListShown) {
       return;
     }
     var targetPlace;
@@ -38,34 +44,41 @@
         targetPlace = this.editor.getAdjacentPlace(this.currentPlace,
                                                   HSLayoutEditor.DIRECTION.TOP,
                                                   true);
+        this.switchFocus(targetPlace);
         break;
       case KeyEvent.DOM_VK_RIGHT:
         targetPlace = this.editor.getAdjacentPlace(this.currentPlace,
                                                  HSLayoutEditor.DIRECTION.RIGHT,
                                                  true);
+        this.switchFocus(targetPlace);
         break;
       case KeyEvent.DOM_VK_DOWN:
         targetPlace = this.editor.getAdjacentPlace(this.currentPlace,
                                                 HSLayoutEditor.DIRECTION.BOTTOM,
                                                 true);
+        this.switchFocus(targetPlace);
         break;
       case KeyEvent.DOM_VK_LEFT:
         targetPlace = this.editor.getAdjacentPlace(this.currentPlace,
                                                   HSLayoutEditor.DIRECTION.LEFT,
                                                   true);
+        this.switchFocus(targetPlace);
         break;
       case KeyEvent.DOM_VK_RETURN:
         this.togglePlace();
         break;
     }
-    this.switchFocus(targetPlace);
   }
 
   WidgetEditor.prototype.togglePlace = function() {
     if (this.currentPlace.app) {
+      if (this.currentPlace.app.iconUrl !== DEFAULT_ICON) {
+        URL.revokeObjectURL(this.currentPlace.app.iconUrl);
+      }
       this.editor.removeWidget(this.currentPlace);
     } else {
       this.appList.oniconclick = this.handleAppChosen.bind(this);
+      this.appListShown = true;
       this.appList.show();
     }
   };
@@ -73,10 +86,10 @@
   WidgetEditor.prototype.handleAppChosen = function(data) {
     var self = this;
     Applications.getIconBlob(data.origin, data.entry_point, 0, function(blob) {
-      if (!blob) {
-        return;
-      }
-      var iconUrl = URL.createObjectURL(blob);
+      self.appListShown = false;
+
+      var iconUrl = blob ? URL.createObjectURL(blob) : DEFAULT_ICON;
+
       self.editor.addWidget({ name: data.name,
                               iconUrl: iconUrl,
                               origin: data.origin,
