@@ -9,7 +9,7 @@ test_apps/membuster
 test_apps/music2
 test_apps/test-ime
 test_apps/share-receiver
-test_apps/template
+test_apps/2048widget
 test_apps/test-agent
 test_apps/test-container
 test_apps/test-keyboard-app
