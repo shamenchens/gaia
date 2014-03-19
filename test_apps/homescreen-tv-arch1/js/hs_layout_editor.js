@@ -4,23 +4,21 @@
 (function(exports) {
   'use strict';
 
-  function HSLayoutEditor() {
+  function HSLayoutEditor(options) {
     this.widgets = [];
+    this.options = options || {};
+    this.options.layout = this.options.layout || { v: 3, h: 3 };
+    this.options.gap = this.options.gap || { v: 10, h: 10 };
+    this.options.padding = this.options.padding ||
+                           { t: 10, r: 10, b: 10, l: 10 };
+    this.options.holders = this.options.holders || [
+                             { static: true, x: 0, y: 0, w: 2, h: 2 },
+                             { static: true, x: 0, y: 2, w: 1, h: 1 },
+                             { x: 2, y: 0, w: 1, h: 1 },
+                             { x: 2, y: 1, w: 1, h: 1 },
+                             { x: 2, y: 2, w: 1, h: 1 },
+                             { x: 1, y: 2, w: 1, h: 1 }];
   }
-
-  HSLayoutEditor.LAYOUT = { v: 4, h: 4 };
-  HSLayoutEditor.GAP = { v: 10, h: 10 };
-  HSLayoutEditor.PADDING = { t: 10, r: 10, b: 10, l: 10 };
-  HSLayoutEditor.PLACEHOLDERS = [
-    { static: true, x: 0, y: 0, w: 1, h: 2 },
-    { static: true, x: 1, y: 0, w: 1, h: 1 },
-    { x: 1, y: 1, w: 1, h: 2 },
-    { x: 0, y: 2, w: 1, h: 1 },
-    { x: 2, y: 0, w: 1, h: 2 },
-    { x: 2, y: 2, w: 1, h: 1 },
-    { x: 0, y: 3, w: 4, h: 1 },
-    { x: 3, y: 0, w: 1, h: 3 }
-  ];
 
   HSLayoutEditor.DIRECTION = {TOP: 'top',
                               RIGHT: 'right',
@@ -43,7 +41,8 @@
       ret.push({
         index: i,
         x: place.x, y: place.y, w: place.w, h: place.h,
-        widgetOrign: place.app.origin
+        widgetOrign: place.app.origin,
+        entryPoint: place.app.entryPoint
       })
     }
   };
@@ -136,17 +135,17 @@
 
   HSLayoutEditor.prototype.createPlaceHolders = function hsle_createHolders() {
     this.placeHolders = [];
-    for (var i = 0; i < HSLayoutEditor.PLACEHOLDERS.length; i++) {
-      var place = HSLayoutEditor.PLACEHOLDERS[i];
+    for (var i = 0; i < this.options.holders.length; i++) {
+      var place = this.options.holders[i];
       // convert grid to pixel coordinate system.
-      var x = place.x * (HSLayoutEditor.GAP.h + this.singleRect.width) +
-              HSLayoutEditor.PADDING.l;
-      var y = place.y * (HSLayoutEditor.GAP.v + this.singleRect.height) +
-              HSLayoutEditor.PADDING.t;
+      var x = place.x * (this.options.gap.h + this.singleRect.width) +
+              this.options.padding.l;
+      var y = place.y * (this.options.gap.v + this.singleRect.height) +
+              this.options.padding.t;
       var w = place.w * this.singleRect.width +
-              (place.w - 1) * HSLayoutEditor.GAP.h;
+              (place.w - 1) * this.options.gap.h;
       var h = place.h * this.singleRect.height +
-              (place.h - 1) * HSLayoutEditor.GAP.v;
+              (place.h - 1) * this.options.gap.v;
       var center = {
         x: (x + w / 2),
         y: (y + h / 2)
@@ -210,15 +209,15 @@
 
   HSLayoutEditor.prototype.initSingleRect = function hsle_initSingleRect() {
     var width = (this.container.clientWidth
-                 - (HSLayoutEditor.LAYOUT.h - 1) * HSLayoutEditor.GAP.h
-                 - HSLayoutEditor.PADDING.l
-                 - HSLayoutEditor.PADDING.r) / HSLayoutEditor.LAYOUT.h;
+                 - (this.options.layout.h - 1) * this.options.gap.h
+                 - this.options.padding.l
+                 - this.options.padding.r) / this.options.layout.h;
     var height = (this.container.clientHeight
-                  - (HSLayoutEditor.LAYOUT.v - 1) * HSLayoutEditor.GAP.v
-                  - HSLayoutEditor.PADDING.t
-                  - HSLayoutEditor.PADDING.b) / HSLayoutEditor.LAYOUT.v;
-    this.singleRect = {width: width,
-                       height: height};
+                  - (this.options.layout.v - 1) * this.options.gap.v
+                  - this.options.padding.t
+                  - this.options.padding.b) / this.options.layout.v;
+    this.singleRect = {width: Math.round(width),
+                       height: Math.round(height)};
   };
 
   exports.HSLayoutEditor = HSLayoutEditor;

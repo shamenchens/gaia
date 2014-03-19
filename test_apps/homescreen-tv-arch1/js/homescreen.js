@@ -41,7 +41,7 @@
     // the creation of WidgetEditor.
     $('widget-editor').hidden = false;
     if (!widgetEditor) {
-      widgetEditor = new WidgetEditor($('widget-view'));
+      widgetEditor = new WidgetEditor($('widget-view'), appList);
     }
     widgetEditor.setVisible(true);
   }
