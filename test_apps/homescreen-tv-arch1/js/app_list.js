@@ -4,11 +4,14 @@
   function AppList() {
     this._appList = document.getElementById('app-list');
     this._container = document.getElementById('app-list-container');
+    this.hide();
   }
 
   AppList.prototype = {
     _appList: null,
     _container: null,
+
+    oniconclick: null,
 
     init: function appListInit() {
       var self = this;
@@ -19,6 +22,18 @@
       Applications.ready(function() {
         var iconTapHandler = function(evt) {
           evt.preventDefault();
+
+          if (self.oniconclick) {
+            var data = {
+              origin: this.dataset.origin,
+              entry_point: this.dataset.entry_point
+            };
+
+            if (!self.oniconclick(data)) {
+              return;
+            }
+          }
+
           Applications.launch(this.dataset.origin, this.dataset.entry_point);
         };
 
@@ -37,7 +52,7 @@
 
           self._container.appendChild(icon);
 
-          Applications.getIconURL(entry.origin, entry.entry_point, 
+          Applications.getIconURL(entry.origin, entry.entry_point,
             function(url) {
               if (url) {
                 img.src = url;
@@ -49,19 +64,21 @@
     },
 
     uninit: function appListUninit() {
-      self.hide();
-      self._container.innerHTML = '';
+      this.oniconclick = null;
+
+      this.hide();
+      this._container.innerHTML = '';
 
       document.getElementById('app-list-close-button')
-        .removeEventListener('click', self);
+        .removeEventListener('click', this);
     },
 
     show: function appListShow() {
-      this._appList.style.display = 'block';
+      this._appList.hidden = false;
     },
 
     hide: function appListHide() {
-      this._appList.style.display = 'none';
+      this._appList.hidden = true;
     },
 
     handleEvent: function appListHandleEvent(evt) {
