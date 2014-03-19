@@ -2,6 +2,7 @@
 
 (function() {
   var HIDDEN_ROLES = ['system', 'input', 'homescreen', 'search'];
+  var DEFAULT_ICON_URL = '/style/images/default.png';
 
   var apps = {};
 
@@ -187,7 +188,7 @@
   }
 
   function bestMatchingIcon(app, manifest, preferredSize) {
-    preferredSize = preferredSize || 0;
+    preferredSize = preferredSize || Number.MAX_VALUE;
 
     var max = 0;
     var closestSize = 0;
@@ -242,6 +243,8 @@
   }
 
   window.Applications = {
+    DEFAULT_ICON_URL: DEFAULT_ICON_URL,
+
     init: init,
     launch: launch,
     getEntries: getEntries,

@@ -4,7 +4,7 @@
 (function(exports) {
   'use strict';
 
-  const DEFAULT_ICON = '/style/images/default.png';
+  const DEFAULT_ICON = Applications.DEFAULT_ICON_URL;
 
   function WidgetEditor(dom, appList) {
     this.dom = dom;
@@ -35,7 +35,7 @@
   };
 
   WidgetEditor.prototype.handleKeyPress = function we_handleKeyPress(e) {
-    if (this.dom.hidden || this.appListShown) {
+    if (this.dom.hidden || this.appList.isShown()) {
       return;
     }
     var targetPlace;
@@ -77,8 +77,7 @@
       }
       this.editor.removeWidget(this.currentPlace);
     } else {
-      this.appList.oniconclick = this.handleAppChosen.bind(this);
-      this.appListShown = true;
+      this.appList.on('iconclick', this.handleAppChosen.bind(this));
       this.appList.show();
     }
   };
@@ -86,8 +85,6 @@
   WidgetEditor.prototype.handleAppChosen = function(data) {
     var self = this;
     Applications.getIconBlob(data.origin, data.entry_point, 0, function(blob) {
-      self.appListShown = false;
-
       var iconUrl = blob ? URL.createObjectURL(blob) : DEFAULT_ICON;
 
       self.editor.addWidget({ name: data.name,
@@ -96,7 +93,7 @@
                               entryPoint: data.entry_point},
                             self.currentPlace);
     });
-    this.appList.oniconclick = null;
+    this.appList.off('iconclick');
     this.appList.hide();
     return false;
   };
