@@ -8,6 +8,8 @@
     this.dom = dom;
     this.editor = null;
     this.currentPlace = null;
+    this.selectionBorder = new SelectionBorder({ multiple: false,
+                                                 container: dom });
   }
 
   WidgetEditor.prototype.setVisible = function we_visible(visible) {
@@ -55,11 +57,8 @@
     if (!place) {
       return;
     }
-    if (this.currentPlace) {
-      this.currentPlace.elm.classList.remove('selected');
-    }
     this.currentPlace = place;
-    this.currentPlace.elm.classList.add('selected');
+    this.selectionBorder.select(place.elm);
   }
 
   exports.WidgetEditor = WidgetEditor;
