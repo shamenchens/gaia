@@ -23,7 +23,6 @@
 
 .place-holder {
   background-color: #66FFFF;
-  border: solid 0.1rem blue;
   position: absolute;
   display: inline-block;
   background-position: center center;
@@ -39,9 +38,4 @@
 
 .static-place-holder {
   background-color: #FFFFFF;
-  border: solid 0.1rem black;
-}
-
-.place-holder.selected {
-  border: solid 0.2rem yellow;
 }
