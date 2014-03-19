@@ -4,8 +4,9 @@
 (function(exports) {
   'use strict';
 
-  function WidgetEditor(dom) {
+  function WidgetEditor(dom, appList) {
     this.dom = dom;
+    this.appList = appList;
     this.editor = null;
     this.currentPlace = null;
     this.selectionBorder = new SelectionBorder({ multiple: false,
@@ -35,23 +36,57 @@
     switch (e.keyCode) {
       case KeyEvent.DOM_VK_UP:
         targetPlace = this.editor.getAdjacentPlace(this.currentPlace,
-                                                  HSLayoutEditor.DIRECTION.TOP);
+                                                  HSLayoutEditor.DIRECTION.TOP,
+                                                  true);
         break;
       case KeyEvent.DOM_VK_RIGHT:
         targetPlace = this.editor.getAdjacentPlace(this.currentPlace,
-                                                HSLayoutEditor.DIRECTION.RIGHT);
+                                                 HSLayoutEditor.DIRECTION.RIGHT,
+                                                 true);
         break;
       case KeyEvent.DOM_VK_DOWN:
         targetPlace = this.editor.getAdjacentPlace(this.currentPlace,
-                                               HSLayoutEditor.DIRECTION.BOTTOM);
+                                                HSLayoutEditor.DIRECTION.BOTTOM,
+                                                true);
         break;
       case KeyEvent.DOM_VK_LEFT:
         targetPlace = this.editor.getAdjacentPlace(this.currentPlace,
-                                                 HSLayoutEditor.DIRECTION.LEFT);
+                                                  HSLayoutEditor.DIRECTION.LEFT,
+                                                  true);
+        break;
+      case KeyEvent.DOM_VK_RETURN:
+        this.togglePlace();
         break;
     }
     this.switchFocus(targetPlace);
   }
+
+  WidgetEditor.prototype.togglePlace = function() {
+    if (this.currentPlace.app) {
+      this.editor.removeWidget(this.currentPlace);
+    } else {
+      this.appList.oniconclick = this.handleAppChosen.bind(this);
+      this.appList.show();
+    }
+  };
+
+  WidgetEditor.prototype.handleAppChosen = function(data) {
+    var self = this;
+    Applications.getIconBlob(data.origin, data.entry_point, 0, function(blob) {
+      if (!blob) {
+        return;
+      }
+      var iconUrl = URL.createObjectURL(blob);
+      self.editor.addWidget({ name: data.name,
+                              iconUrl: iconUrl,
+                              origin: data.origin,
+                              entryPoint: data.entry_point},
+                            self.currentPlace);
+    });
+    this.appList.oniconclick = null;
+    this.appList.hide();
+    return false;
+  };
 
   WidgetEditor.prototype.switchFocus = function we_switchFocus(place) {
     if (!place) {
