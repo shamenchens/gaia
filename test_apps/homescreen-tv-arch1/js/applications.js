@@ -78,12 +78,37 @@
     return true;
   }
 
-  function getIconURL(origin, entryPoint, callback) {
+  function getEntryManifest(origin, entryPoint) {
+    if (!origin || !apps[origin]) {
+      return null;
+    }
+
     var manifest = apps[origin].manifest;
-    var iconsHolder = entryPoint ? manifest.entry_points[entryPoint] : manifest;
+
+    if (entryPoint) {
+      var entry_manifest = manifest.entry_points[entryPoint];
+      return entry_manifest || null;
+    }
+
+    return manifest;
+  }
+
+  function getAppName(origin, entryPoint) {
+    var entry_manifest = getEntryManifest(origin, entryPoint);
+    if (!entry_manifest) {
+      return '';
+    }
+    return entry_manifest.name;
+  }
+
+  function getIconURL(origin, entryPoint, callback) {
+    var entry_manifest = getEntryManifest(origin, entryPoint);
+    if (! entry_manifest) {
+      return false;
+    }
 
     loadIcon({
-      url: bestMatchingIcon(apps[origin], iconsHolder),
+      url: bestMatchingIcon(apps[origin], entry_manifest),
       onsuccess: function(blob) {
         if (callback) {
           callback(window.URL.createObjectURL(blob));
@@ -95,6 +120,8 @@
         }
       }
     });
+
+    return true;
   }
 
   function loadIcon(request) {
@@ -198,6 +225,7 @@
     init: init,
     getAppEntries: getAppEntries,
     launch: launch,
+    getAppName: getAppName,
     getIconURL: getIconURL,
     ready: ready
   };

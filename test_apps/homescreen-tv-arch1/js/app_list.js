@@ -1,6 +1,8 @@
 'use strict';
 
 (function(exports) {
+  var DEFAULT_ICON_URL = '/style/images/default.png';
+
   function AppList() {
     this._appList = document.getElementById('app-list');
     this._container = document.getElementById('app-list-container');
@@ -26,7 +28,9 @@
           if (self.oniconclick) {
             var data = {
               origin: this.dataset.origin,
-              entry_point: this.dataset.entry_point
+              entry_point: this.dataset.entry_point,
+              name: this.dataset.name,
+              icon: this.dataset.icon
             };
 
             if (!self.oniconclick(data)) {
@@ -40,12 +44,14 @@
         Applications.getAppEntries().forEach(function(entry) {
           var img = new Image();
           img.className = 'icon';
-          img.src = '/style/images/default.png';
+          img.src = DEFAULT_ICON_URL;
 
           var icon = document.createElement('div');
           icon.className = 'app-list-icon';
           icon.dataset.origin = entry.origin;
           icon.dataset.entry_point = entry.entry_point;
+          icon.dataset.name = entry.name;
+          icon.dataset.icon = DEFAULT_ICON_URL;
           icon.appendChild(img);
           icon.appendChild(document.createTextNode(entry.name));
           icon.addEventListener('click', iconTapHandler);
@@ -55,7 +61,7 @@
           Applications.getIconURL(entry.origin, entry.entry_point,
             function(url) {
               if (url) {
-                img.src = url;
+                img.src = icon.dataset.icon = url;
               }
             }
           );
