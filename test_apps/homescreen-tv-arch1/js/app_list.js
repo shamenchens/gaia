@@ -1,8 +1,6 @@
 'use strict';
 
 (function(exports) {
-  var DEFAULT_ICON_URL = '/style/images/default.png';
-
   function AppList() {
     this._appList = document.getElementById('app-list');
     this._container = document.getElementById('app-list-container');
@@ -10,6 +8,8 @@
   }
 
   AppList.prototype = {
+    DEFAULT_ICON_URL: '/style/images/default.png',
+
     _appList: null,
     _container: null,
 
@@ -29,8 +29,7 @@
             var data = {
               origin: this.dataset.origin,
               entry_point: this.dataset.entry_point,
-              name: this.dataset.name,
-              icon: this.dataset.icon
+              name: this.dataset.name
             };
 
             if (!self.oniconclick(data)) {
@@ -41,28 +40,31 @@
           Applications.launch(this.dataset.origin, this.dataset.entry_point);
         };
 
-        Applications.getAppEntries().forEach(function(entry) {
+        Applications.getEntries().forEach(function(entry) {
           var img = new Image();
           img.className = 'icon';
-          img.src = DEFAULT_ICON_URL;
+          img.src = self.DEFAULT_ICON_URL;
 
           var icon = document.createElement('div');
           icon.className = 'app-list-icon';
           icon.dataset.origin = entry.origin;
           icon.dataset.entry_point = entry.entry_point;
           icon.dataset.name = entry.name;
-          icon.dataset.icon = DEFAULT_ICON_URL;
           icon.appendChild(img);
           icon.appendChild(document.createTextNode(entry.name));
           icon.addEventListener('click', iconTapHandler);
 
           self._container.appendChild(icon);
 
-          Applications.getIconURL(entry.origin, entry.entry_point,
-            function(url) {
-              if (url) {
-                img.src = icon.dataset.icon = url;
+          Applications.getIconBlob(entry.origin, entry.entry_point, 32,
+            function(blob) {
+              if (!blob) {
+                return;
               }
+              img.onload = function() {
+                window.URL.revokeObjectURL(this.src);
+              };
+              img.src = window.URL.createObjectURL(blob);
             }
           );
         });

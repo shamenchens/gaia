@@ -34,7 +34,7 @@
     };
   }
 
-  function getAppEntries() {
+  function getEntries() {
     if (!ready) {
       return null;
     }
@@ -93,7 +93,7 @@
     return manifest;
   }
 
-  function getAppName(origin, entryPoint) {
+  function getName(origin, entryPoint) {
     var entry_manifest = getEntryManifest(origin, entryPoint);
     if (!entry_manifest) {
       return '';
@@ -101,22 +101,31 @@
     return entry_manifest.name;
   }
 
-  function getIconURL(origin, entryPoint, callback) {
+  function getIconBlob(origin, entryPoint, preferredSize, callback) {
     var entry_manifest = getEntryManifest(origin, entryPoint);
     if (! entry_manifest) {
       return false;
     }
 
+    var url = bestMatchingIcon(apps[origin], entry_manifest, preferredSize);
+
+    if (!url) {
+      if (callback) {
+        setTimeout(callback);
+      }
+      return true;
+    }
+
     loadIcon({
-      url: bestMatchingIcon(apps[origin], entry_manifest),
+      url: url,
       onsuccess: function(blob) {
         if (callback) {
-          callback(window.URL.createObjectURL(blob));
+          callback(blob);
         }
       },
       onerror: function() {
         if (callback) {
-          callback('');
+          callback();
         }
       }
     });
@@ -177,16 +186,27 @@
     }
   }
 
-  function bestMatchingIcon(app, manifest) {
+  function bestMatchingIcon(app, manifest, preferredSize) {
+    preferredSize = preferredSize || 0;
+
     var max = 0;
+    var closestSize = 0;
+
     for (var size in manifest.icons) {
       size = parseInt(size, 10);
       if (size > max) {
         max = size;
       }
+      if (!closestSize && size >= preferredSize) {
+        closestSize = size;
+      }
     }
 
-    var url = manifest.icons[max];
+    if (! closestSize) {
+      closestSize = max;
+    }
+
+    var url = manifest.icons[closestSize];
     if (url.indexOf('data:') == 0 ||
         url.indexOf('app://') == 0 ||
         url.indexOf('http://') == 0 ||
@@ -223,10 +243,10 @@
 
   window.Applications = {
     init: init,
-    getAppEntries: getAppEntries,
     launch: launch,
-    getAppName: getAppName,
-    getIconURL: getIconURL,
+    getEntries: getEntries,
+    getName: getName,
+    getIconBlob: getIconBlob,
     ready: ready
   };
 })();
