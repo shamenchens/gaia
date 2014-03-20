@@ -39,7 +39,7 @@
       var place = this.placeHolders[i];
       if (place.app) {
         ret.push({
-          index: i,
+          positionId: i,
           x: place.x, y: place.y, w: place.w, h: place.h,
           origin: place.app.origin,
           entryPoint: place.app.entryPoint
@@ -50,8 +50,8 @@
   };
 
   HSLayoutEditor.prototype.loadWidget = function hsle_import(config) {
-    if (config && this.placeHolders[config.index]) {
-      this.addWidget(config.app, this.placeHolders[config.index]);
+    if (config && this.placeHolders[config.positionId]) {
+      this.addWidget(config.app, this.placeHolders[config.positionId]);
     }
   };
 
