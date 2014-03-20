@@ -67,15 +67,24 @@
         return true;
       }
       return false;
+    },
+
+    getIconElement: function alpGetIconElement(index) {
+      if (index < 0 || index >= this._iconCount) {
+        return null;
+      }
+      return this._dom.childNodes[index];
+    },
+
+    getIconCount: function alpGetIconCount() {
+      return this._iconCount;
     }
   };
 
   function AppList() {
     this._appList = document.getElementById('app-list');
     this._container = document.getElementById('app-list-container');
-
     this._calcPagingSize();
-    this.hide();
   }
 
   AppList.prototype = evt({
@@ -89,60 +98,108 @@
     _iconDimensions: {},
     _pagingSize: {},
 
+    _currentPage: 0,
+    _pages: null,
+
     oniconclick: null,
 
     _handleKeyDown: function appListHandleKeyDown(evt) {
-      var icon_count = this._iconCount;
-      var numPerRow = this._pagingSize.numIconsPerRow;
-      var new_focus = -1;
-
-      switch (evt.keyCode) {
-        case KeyEvent.DOM_VK_UP:
-          new_focus = this._focus - numPerRow;
-          if (new_focus < 0) {
-            return;
-          }
+      switch (evt.key) {
+        case 'PageUp':
+          this.previousPage();
+          this.setFocus(0);
           break;
-        case KeyEvent.DOM_VK_DOWN:
-          new_focus = this._focus + numPerRow;
-          if (new_focus >= icon_count) {
-            return;
-          }
+        case 'PageDown':
+          this.nextPage();
+          this.setFocus(0);
           break;
-        case KeyEvent.DOM_VK_LEFT:
-          new_focus = this._focus - 1;
-          if (new_focus < 0 || Math.floor(new_focus / numPerRow) !=
-              Math.floor(this._focus / numPerRow)) {
-            return;
-          }
+        case 'Up':
+        case 'Down':
+        case 'Left':
+        case 'Right':
+          this._handleArrowKey(evt.key);
           break;
-        case KeyEvent.DOM_VK_RIGHT:
-          new_focus = this._focus + 1;
-          if (new_focus >= icon_count || Math.floor(new_focus / numPerRow) !=
-              Math.floor(this._focus / numPerRow)) {
-            return;
-          }
-          break;
-        case KeyEvent.DOM_VK_RETURN:
+        case 'Enter':
           var event = new MouseEvent('click', {
             'view': window,
             'bubbles': false,
             'cancelable': false
           });
-          var icons = this._container.querySelectorAll('.app-list-icon');
-          icons[this._focus].dispatchEvent(event);
+
+          this._pages[this._currentPage].getIconElement(this._focus)
+            .dispatchEvent(event);
+          break;
+        case 'Esc':
+          this.hide();
+          break;
+        default:
+          return false;
+      }
+
+      return true;
+    },
+
+    _handleArrowKey: function appListHandleArrowKey(direction) {
+      var current_page = this._pages[this._currentPage];
+      var icon_count = current_page.getIconCount();
+      var numPerRow = this._pagingSize.numIconsPerRow;
+      var new_focus;
+
+      switch(direction) {
+        case 'Up':
+          new_focus = this._focus - numPerRow;
+          break;
+        case 'Down':
+          new_focus = this._focus + numPerRow;
+          break;
+        case 'Left':
+          if (this._focus % numPerRow == 0) {
+            if (this._currentPage == 0) {
+              return false;
+            }
+
+            this.previousPage();
+
+            current_page = this._pages[this._currentPage];
+            icon_count = current_page.getIconCount();
+            new_focus = this._focus + numPerRow - 1;
+          } else {
+            new_focus = this._focus - 1;
+          }
+          break;
+        case 'Right':
+          if (this._focus % numPerRow == numPerRow - 1) {
+            if (this._currentPage == this._pages.length - 1) {
+              return false;
+            }
+
+            this.nextPage();
+
+            current_page = this._pages[this._currentPage];
+            icon_count = current_page.getIconCount();
+            new_focus = this._focus - numPerRow + 1;
+
+            if (new_focus >= icon_count) {
+              new_focus = 0;
+            }
+          } else {
+            new_focus = this._focus + 1;
+          }
           break;
       }
 
-      if (new_focus >= 0) {
-        this.setFocus(new_focus);
-        //icons[this._focus].scrollIntoView(false);
+      if (new_focus < 0 || new_focus >= icon_count) {
+        return false;
       }
+
+      return this.setFocus(new_focus);
     },
 
     _calcPagingSize: function appListCalcPagingSize() {
+      this._appList.hidden = false;
       this._containerDimensions.width = this._container.clientWidth;
       this._containerDimensions.height = this._container.clientHeight;
+      this._appList.hidden = true;
 
       var icon = document.createElement('div');
       icon.className = 'app-list-icon';
@@ -204,6 +261,9 @@
           self._iconCount++;
         });
 
+        self._pages = pages;
+        self.setPage(0);
+
         self._selectionBorder = new SelectionBorder({
           multiple: false,
           container: self._container
@@ -258,17 +318,42 @@
     },
 
     setFocus: function appListSetFocus(index) {
-      var icons = this._container.querySelectorAll('.app-list-icon');
+      var current_page = this._pages[this._currentPage];
+      var icon_count = current_page.getIconCount();
 
       if (index >= 0) {
-        this._focus = index;
-        this._selectionBorder.select(icons[this._focus]);
-      } else {
-        if (this._focus >= 0) {
-          this._focus = index;
-          this._selectionBorder.deselectAll();
+        if (index >= icon_count) {
+          return false;
         }
+
+        this._focus = index;
+        this._selectionBorder
+          .select(current_page.getIconElement(this._focus));
+      } else if (this._focus >= 0) {
+        this._focus = index;
+        this._selectionBorder.deselectAll();
       }
+
+      return true;
+    },
+
+    setPage: function appListSetPage(index) {
+      if (index < 0 || index >= this._pages.length) {
+        return false;
+      }
+
+      this._container.style.left =
+        (-1 * index * this._containerDimensions.width) + 'px';
+      this._currentPage = index;
+      return true;
+    },
+
+    previousPage: function appListPreviousPage() {
+      return this.setPage(this._currentPage - 1);
+    },
+
+    nextPage: function appListNextPage() {
+      return this.setPage(this._currentPage + 1);
     },
 
     handleEvent: function appListHandleEvent(evt) {
@@ -284,9 +369,9 @@
           if (!this.isShown()) {
             return;
           }
-
-          evt.preventDefault();
-          this._handleKeyDown(evt);
+          if (this._handleKeyDown(evt)) {
+            evt.preventDefault();
+          }
           break;
       }
     }
