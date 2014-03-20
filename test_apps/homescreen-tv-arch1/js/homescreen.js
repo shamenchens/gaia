@@ -31,6 +31,7 @@
     $('edit-widget').addEventListener('click', enterWidgetEditor);
     $('widget-editor-close').addEventListener('click', function() {
       widgetEditor.setVisible(false);
+      widgetEditor.save();
       $('widget-editor').hidden = true;
     });
   }
@@ -42,6 +43,7 @@
     $('widget-editor').hidden = false;
     if (!widgetEditor) {
       widgetEditor = new WidgetEditor($('widget-view'), appList);
+      widgetEditor.load();
     }
     widgetEditor.setVisible(true);
   }
