@@ -16,11 +16,13 @@
       console.log('HomescreenConnection stopped!');
     },
     handleEvent: function hc_handleEvent(evt) {
-      var message = evt.detail;
-      // TODO
-      console.log('received homescreen-request message:[' + message + ']');
+      var messageObject = evt.detail;
+      console.log('received homescreen-request message:[' +
+        JSON.stringify(messageObject) + ']');
+      window.dispatchEvent(
+        new CustomEvent('homescreen-action-object', {'detail': messageObject}));
     },
-    sendMessage: function hc_sendMessage(message) {
+    _sendMessage: function hc_sendMessage(message) {
       navigator.mozApps.getSelf().onsuccess = function(evt) {
         var app = evt.target.result;
         app.connect('system-response').then(function onConnAccepted(ports) {
