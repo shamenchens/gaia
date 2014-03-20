@@ -5,7 +5,6 @@
   'use strict';
 
   function HSLayoutEditor(options) {
-    this.widgets = [];
     this.options = options || {};
     this.options.layout = this.options.layout || { v: 3, h: 3 };
     this.options.gap = this.options.gap || { v: 10, h: 10 };
@@ -38,12 +37,21 @@
     var ret = [];
     for (var i = 0; i < this.placeHolders.length; i++) {
       var place = this.placeHolders[i];
-      ret.push({
-        index: i,
-        x: place.x, y: place.y, w: place.w, h: place.h,
-        widgetOrign: place.app.origin,
-        entryPoint: place.app.entryPoint
-      })
+      if (place.app) {
+        ret.push({
+          index: i,
+          x: place.x, y: place.y, w: place.w, h: place.h,
+          origin: place.app.origin,
+          entryPoint: place.app.entryPoint
+        });
+      }
+    }
+    return ret;
+  };
+
+  HSLayoutEditor.prototype.loadWidget = function hsle_import(config) {
+    if (config && this.placeHolders[config.index]) {
+      this.addWidget(config.app, this.placeHolders[config.index]);
     }
   };
 
@@ -202,9 +210,13 @@
     this.updatePlaceHolderUI(place2);
   };
 
-  HSLayoutEditor.prototype.reset = function hsle_reset() {
-    this.widgets = [];
-    this.container = null;
+  HSLayoutEditor.prototype.reset = function hsle_reset(callback) {
+    for (var i = 0; i < this.placeHolders.length; i++) {
+      if (callback && (typeof callback) === 'function') {
+        callback(this.placeHolders[i]);
+      }
+      delete this.placeHolders[i].app;
+    }
   };
 
   HSLayoutEditor.prototype.initSingleRect = function hsle_initSingleRect() {
