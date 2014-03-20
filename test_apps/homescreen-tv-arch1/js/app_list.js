@@ -99,7 +99,7 @@
     _pagingSize: {},
 
     _currentPage: 0,
-    _pages: null,
+    _pages: [],
 
     oniconclick: null,
 
@@ -225,6 +225,18 @@
         this._containerDimensions.height / this._iconDimensions.height);
     },
 
+    _handleAppInstall: function appListHandleAppInstall(entries) {
+      console.log(entries);
+    },
+
+    _handleAppUpdate: function appListHandleAppUpdate(entries) {
+      console.log(entries);
+    },
+
+    _handleAppUninstall: function appListHandleAppUninstall(entries) {
+      console.log(entries);
+    },
+
     init: function appListInit() {
       var self = this;
 
@@ -248,11 +260,11 @@
           }
         };
 
-        var pages = [];
+        var pages = self._pages;
         var current_page = 0;
         pages.push(new AppListPage(self._container, self._pagingSize));
 
-        Applications.getEntries().forEach(function(entry) {
+        Applications.getAllEntries().forEach(function(entry) {
           if (pages[current_page].isFull()) {
             pages.push(new AppListPage(self._container, self._pagingSize));
             current_page++;
@@ -261,7 +273,10 @@
           self._iconCount++;
         });
 
-        self._pages = pages;
+        Applications.on('install', self._handleAppInstall);
+        Applications.on('update', self._handleAppUpdate);
+        Applications.on('uninstall', self._handleAppUninstall);
+
         self.setPage(0);
 
         self._selectionBorder = new SelectionBorder({
@@ -281,6 +296,10 @@
       this._selectionBorder.deselectAll();
       this._container.innerHTML = '';
       this._iconCount = 0;
+
+      Applications.off('install', self._handleAppInstall);
+      Applications.off('update', self._handleAppUpdate);
+      Applications.off('uninstall', self._handleAppUninstall);
 
       document.removeEventListener('keydown', self);
       document.getElementById('app-list-close-button')
