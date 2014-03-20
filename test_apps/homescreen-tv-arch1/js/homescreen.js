@@ -3,6 +3,7 @@
 (function() {
   var appList;
   var widgetEditor;
+  var widgetManager;
 
   function $(id) {
     return document.getElementById(id);
@@ -13,6 +14,9 @@
 
     appList = new AppList();
     appList.init();
+
+    widgetManager = new WidgetManager(window.systemConnection);
+    widgetManager.start();
 
     $('app-list-open-button').addEventListener('click', function() {
       appList.show();
@@ -31,7 +35,8 @@
     $('edit-widget').addEventListener('click', enterWidgetEditor);
     $('widget-editor-close').addEventListener('click', function() {
       widgetEditor.setVisible(false);
-      widgetEditor.save();
+      var newConfig = widgetEditor.exportConfig();
+      widgetManager.save(newConfig);
       $('widget-editor').hidden = true;
     });
   }
@@ -42,8 +47,10 @@
     // the creation of WidgetEditor.
     $('widget-editor').hidden = false;
     if (!widgetEditor) {
-      widgetEditor = new WidgetEditor($('widget-view'), appList);
-      widgetEditor.load();
+      widgetEditor = new WidgetEditor($('widget-view'), appList,
+                                      window.systemConnection);
+      widgetEditor.start();
+      widgetEditor.importConfig(widgetManager.widgetConfig);
     }
     widgetEditor.setVisible(true);
   }

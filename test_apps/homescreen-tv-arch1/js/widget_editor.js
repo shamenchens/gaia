@@ -15,6 +15,14 @@
                                                  container: dom });
   }
 
+  WidgetEditor.prototype.start = function we_start() {
+    this.editor = new HSLayoutEditor();
+    this.editor.init(this.dom);
+    window.addEventListener('keypress', this.handleKeyPress.bind(this));
+    this.currentPlace = this.editor.getFirstNonStatic();
+    this.switchFocus(this.currentPlace);
+  };
+
   WidgetEditor.prototype.setVisible = function we_visible(visible) {
     if (this.dom.hidden !== visible) {
       return;
@@ -22,37 +30,28 @@
 
     this.dom.hidden = !visible;
 
-    if (visible && !this.editor) {
-      this.editor = new HSLayoutEditor();
-      this.editor.init(this.dom);
-      window.addEventListener('keypress', this.handleKeyPress.bind(this));
-    }
-
     if (visible) {
       this.currentPlace = this.editor.getFirstNonStatic();
       this.switchFocus(this.currentPlace);
     }
   };
 
-  WidgetEditor.prototype.save = function we_save() {
-    window.asyncStorage.setItem('widget-list', this.editor.exportConfig());
+  WidgetEditor.prototype.exportConfig = function we_exportConfig() {
+    return this.editor.exportConfig();
   };
 
-  WidgetEditor.prototype.load = function we_load() {
+  WidgetEditor.prototype.importConfig = function we_importConfig(config) {
+    if (!config) {
+      return;
+    }
+
     var self = this;
-
-    window.asyncStorage.getItem('widget-list', function gotConfig(config) {
-      if (!config) {
-        return;
-      }
-
-      self.editor.reset(self.revokeUrl.bind(self));
-      for (var i = config.length - 1; i >= 0; i--) {
-        self.fillAppInfo(config[i], function fillReady(config) {
-          self.editor.loadWidget(config);
-        });
-      };
-    });
+    this.editor.reset(this.revokeUrl.bind(this));
+    for (var i = config.length - 1; i >= 0; i--) {
+      this.fillAppInfo(config[i], function fillReady(config) {
+        self.editor.loadWidget(config);
+      });
+    };
   };
 
   WidgetEditor.prototype.revokeUrl = function we_revokeUrl(app) {
@@ -143,7 +142,7 @@
     }
     this.currentPlace = place;
     this.selectionBorder.select(place.elm);
-  }
+  };
 
   exports.WidgetEditor = WidgetEditor;
 })(window);
