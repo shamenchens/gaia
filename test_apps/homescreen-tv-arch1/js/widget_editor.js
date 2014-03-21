@@ -6,18 +6,22 @@
 
   const DEFAULT_ICON = Applications.DEFAULT_ICON_URL;
 
-  function WidgetEditor(dom, appList) {
-    this.dom = dom;
-    this.appList = appList;
+  function WidgetEditor(options) {
+    if (!options.dom || !options.appList) {
+      throw new Error('WidgetEditor needs dom and appList to work.');
+    }
+    this.dom = options.dom;
+    this.appList = options.appList;
+    this.targetSize = options.targetSize;
     this.editor = null;
     this.currentPlace = null;
     this.selectionBorder = new SelectionBorder({ multiple: false,
-                                                 container: dom });
+                                                 container: this.dom });
   }
 
   WidgetEditor.prototype.start = function we_start() {
     this.editor = new HSLayoutEditor();
-    this.editor.init(this.dom);
+    this.editor.init(this.dom, this.targetSize);
     window.addEventListener('keypress', this.handleKeyPress.bind(this));
     this.currentPlace = this.editor.getFirstNonStatic();
     this.switchFocus(this.currentPlace);
