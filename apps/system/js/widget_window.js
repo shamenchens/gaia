@@ -30,11 +30,11 @@
     CLASS_NAME: 'WidgetWindow',
 
     setStyle: function(arg) {
-      this.width = arg.w;
-      this.height = arg.h;
-      this.left = arg.x;
-      this.top = arg.y;
-      this.opacity = arg.opacity;
+      this.width = arg.w || this.width;
+      this.height = arg.h || this.height;
+      this.left = arg.x || this.left;
+      this.top = arg.y || this.top;
+      this.opacity = arg.opacity || this.opacity;
       this.element.style.width = this.width + 'px';
       this.element.style.height = this.height + 'px';
       this.element.style.left = this.left + 'px';
@@ -43,6 +43,10 @@
     },
 
     resize: function() {},
+    isActive: function() {
+      // Widgets never goes active.
+      return false;
+    }
   };
   // Widget.prototype.__proto__ = AppWindow.prototype;
   exports.WidgetWindow = WidgetWindow;

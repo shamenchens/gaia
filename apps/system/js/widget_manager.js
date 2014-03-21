@@ -1,15 +1,16 @@
-/* global widgetFactory */
+/* global widgetFactory, homescreenConnection */
 'use strict';
 
 (function(exports) {
-  // var DEBUG = false;
+  var DEBUG = false;
 
   var WidgetManager = function(app) {
     this.app = app;
     this.runningWidgets = [];
-    window.addEventListener('iac-widget', this);
     window.addEventListener('widgetcreated', this);
+    window.addEventListener('widgetterminated', this);
     window.addEventListener('launchwidget', this);
+    window.addEventListener('homescreen-action-object', this);
     window.navigator.mozSetMessageHandler(
       'widget', this.handleEvent.bind(this));
   };
@@ -18,42 +19,58 @@
     idFormat: 'Widget_',
 
 
-    draw: function(commands) {
+    receiveOperation: function(commands) {
       if (!commands) {
         return;
       }
 
-      var returns = [];
       commands.forEach(function(command) {
+        var app;
         switch (command.action) {
           case 'add':
-            var app = widgetFactory.createWidget(command.args.origin,
-              command.args.origin + 'manifest.webapp', command.args);
-            returns.push({
-              requestId: command.requestId,
-              action: command.action,
-              result: !!app,
-              widgetId: app.origin
-            });
+            app = widgetFactory.createWidget(command.args.widgetOrigin,
+              command.args.widgetOrigin + '/manifest.webapp', command.args);
+            homescreenConnection.response(
+              !!app,
+              command.requestId,
+              command.action,
+              app.origin);
           break;
           case 'remove':
-            this.remove(command.args.widgetId);
-            //implement me
-            returns.push({});
+            homescreenConnection.response(
+              this.remove(command.widgetId),
+              command.requestId,
+              command.action,
+              command.widgetId);
           break;
           case 'update':
+            app = this.runningWidgets[command.args.widgetId];
+            if (!app) {
+              homescreenConnection.deny(
+                command.requestId, command.action, command.args.widgetId);
+              return;
+            }
+            app.setStyle(command.args);
+            homescreenConnection.confirm(
+              command.requestId,
+              command.action,
+              command.args.widgetId);
           break;
         }
       }.bind(this));
-      return returns;
     },
 
     getWidget: function(origin) {
       return this.runningWidgets[origin];
     },
 
-    remove: function(widgetId) {
-      // Implement me
+    remove: function(origin) {
+      if (this.runningWidgets[origin]) {
+        this.runningWidgets[origin].kill();
+        return true;
+      } else {
+        return false;
+      }
     },
 
     handleEvent: function(evt) {
@@ -65,6 +82,12 @@
         case 'launchwidget':
           var config = evt.detail;
           this.display(config.origin);
+          break;
+        case 'homescreen-action-object':
+          this.receiveOperation(evt.detail);
+          break;
+        case 'widgetterminated':
+          delete this.runningWidgets[evt.detail.origin];
           break;
       }
     },
@@ -78,4 +101,61 @@
     }
   };
   exports.WidgetManager = WidgetManager;
+
+  function getAppURL(origin, path) {
+    path = path ? path : '';
+    return window.location.protocol + '//' + origin +
+          (window.location.port ? (':' + window.location.port) : '') + path;
+  }
+  if (DEBUG) {
+    // XXX: For testing widget only. Remove when widget IAC is completed.
+    setTimeout(function() {
+      window.dispatchEvent(new CustomEvent('homescreen-action-object',
+        {'detail': [
+          {
+            requestId: 'w001',
+            action: 'add',
+            args: {
+              x: 150,
+              y: 10,
+              w: 100,
+              h: 100,
+              opacity: 0.7,
+              widgetOrigin: getAppURL('clock.gaiamobile.org'),
+            }
+          },
+          {
+            requestId: 'w002',
+            action: 'add',
+            args: {
+              x: 150,
+              y: 230,
+              w: 100,
+              h: 150,
+              opacity: 0.7,
+              widgetOrigin: getAppURL('calendar.gaiamobile.org')
+            }
+          }
+        ]}));
+    }.bind(this), 5000);
+  }
+  setTimeout(function() {
+    window.dispatchEvent(new CustomEvent('homescreen-action-object',
+      {'detail':[
+        {
+          requestId: 'w003',
+          action: 'update',
+          args: {
+            x: 50,
+            widgetId: getAppURL('calendar.gaiamobile.org')
+          }
+        },
+        {
+          requestId: 'w004',
+          action:'remove',
+          widgetId: getAppURL('clock.gaiamobile.org')
+        }
+      ]}
+    ));
+  }.bind(this), 10000);
 }(window));

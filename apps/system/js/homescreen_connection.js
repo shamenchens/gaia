@@ -99,6 +99,13 @@
     deny: function hc_deny(requestId, action, widgetId) {
       this._sendMessage(
         this._packResponseObject(requestId, action, false, widgetId));
+    },
+    response: function hc_response(result, requestId, action, widgetId) {
+      if (result) {
+        this.confirm(requestId, action, widgetId);
+      } else {
+        this.deny(requestId,action,widgetId);
+      }
     }
   };
   exports.HomescreenConnection = HomescreenConnection;
