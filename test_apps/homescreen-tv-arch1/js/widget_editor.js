@@ -23,6 +23,10 @@
     this.editor = new HSLayoutEditor();
     this.editor.init(this.dom, this.targetSize);
     window.addEventListener('keypress', this.handleKeyPress.bind(this));
+    Applications.on('uninstall',
+                    this.handleAppRemoved.bind(this));
+    Applications.on('update',
+                    this.handleAppUpdated.bind(this));
     this.currentPlace = this.editor.getFirstNonStatic();
     this.switchFocus(this.currentPlace);
   };
@@ -124,6 +128,14 @@
     }
   };
 
+  WidgetEditor.prototype.switchFocus = function we_switchFocus(place) {
+    if (!place) {
+      return;
+    }
+    this.currentPlace = place;
+    this.selectionBorder.select(place.elm);
+  };
+
   WidgetEditor.prototype.handleAppChosen = function we_handleAppChosen(data) {
     var self = this;
     Applications.getIconBlob(data.origin, data.entry_point, 0, function(blob) {
@@ -140,12 +152,44 @@
     return false;
   };
 
-  WidgetEditor.prototype.switchFocus = function we_switchFocus(place) {
-    if (!place) {
-      return;
+  WidgetEditor.prototype.handleAppRemoved = function we_handleAppRemoved(apps) {
+    var self = this;
+    for (var i = 0; i < apps.length; i++) {
+      var app = apps[i];
+      this.editor.removeWidgets(function(place, resultCallback) {
+
+        if (place.app.origin === app.origin &&
+            place.app.entryPoint === app.entry_point) {
+          self.revokeUrl(place.app.iconUrl);
+          resultCallback(true, place);
+        } else {
+          resultCallback(false, place);
+        }
+      });
     }
-    this.currentPlace = place;
-    this.selectionBorder.select(place.elm);
+  };
+
+  WidgetEditor.prototype.handleAppUpdated = function we_handleAppUpdated(apps) {
+    var self = this;
+    for (var i = 0; i < apps.length; i++) {
+      var app = apps[i];
+      this.editor.updateWidgets(function(place, resultCallback) {
+
+        if (place.app.origin === app.origin &&
+            place.app.entryPoint === app.entry_point) {
+
+          place.app.name = app.name;
+          self.revokeUrl(place.app.iconUrl);
+          Applications.getIconBlob(app.origin, app.entry_point, 0, function(b) {
+            var iconUrl = b ? URL.createObjectURL(b) : DEFAULT_ICON;
+            place.app.iconUrl = iconUrl;
+            resultCallback(true, place);
+          });
+        } else {
+          resultCallback(false, place);
+        }
+      });
+    }
   };
 
   exports.WidgetEditor = WidgetEditor;

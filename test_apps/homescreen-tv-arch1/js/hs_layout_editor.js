@@ -211,6 +211,37 @@
     this.updatePlaceHolderUI(place);
   };
 
+  HSLayoutEditor.prototype.removeWidgets = function hsle_removeItems(callback) {
+    this.batchOps(callback, this.removeWidget.bind(this));
+  };
+
+  HSLayoutEditor.prototype.updateWidgets = function hsle_updateItems(callback) {
+    this.batchOps(callback, this.updatePlaceHolderUI.bind(this));
+  };
+
+  HSLayoutEditor.prototype.batchOps = function hsle_batch(checkingFunc,
+                                                          affectedFunc) {
+    if (!checkingFunc || (typeof checkingFunc) !== 'function' ||
+        !affectedFunc || (typeof affectedFunc) !== 'function') {
+      return;
+    }
+    for (var i = 0; i < this.placeHolders.length; i++) {
+      if (!this.placeHolders[i].app) {
+        continue;
+      }
+      try {
+        checkingFunc(this.placeHolders[i], function result(affected, place) {
+          if (affected) {
+            affectedFunc(place);
+          }
+        });
+      } catch (ex) {
+        console.error('Error while trying to execute callback of ' +
+                      'batch tasks with place #' + i, ex);
+      }
+    }
+  };
+
   HSLayoutEditor.prototype.swapWidget = function hsle_swap(place1, place2) {
     var tmp = place1.app;
     place1.app = place2.app;
