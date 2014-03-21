@@ -47,8 +47,15 @@
     // the creation of WidgetEditor.
     $('widget-editor').hidden = false;
     if (!widgetEditor) {
-      widgetEditor = new WidgetEditor($('widget-view'), appList,
-                                      window.systemConnection);
+      var widgetPane = $('widget-pane');
+      widgetEditor = new WidgetEditor({ 
+                                        dom: $('widget-view'),
+                                        appList: appList,
+                                        targetSize: {
+                                          w: widgetPane.clientWidth,
+                                          h: widgetPane.clientHeight
+                                        }
+                                      });
       widgetEditor.start();
       widgetEditor.importConfig(widgetManager.widgetConfig);
     }

@@ -24,9 +24,15 @@
                               BOTTOM: 'bottom',
                               LEFT: 'left'};
 
-  HSLayoutEditor.prototype.init = function hsle_init(dom) {
-    this.container = dom;
+  HSLayoutEditor.prototype.init = function hsle_init(dom, targetSize) {
+    if (!targetSize) {
+      this.scaleRatio = 1;
+    } else {
+      this.scaleRatio = Math.min(targetSize.w / dom.clientWidth,
+                                 targetSize.h / dom.clientHeight);
+    }
 
+    this.container = dom;
     this.initSingleRect();
     this.createPlaceHolders();
     // return the initial widget
@@ -40,7 +46,10 @@
       if (place.app) {
         ret.push({
           positionId: i,
-          x: place.x, y: place.y, w: place.w, h: place.h,
+          x: Math.round(place.x * this.scaleRatio),
+          y: Math.round(place.y * this.scaleRatio),
+          w: Math.round(place.w * this.scaleRatio),
+          h: Math.round(place.h * this.scaleRatio),
           origin: place.app.origin,
           entryPoint: place.app.entryPoint
         });
