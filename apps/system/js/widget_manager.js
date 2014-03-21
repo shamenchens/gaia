@@ -1,4 +1,4 @@
-/* global widgetFactory, homescreenConnection */
+/* global widgetFactory, homescreenConnection, HomescreenLauncher */
 'use strict';
 
 (function(exports) {
@@ -37,11 +37,15 @@
               app.origin);
           break;
           case 'remove':
+            if (!command.args.widgetId) {
+              homescreenConnection.deny(
+                command.requestId, command.action, command.args.widgetId);
+            }
             homescreenConnection.response(
-              this.remove(command.widgetId),
+              this.remove(command.args.widgetId),
               command.requestId,
               command.action,
-              command.widgetId);
+              command.args.widgetId);
           break;
           case 'update':
             app = this.runningWidgets[command.args.widgetId];
@@ -55,7 +59,15 @@
               command.requestId,
               command.action,
               command.args.widgetId);
-          break;
+            break;
+          case 'hideall':
+            HomescreenLauncher.getHomescreen().hideWidgetLayer();
+            homescreenConnection.confirm(command.requestId, command.action);
+            break;
+          case 'showall':
+            HomescreenLauncher.getHomescreen().showWidgetLayer();
+            homescreenConnection.confirm(command.requestId, command.action);
+            break;
         }
       }.bind(this));
     },
@@ -138,24 +150,31 @@
           }
         ]}));
     }.bind(this), 5000);
-  }
-  setTimeout(function() {
-    window.dispatchEvent(new CustomEvent('homescreen-action-object',
-      {'detail':[
-        {
-          requestId: 'w003',
-          action: 'update',
-          args: {
-            x: 50,
-            widgetId: getAppURL('calendar.gaiamobile.org')
+    setTimeout(function() {
+      window.dispatchEvent(new CustomEvent('homescreen-action-object',
+        {'detail':[
+          {
+            requestId: 'w004',
+            action:'hideall'
           }
-        },
-        {
-          requestId: 'w004',
-          action:'remove',
-          widgetId: getAppURL('clock.gaiamobile.org')
-        }
-      ]}
-    ));
-  }.bind(this), 10000);
+        ]}
+      ));
+    }.bind(this), 10000);
+    setTimeout(function() {
+      window.dispatchEvent(new CustomEvent('homescreen-action-object',
+        {'detail':[
+          {
+            requestId: 'w003',
+            action: 'showall'
+          }, {
+            requestId: 'w004',
+            action: 'remove',
+            args: {
+              widgetId: getAppURL('clock.gaiamobile.org')
+            }
+          }
+        ]}
+      ));
+    }.bind(this), 15000);
+  }
 }(window));
