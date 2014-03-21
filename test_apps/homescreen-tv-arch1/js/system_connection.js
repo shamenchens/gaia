@@ -85,29 +85,38 @@
       this._unrespondRequests.push(requestObject);
     },
     _packRequestObject: function sc_packRequestObject(action, args) {
-      return {
-        requestId: uuid.v4(),
-        action: action,
-        args: args
-      };
+      if (args) {
+        return {
+          requestId: uuid.v4(),
+          action: action,
+          args: args
+        };
+      } else {
+        return {
+          requestId: uuid.v4(),
+          action: action
+        };
+      }
+    },
+    _commonAction: function sc_commonAction(action, args) {
+      var requestObject = this._packRequestObject(action, args);
+      this._sendMessage(requestObject, this._waitForResponse.bind(this));
+      return requestObject.requestId;
     },
     addWidget: function sc_addWidget(args) {
-      var requestObject = this._packRequestObject('add', args);
-      // TODO: validation on args and refactoring
-      this._sendMessage(requestObject, this._waitForResponse.bind(this));
-      return requestObject.requestId;
+      return this._commonAction('add', args);
     },
     removeWidget: function sc_removeWidget(args) {
-      var requestObject = this._packRequestObject('remove', args);
-      // TODO: validation on args and refactoring
-      this._sendMessage(requestObject, this._waitForResponse.bind(this));
-      return requestObject.requestId;
+      return this._commonAction('remove', args);
     },
     updateWidget: function sc_updateWidget(args) {
-      var requestObject = this._packRequestObject('update', args);
-      // TODO: validation on args and refactoring
-      this._sendMessage(requestObject, this._waitForResponse.bind(this));
-      return requestObject.requestId;
+      return this._commonAction('update', args);
+    },
+    showAll: function sc_showAll() {
+      return this._commonAction('showall');
+    },
+    hideAll: function sc_hideAll() {
+      return this._commonAction('hideall');
     }
   };
   exports.SystemConnection = SystemConnection;

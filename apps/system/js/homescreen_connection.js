@@ -84,12 +84,20 @@
     },
     _packResponseObject: function hc_packResponseObject(
         requestId, action, result, widgetId) {
-      return {
-        requestId: requestId,
-        action: action,
-        result: result,
-        widgetId: widgetId
-      };
+      if (widgetId) {
+        return {
+          requestId: requestId,
+          action: action,
+          result: result,
+          widgetId: widgetId
+        };
+      } else {
+        return {
+          requestId: requestId,
+          action: action,
+          result: result
+        };
+      }
     },
     confirm: function hc_confirm(requestId, action, widgetId) {
       this._sendMessage(

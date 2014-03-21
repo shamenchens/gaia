@@ -5,25 +5,11 @@ requireApp('homescreen-tv-arch1/js/system_connection.js');
 requireApp('homescreen-tv-arch1/test/unit/mock_uuid.js');
 
 suite('SystemConntection', function() {
-  setup(function() {
+  var app;
+
+  suiteSetup(function() {
     window.navigator.mozApps = MockNavigatormozApps;
-  });
-
-  teardown(function() {
-    systemConnection._unrespondRequests = [];
-    MockNavigatormozApps.mTeardown();
-  });
-
-  test('addWidget', function() {
-    var args = {
-      x: 220,
-      y: 10,
-      w: 200,
-      h: 150,
-      widgetOrigin: 'app://widget.gaiamobile.org/',
-      widgetEntryPoint: 'entry'
-    };
-    var app = {
+    app = {
       name: 'homescreen',
       launch: MockNavigatormozApps._mLaunch.bind(MockNavigatormozApps),
       connect: function(keyword) {
@@ -35,16 +21,50 @@ suite('SystemConntection', function() {
         };
       }
     };
-    assert.isTrue(systemConnection._unrespondRequests.length === 0);
+  });
+
+  suiteTeardown(function() {
+    MockNavigatormozApps.mTeardown();
+  });
+
+  setup(function() {
+  });
+
+  teardown(function() {
+    systemConnection._unrespondRequests = [];
+  });
+
+  test('addWidget', function() {
+    var args = {
+      x: 220,
+      y: 10,
+      w: 200,
+      h: 150,
+      widgetOrigin: 'app://widget.gaiamobile.org/',
+      widgetEntryPoint: 'entry'
+    };
+    assert.strictEqual(systemConnection._unrespondRequests.length, 0);
     systemConnection.addWidget(args);
     MockNavigatormozApps.mTriggerLastRequestSuccess(app);
     if (MockNavigatormozApps.mLastConnectionCallback) {
       MockNavigatormozApps.mLastConnectionCallback([]);
     }
     assert.isTrue(systemConnection._unrespondRequests.length > 0);
-    assert.isTrue(systemConnection._unrespondRequests[0].args === args);
-    assert.isTrue(systemConnection._unrespondRequests[0].action === 'add');
-    assert.isTrue(
-      systemConnection._unrespondRequests[0].requestId === uuid.FAKE_UUID);
+    assert.deepEqual(systemConnection._unrespondRequests[0].args, args);
+    assert.strictEqual(systemConnection._unrespondRequests[0].action, 'add');
   });
+
+  test('showAll', function() {
+    assert.isTrue(systemConnection._unrespondRequests.length === 0);
+    systemConnection.showAll();
+    MockNavigatormozApps.mTriggerLastRequestSuccess(app);
+    if (MockNavigatormozApps.mLastConnectionCallback) {
+      MockNavigatormozApps.mLastConnectionCallback([]);
+    }
+    assert.isTrue(systemConnection._unrespondRequests.length > 0);
+    assert.isUndefined(systemConnection._unrespondRequests[0].args);
+    assert.strictEqual(
+      systemConnection._unrespondRequests[0].action, 'showall');
+  });
+
 });
