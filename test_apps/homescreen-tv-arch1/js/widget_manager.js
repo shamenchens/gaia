@@ -14,6 +14,8 @@
   WidgetManager.prototype.start = function wm_start() {
     window.addEventListener('system-action-object',
                             this.handleSystemWidgetMsg.bind(this));
+    Applications.on('uninstall',
+                    this.handleAppRemoved.bind(this));
     this.syncWidgets();
   };
 
@@ -111,6 +113,29 @@
       window.asyncStorage.setItem('widget-list', newConfig);
       self.widgetConfig = newConfig;
     });
+  };
+
+  WidgetManager.prototype.handleAppRemoved = function wm_appRemoved(apps) {
+    if (!this.widgetConfig) {
+      return;
+    }
+
+    var affected = false;
+    for (var idx = 0; idx < apps.length; idx++) {
+      var app = apps[idx];
+      for (var i = 0; i < this.widgetConfig.length; i++) {
+        if (this.widgetConfig[i].origin === app.origin &&
+            this.widgetConfig[i].entryPoint === app.entry_point) {
+          this.widgetConfig.splice(i, 1);
+          i--;
+          affected = true;
+        }
+      }
+    }
+    // save is expensive, we don't need to do save all the time.
+    if (affected) {
+      this.save(this.widgetConfig);
+    }
   };
 
   exports.WidgetManager = WidgetManager;
