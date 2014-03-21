@@ -39,6 +39,8 @@
       widgetManager.save(newConfig);
       $('widget-editor').hidden = true;
     });
+
+    initTestModule();
   }
 
   function enterWidgetEditor() {
@@ -48,7 +50,7 @@
     $('widget-editor').hidden = false;
     if (!widgetEditor) {
       var widgetPane = $('widget-pane');
-      widgetEditor = new WidgetEditor({ 
+      widgetEditor = new WidgetEditor({
                                         dom: $('widget-view'),
                                         appList: appList,
                                         targetSize: {

@@ -36,4 +36,5 @@ section {
   outline: solid 0.2rem yellow;
   box-shadow: 0 0 1rem 0.2rem yellow;
   transition: all 0.2s ease;
+  pointer-events: none;
 }

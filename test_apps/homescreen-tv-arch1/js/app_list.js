@@ -13,10 +13,12 @@
     this._numIconsPerCol = pagingSize.numIconsPerCol || 0;
     this._maxIconCount = this._numIconsPerRow * this._numIconsPerCol;
 
-    parent.appendChild(this._dom);
+    this._parent = parent;
+    this._parent.appendChild(this._dom);
   }
 
   AppListPage.prototype = {
+    _parent: null,
     _dom: null,
 
     _numIconsPerRow: 0,
@@ -50,6 +52,10 @@
       );
     },
 
+    remove: function alpRemove() {
+      this._parent.removeChild(this._dom);
+    },
+
     addIcon: function alpAddIcon(entry, tapHandler) {
       if (this.isFull()) {
         return false;
@@ -80,8 +86,9 @@
     },
 
     removeIcon: function alpInsertIcon(index) {
-      var elem = getIconElement(index);
+      var elem = this.getIconElement(index);
       if (elem) {
+        this._dom.removeChild(elem);
         this._iconCount--;
       }
       return elem;
@@ -312,7 +319,33 @@
     },
 
     _handleAppUninstall: function appListHandleAppUninstall(entries) {
-      // TBD
+      var self = this;
+
+      entries.forEach(function(entry) {
+        var pages = self._pages;
+        var page_count = pages.length;
+        var page_index;
+        var found = -1;
+
+        for (page_index = 0; page_index < page_count; page_index++) {
+          var index = pages[page_index].findIcon(entry);
+          if (index != -1) {
+            found = index;
+            break;
+          }
+        }
+
+        if (found != -1) {
+          pages[page_index].removeIcon(found);
+
+          for (var i = page_index + 1; i < page_count; i++) {
+            var icon = pages[i].removeIcon(0);
+            pages[i - 1].insertIcon(icon);
+          }
+
+          self.reducePage();
+        }
+      });
     },
 
     init: function appListInit() {
@@ -433,6 +466,24 @@
       this._pageIndicator.appendChild(item);
 
       return this._pages[this._pages.length - 1];
+    },
+
+    reducePage: function appListReducePage(index) {
+      while(this._pages.length) {
+        var last_page = this._pages[this._pages.length - 1];
+
+        if (!last_page.isEmpty()) {
+          break;
+        }
+
+        this._pages.pop();
+        last_page.remove();
+        this._pageIndicator.removeChild(this._pageIndicator.lastChild);
+      }
+
+      if (this._currentPage >= this._pages.length) {
+        this.setPage(this._pages.length - 1);
+      }
     },
 
     setPage: function appListSetPage(index) {
