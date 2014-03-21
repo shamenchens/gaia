@@ -29,9 +29,9 @@ function initTestModule() {
           break;
         case 'F3':
           if (Applications.installedApps[TEST_ORIGIN]) {
-            Applications.fire('uninstall',
-              Applications.getAppEntries(TEST_ORIGIN));
+            var entries = Applications.getAppEntries(TEST_ORIGIN);
             delete Applications.installedApps[TEST_ORIGIN];
+            Applications.fire('uninstall', entries);
           }
           break;
         default:

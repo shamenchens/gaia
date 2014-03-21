@@ -162,6 +162,7 @@
     _pages: [],
 
     _iconTapHandler: null,
+    _unbindAppEventHandler: null,
 
     oniconclick: null,
 
@@ -371,9 +372,21 @@
       document.addEventListener('keydown', self);
 
       Applications.ready(function() {
-        Applications.on('install', self._handleAppInstall.bind(self));
-        Applications.on('update', self._handleAppUpdate.bind(self));
-        Applications.on('uninstall', self._handleAppUninstall.bind(self));
+        var appEventHandler = {
+          'install': self._handleAppInstall.bind(self),
+          'update': self._handleAppUpdate.bind(self),
+          'uninstall': self._handleAppUninstall.bind(self)
+        };
+
+        for(var type in appEventHandler) {
+          Applications.on(type, appEventHandler[type]);
+        }
+
+        this._unbindAppEventHandler = function() {
+          for(var type in appEventHandler) {
+            Applications.off(type, appEventHandler[type]);
+          }
+        };
 
         self._handleAppInstall(Applications.getAllEntries());
         self.setPage(0);
@@ -397,9 +410,8 @@
 
       this._iconTapHandler = null;
 
-      Applications.off('install', self._handleAppInstall.bind(self));
-      Applications.off('update', self._handleAppUpdate.bind(self));
-      Applications.off('uninstall', self._handleAppUninstall.bind(self));
+      this._unbindAppEventHandler();
+      this._unbindAppEventHandler = null;
 
       document.removeEventListener('keydown', self);
       document.getElementById('app-list-close-button')

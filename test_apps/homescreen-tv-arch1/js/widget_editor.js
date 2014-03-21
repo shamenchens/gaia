@@ -123,8 +123,13 @@
       this.revokeUrl(this.currentPlace.app);
       this.editor.removeWidget(this.currentPlace);
     } else {
-      this.appList.on('iconclick', this.handleAppChosen.bind(this));
-      this.appList.show();
+      if (this.appList.show()) {
+        var handleAppChosen = this.handleAppChosen.bind(this);
+        this.appList.on('iconclick', handleAppChosen);
+        this.appList.once('closed', function() {
+          this.off('iconclick', handleAppChosen);
+        });
+      }
     }
   };
 
@@ -147,7 +152,6 @@
                               entryPoint: data.entry_point},
                             self.currentPlace);
     });
-    this.appList.off('iconclick');
     this.appList.hide();
     return false;
   };
