@@ -40,7 +40,9 @@
       $('widget-editor').hidden = true;
     });
 
-    initTestModule();
+    // for testing only
+    initFakeAppEvent();
+    initGesture();
   }
 
   function enterWidgetEditor() {

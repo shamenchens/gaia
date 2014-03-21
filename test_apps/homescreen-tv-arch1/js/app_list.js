@@ -72,7 +72,9 @@
       icon.dataset.entry_point = entry.entry_point;
       icon.appendChild(img);
       icon.appendChild(text);
-      icon.addEventListener('click', tapHandler);
+      if (tapHandler) {
+        icon.addEventListener('click', tapHandler);
+      }
 
       this.insertIcon(icon);
       this._updateIconNameAndIcon(icon, entry);
@@ -161,7 +163,6 @@
     _currentPage: 0,
     _pages: [],
 
-    _iconTapHandler: null,
     _unbindAppEventHandler: null,
 
     oniconclick: null,
@@ -183,14 +184,7 @@
           this._handleArrowKey(evt.key);
           break;
         case 'Enter':
-          var event = new MouseEvent('click', {
-            'view': window,
-            'bubbles': false,
-            'cancelable': false
-          });
-
-          this._pages[this._currentPage].getIconElement(this._focus)
-            .dispatchEvent(event);
+          this._launchCurrentIcon();
           break;
         case 'Esc':
           this.hide();
@@ -258,6 +252,21 @@
       return this.setFocus(new_focus);
     },
 
+    _launchCurrentIcon: function appListLaunchCurrentIcon() {
+      var current_page = this._pages[this._currentPage];
+      var icon = current_page.getIconElement(this._focus);
+
+      var data = {
+        origin: icon.dataset.origin,
+        entry_point: icon.dataset.entry_point,
+        name: icon.dataset.name
+      };
+
+      if (this.fire('iconclick', data)) {
+        Applications.launch(data.origin, data.entry_point);
+      }
+    },
+
     _calcPagingSize: function appListCalcPagingSize() {
       this._appList.hidden = false;
       this._containerDimensions.width = this._container.clientWidth;
@@ -302,7 +311,7 @@
         if (page.isFull()) {
           page = self.createPage();
         }
-        page.addIcon(entry, self._iconTapHandler);
+        page.addIcon(entry);
       });
     },
 
@@ -352,20 +361,6 @@
     init: function appListInit() {
       var self = this;
 
-      this._iconTapHandler = function(evt) {
-        evt.preventDefault();
-
-        var data = {
-          origin: this.dataset.origin,
-          entry_point: this.dataset.entry_point,
-          name: this.dataset.name
-        };
-
-        if (self.fire('iconclick', data)) {
-          Applications.launch(data.origin, data.entry_point);
-        }
-      };
-
       document.getElementById('app-list-close-button')
         .addEventListener('click', self);
 
@@ -408,8 +403,6 @@
       this._selectionBorder.deselectAll();
       this._container.innerHTML = '';
 
-      this._iconTapHandler = null;
-
       this._unbindAppEventHandler();
       this._unbindAppEventHandler = null;
 
@@ -419,7 +412,7 @@
     },
 
     show: function appListShow() {
-      if (!this.fire('opening')) {
+      if (!this._appList.hidden || !this.fire('opening')) {
         return false;
       }
 
@@ -435,7 +428,7 @@
     },
 
     hide: function appListHide() {
-      if (!this.fire('closing')) {
+      if (this._appList.hidden || !this.fire('closing')) {
         return false;
       }
 
