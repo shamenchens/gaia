@@ -1,4 +1,4 @@
-/* global AppWindow, Applications, BrowserConfigHelper, widgetManager */
+/* global AppWindow, Applications, BrowserConfigHelper */
 'use strict';
 
 (function(exports) {
@@ -190,6 +190,14 @@
     }
 
     return this.element;
+  };
+
+  HomescreenWindow.prototype.hideWidgetLayer = function hw_hideWidgetLayer() {
+    this.widgetOverlay.style.display = 'none';
+  };
+
+  HomescreenWindow.prototype.showWidgetLayer = function hw_hideWidgetLayer() {
+    this.widgetOverlay.style.display = 'block';
   };
 
   exports.HomescreenWindow = HomescreenWindow;
