@@ -41,19 +41,19 @@
         JSON.stringify(messageObject) + ']');
       // TODO: validate request action object
       if (messageObject && messageObject.requestId) {
-        this._pendingRequests.push(messageObject);
+        this._unrespondRequests.push(messageObject);
       }
       window.dispatchEvent(
         new CustomEvent('homescreen-action-object',
           {'detail': [messageObject]}));
     },
-    _pendingRequests: [],
-    _removePendingRequest: function sc_findUnresponsiveRequest(requestObject) {
+    _unrespondRequests: [],
+    _removeUnrespondRequest: function sc_removeUnrespondRequest(requestObject) {
       var that = this;
       try {
-        this._pendingRequests.forEach(function(value, index) {
+        this._unrespondRequests.forEach(function(value, index) {
           if (value.requestId === requestObject.requestId) {
-            that._pendingRequests.splice(index, 1);
+            that._unrespondRequests.splice(index, 1);
             throw new Error('Break');
           }
         });
@@ -94,7 +94,7 @@
     confirm: function hc_confirm(requestId, action, widgetId) {
       this._sendMessage(
         this._packResponseObject(requestId, action, true, widgetId),
-        this._removePendingRequest.bind(this));
+        this._removeUnrespondRequest.bind(this));
     },
     deny: function hc_deny(requestId, action, widgetId) {
       this._sendMessage(
