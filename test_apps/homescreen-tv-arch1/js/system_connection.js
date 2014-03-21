@@ -41,18 +41,18 @@
         JSON.stringify(messageObject) + ']');
       // TODO: validation
       if (messageObject && messageObject.requestId) {
-        this._removeUnresponsiveRequest(messageObject.requestId);
+        this._removeUnrespondRequest(messageObject.requestId);
       }
       window.dispatchEvent(
         new CustomEvent('system-action-object', {'detail': [messageObject]}));
     },
-    _unresponsiveRequests: [],
-    _removeUnresponsiveRequest: function sc_findUnresponsiveRequest(requestId) {
+    _unrespondRequests: [],
+    _removeUnrespondRequest: function sc_removeUnrespondRequest(requestId) {
       var that = this;
       try {
-        this._unresponsiveRequests.forEach(function(value, index) {
+        this._unrespondRequests.forEach(function(value, index) {
           if (value.requestId === requestId) {
-            that._unresponsiveRequests.splice(index, 1);
+            that._unrespondRequests.splice(index, 1);
             throw new Error('Break');
           }
         });
@@ -82,7 +82,7 @@
       };
     },
     _waitForResponse: function sc_waitForResponse(requestObject) {
-      this._unresponsiveRequests.push(requestObject);
+      this._unrespondRequests.push(requestObject);
     },
     _packRequestObject: function sc_packRequestObject(action, args) {
       return {
