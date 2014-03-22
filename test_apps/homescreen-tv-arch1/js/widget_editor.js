@@ -153,7 +153,7 @@
                             self.currentPlace);
     });
     this.appList.hide();
-    return false;
+    return true;
   };
 
   WidgetEditor.prototype.handleAppRemoved = function we_handleAppRemoved(apps) {

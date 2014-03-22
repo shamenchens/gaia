@@ -40,14 +40,13 @@
           if (!blob) {
             return;
           }
+
           var url = window.URL.createObjectURL(blob);
-          img.addEventListener('load', function iconImageOnLoad() {
-            if (this.src == url) {
-              img.removeEventListener('load', iconImageOnLoad);
-              window.URL.revokeObjectURL(url);
-            }
-          });
           img.src = url;
+          img.addEventListener('load', function iconImageOnLoad() {
+            img.removeEventListener('load', iconImageOnLoad);
+            window.URL.revokeObjectURL(url);
+          });
         }
       );
     },

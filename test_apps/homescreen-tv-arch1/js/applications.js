@@ -126,8 +126,8 @@
       appMgmt.getAll().onsuccess = function onsuccess(event) {
         event.target.result.forEach(function eachApp(app) {
           var manifest = app.manifest;
-          if (!app.launch || !manifest || !manifest.launch_path ||
-              !manifest.icons || self._isHiddenApp(manifest.role)) {
+          if (!app.launch || !manifest || !manifest.icons ||
+              self._isHiddenApp(manifest.role)) {
             return;
           }
           self.installedApps[app.origin] = app;
@@ -146,6 +146,13 @@
 
       appMgmt.oninstall = function(evt) {
         var app = evt.application;
+        var manifest = app.manifest || app.updateManifest;
+
+        if (!app.launch || !manifest || !manifest.icons ||
+            self._isHiddenApp(manifest.role)) {
+          return;
+        }
+
         var message = self.installedApps[app.origin] ? 'update' : 'install';
         self.installedApps[app.origin] = app;
         self.fire(message, self.getAppEntries(app.origin));
@@ -153,8 +160,10 @@
 
       appMgmt.onuninstall = function(evt) {
         var app = evt.application;
-        delete self.installedApps[app.origin];
-        self.fire('uninstall', self.getAppEntries(app.origin));
+        if (self.installedApps[app.origin]) {
+          delete self.installedApps[app.origin];
+          self.fire('uninstall', self.getAppEntries(app.origin));
+        }
       };
     },
 
@@ -173,7 +182,8 @@
         return [];
       }
 
-      var manifest = this.installedApps[origin].manifest;
+      var manifest = this.installedApps[origin].manifest ||
+        this.installedApps[origin].updateManifest;
       var entryPoints = manifest.entry_points;
       var entries = [];
 
@@ -228,7 +238,8 @@
         return null;
       }
 
-      var manifest = this.installedApps[origin].manifest;
+      var manifest = this.installedApps[origin].manifest ||
+        this.installedApps[origin].updateManifest;
 
       if (entryPoint) {
         var entry_manifest = manifest.entry_points[entryPoint];
