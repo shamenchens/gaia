@@ -24,7 +24,7 @@
                               BOTTOM: 'bottom',
                               LEFT: 'left'};
 
-  HSLayoutEditor.prototype.init = function hsle_init(dom, targetSize) {
+  HSLayoutEditor.prototype.init = function hsle_init(dom, targetSize, offset) {
     if (!targetSize) {
       this.scaleRatio = 1;
     } else {
@@ -32,6 +32,7 @@
                                  targetSize.h / dom.clientHeight);
     }
 
+    this.offsetPosition = offset;
     this.container = dom;
     this.initSingleRect();
     this.createPlaceHolders();
@@ -46,8 +47,8 @@
       if (place.app) {
         ret.push({
           positionId: i,
-          x: Math.round(place.x * this.scaleRatio),
-          y: Math.round(place.y * this.scaleRatio),
+          x: this.offsetPosition.left + Math.round(place.x * this.scaleRatio),
+          y: this.offsetPosition.top + Math.round(place.y * this.scaleRatio),
           w: Math.round(place.w * this.scaleRatio),
           h: Math.round(place.h * this.scaleRatio),
           origin: place.app.origin,

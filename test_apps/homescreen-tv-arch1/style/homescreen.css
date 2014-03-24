@@ -37,4 +37,10 @@ section {
   box-shadow: 0 0 1rem 0.2rem yellow;
   transition: all 0.2s ease;
   pointer-events: none;
+  z-index: 100;
+}
+
+#main-section.app-list-shown .selection-border,
+#main-section.widget-editor-shown .selection-border {
+  display: none;
 }

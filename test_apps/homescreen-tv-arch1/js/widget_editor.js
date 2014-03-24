@@ -13,6 +13,7 @@
     this.dom = options.dom;
     this.appList = options.appList;
     this.targetSize = options.targetSize;
+    this.offset = options.offset;
     this.editor = null;
     this.currentPlace = null;
     this.selectionBorder = new SelectionBorder({ multiple: false,
@@ -21,8 +22,7 @@
 
   WidgetEditor.prototype.start = function we_start() {
     this.editor = new HSLayoutEditor();
-    this.editor.init(this.dom, this.targetSize);
-    window.addEventListener('keypress', this.handleKeyPress.bind(this));
+    this.editor.init(this.dom, this.targetSize, this.offset);
     Applications.on('uninstall',
                     this.handleAppRemoved.bind(this));
     Applications.on('update',
@@ -42,6 +42,10 @@
       this.currentPlace = this.editor.getFirstNonStatic();
       this.switchFocus(this.currentPlace);
     }
+  };
+
+  WidgetEditor.prototype.isShown = function we_isShown() {
+    return !this.dom.hidden;
   };
 
   WidgetEditor.prototype.exportConfig = function we_exportConfig() {
@@ -82,7 +86,7 @@
     });
   };
 
-  WidgetEditor.prototype.handleKeyPress = function we_handleKeyPress(e) {
+  WidgetEditor.prototype.handleKeyDown = function we_handleKeyPress(e) {
     if (this.dom.hidden || this.appList.isShown()) {
       return;
     }
