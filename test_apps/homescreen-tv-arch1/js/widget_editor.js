@@ -20,28 +20,44 @@
                                                  container: this.dom });
   }
 
+  WidgetEditor.prototype = new window.evt();
+
   WidgetEditor.prototype.start = function we_start() {
     this.editor = new HSLayoutEditor();
     this.editor.init(this.dom, this.targetSize, this.offset);
-    Applications.on('uninstall',
-                    this.handleAppRemoved.bind(this));
-    Applications.on('update',
-                    this.handleAppUpdated.bind(this));
+    //keep reference for removal
+    this.boundHandleAppRemoved = this.handleAppRemoved.bind(this);
+    this.boundHandleAppUpdate = this.handleAppUpdated.bind(this);
+    Applications.on('uninstall', this.boundHandleAppRemoved);
+    Applications.on('update', this.boundHandleAppUpdate);
+
     this.currentPlace = this.editor.getFirstNonStatic();
     this.switchFocus(this.currentPlace);
   };
 
-  WidgetEditor.prototype.setVisible = function we_visible(visible) {
-    if (this.dom.hidden !== visible) {
+  WidgetEditor.prototype.stop = function we_stop() {
+    Applications.off('uninstall', this.boundHandleAppRemoved);
+    Applications.off('update', this.boundHandleAppUpdate);
+  };
+
+  WidgetEditor.prototype.show = function we_show() {
+    if (!this.dom.hidden) {
       return;
     }
 
-    this.dom.hidden = !visible;
+    this.dom.hidden = false;
+    this.currentPlace = this.editor.getFirstNonStatic();
+    this.switchFocus(this.currentPlace);
+    this.fire('shown');
+  };
 
-    if (visible) {
-      this.currentPlace = this.editor.getFirstNonStatic();
-      this.switchFocus(this.currentPlace);
+  WidgetEditor.prototype.hide = function we_hide() {
+    if (this.dom.hidden) {
+      return;
     }
+
+    this.dom.hidden = true;
+    this.fire('closed');
   };
 
   WidgetEditor.prototype.isShown = function we_isShown() {

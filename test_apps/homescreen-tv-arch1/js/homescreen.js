@@ -30,6 +30,7 @@
     widgetManager.on('update', updateSelection);
     widgetManager.start();
 
+    // app list
     $('app-list-open-button').addEventListener('click', function() {
       appList.show();
       $('main-section').classList.add('app-list-shown');
@@ -49,8 +50,11 @@
       evt.preventDefault();
     });
 
+    // widget editor
     $('edit-widget').addEventListener('click', enterWidgetEditor);
-    $('widget-editor-close').addEventListener('click', leaveWidgetEditor);
+    $('widget-editor-close').addEventListener('click', function() {
+      widgetEditor.hide();
+    });
 
     window.addEventListener('keydown', handleKeyEvent);
 
@@ -68,7 +72,7 @@
       appList.handleEvent(evt);
     } else if (widgetEditor && widgetEditor.isShown()) {
       if (evt.key === 'Esc') {
-        $('widget-editor-close').click();
+        widgetEditor.hide();
       } else {
         widgetEditor.handleKeyDown(evt);
       }
@@ -96,17 +100,8 @@
     } else if (focused === $('edit-widget')) {
       $('edit-widget').click();
     } else {
-
+      Applications.launch(focused.origin, focused.entryPoint);
     }
-  }
-
-  function leaveWidgetEditor() {
-    widgetEditor.setVisible(false);
-    var newConfig = widgetEditor.exportConfig();
-    widgetManager.save(newConfig);
-    $('widget-editor').hidden = true;
-    $('main-section').classList.remove('widget-editor-shown');
-    window.systemConnection.showAll();
   }
 
   function enterWidgetEditor() {
@@ -130,10 +125,19 @@
                                           h: widgetPane.clientHeight
                                         }
                                       });
+      widgetEditor.on('closed', handleWidgetEditorClosed);
       widgetEditor.start();
       widgetEditor.importConfig(widgetManager.widgetConfig);
     }
-    widgetEditor.setVisible(true);
+    widgetEditor.show();
+  }
+
+  function handleWidgetEditorClosed() {
+    var newConfig = widgetEditor.exportConfig();
+    widgetManager.save(newConfig);
+    $('widget-editor').hidden = true;
+    $('main-section').classList.remove('widget-editor-shown');
+    window.systemConnection.showAll();
   }
 
   function updateSelection(config) {
