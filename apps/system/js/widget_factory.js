@@ -16,16 +16,11 @@
       if (!config.manifest) {
         return;
       }
-      var app = widgetManager.getWidget(config.origin);
-      if (!app) {
-        // Widget doesn't exist. Create new widget window and manage it.
-        // XXX: What's the implementation for Multi-homescreen?
-        var widgetOverlay =
-          document.getElementsByClassName('widget-overlay')[0];
-        app = new WidgetWindow(config, widgetOverlay);
-      }
+      var widgetOverlay =
+        document.getElementsByClassName('widget-overlay')[0];
+      var app = new WidgetWindow(config, widgetOverlay);
       app.setStyle(styles);
-      this.publish('launchwidget', config);
+      this.publish('launchwidget', app.instanceID);
 
       return app;
     },
