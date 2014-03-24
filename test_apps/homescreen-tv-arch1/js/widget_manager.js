@@ -4,12 +4,19 @@
 (function(exports) {
   'use strict';
 
-  function WidgetManager(systemConn) {
+  function $(id) {
+    return document.getElementById(id);
+  }
+
+  function WidgetManager(systemConn, appList) {
     this.systemConn = systemConn;
+    this.appList = appList;
     this.widgetConfig;
     this.posIdToWidgetId = {};
     this.reqIdToPosId = {};
   }
+
+  WidgetManager.prototype = new evt();
 
   WidgetManager.prototype.start = function wm_start() {
     window.addEventListener('system-action-object',
@@ -35,6 +42,7 @@
         });
         self.reqIdToPosId[reqId] = config[i].positionId;
       };
+      self.fire('update', self.widgetConfig);
     });
   };
 
@@ -114,6 +122,7 @@
       self.dispatchMessageToIAC(eventList);
       window.asyncStorage.setItem('widget-list', newConfig);
       self.widgetConfig = newConfig;
+      self.fire('update', self.widgetConfig);
     });
   };
 

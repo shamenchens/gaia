@@ -363,8 +363,6 @@
       document.getElementById('app-list-close-button')
         .addEventListener('click', self);
 
-      document.addEventListener('keydown', self);
-
       Applications.ready(function() {
         var appEventHandler = {
           'install': self._handleAppInstall.bind(self),
@@ -405,7 +403,7 @@
       this._unbindAppEventHandler();
       this._unbindAppEventHandler = null;
 
-      document.removeEventListener('keydown', self);
+      window.removeEventListener('keydown', self);
       document.getElementById('app-list-close-button')
         .removeEventListener('click', this);
     },
@@ -529,9 +527,7 @@
           if (!this.isShown()) {
             return;
           }
-          if (this._handleKeyDown(evt)) {
-            evt.preventDefault();
-          }
+          this._handleKeyDown(evt)
           break;
       }
     }
