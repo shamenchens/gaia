@@ -48,8 +48,13 @@
 
   WidgetManager.prototype.handleSystemWidgetMsg = function(evt) {
     var detail = evt.detail;
-    var posId = this.reqIdToPosId[detail.requestId];
-    this.posIdToWidgetId[posId] = detail.widgetId;
+    for (var i = 0; i < detail.length; i++) {
+      if (detail[i].action === 'remove' || detail[i].action === 'add') {
+        var posId = this.reqIdToPosId[detail[i].requestId];
+        this.posIdToWidgetId[posId] = detail[i].widgetId;
+        delete this.reqIdToPosId[detail[i].requestId];
+      }
+    }
   };
 
   WidgetManager.prototype.compareConfig = function we_compare(oldCfg, newCfg) {

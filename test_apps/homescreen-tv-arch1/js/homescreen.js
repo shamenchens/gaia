@@ -32,17 +32,20 @@
 
     // app list
     $('app-list-open-button').addEventListener('click', function() {
+      window.systemConnection.hideAll();
       appList.show();
       $('main-section').classList.add('app-list-shown');
     });
     appList.on('closed', function() {
       $('main-section').classList.remove('app-list-shown');
+      window.systemConnection.showAll();
     });
 
     document.addEventListener('visibilitychange', function(evt) {
       if (document.visibilityState === 'visible') {
         appList.hide();
         $('main-section').classList.remove('app-list-shown');
+        window.systemConnection.showAll();
       }
     });
 
