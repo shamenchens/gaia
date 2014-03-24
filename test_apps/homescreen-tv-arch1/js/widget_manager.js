@@ -48,6 +48,8 @@
     function comparer(a, b) {
       return a.positionId - b.positionId;
     }
+    oldCfg = oldCfg || [];
+    newCfg = newCfg || [];
     oldCfg.sort(comparer);
     newCfg.sort(comparer);
     var eventList = [];
