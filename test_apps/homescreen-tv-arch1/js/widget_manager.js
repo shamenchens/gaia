@@ -16,7 +16,7 @@
     this.reqIdToPosId = {};
   }
 
-  WidgetManager.prototype = new evt();
+  WidgetManager.prototype = new window.evt();
 
   WidgetManager.prototype.start = function wm_start() {
     window.addEventListener('system-action-object',
