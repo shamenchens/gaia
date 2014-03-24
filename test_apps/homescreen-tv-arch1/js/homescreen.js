@@ -9,7 +9,6 @@
   var selectionBorder;
   var focusedItem;
 
-
   function $(id) {
     return document.getElementById(id);
   }
@@ -44,8 +43,6 @@
     document.addEventListener('visibilitychange', function(evt) {
       if (document.visibilityState === 'visible') {
         appList.hide();
-        $('main-section').classList.remove('app-list-shown');
-        window.systemConnection.showAll();
       }
     });
 
@@ -58,6 +55,9 @@
     $('widget-editor-close').addEventListener('click', function() {
       widgetEditor.hide();
     });
+
+    spatialNav = new SpatialNavigator(staticObjectPositions);
+    spatialNav.on('focus', handleSelection);
 
     window.addEventListener('keydown', handleKeyEvent);
 
@@ -85,13 +85,13 @@
         case 'Right':
         case 'Up':
         case 'Down':
-          if (!spatialNav.move(evt.key)) {
-            console.log(evt.key + ': no elements');
-          }
+          spatialNav.move(evt.key);
           break;
         case 'Enter':
           handleEnterKey(focusedItem);
           break;
+        default:
+          return;
       }
     }
     evt.preventDefault();
@@ -144,16 +144,12 @@
   }
 
   function updateSelection(config) {
-    var allSelectable = [].concat(staticObjectPositions).concat(config);
-
-    if (spatialNav) {
-      spatialNav.off('focus', handleSelection);
+    var previousFocusedItem = spatialNav.currentFocus();
+    var allSelectable = staticObjectPositions.concat(config);
+    spatialNav.reset(allSelectable);
+    if (!previousFocusedItem || !spatialNav.focus(previousFocusedItem)) {
+      spatialNav.focus();
     }
-
-    spatialNav = new SpatialNavigator(allSelectable);
-    spatialNav.on('focus', handleSelection);
-
-    spatialNav.focus();
   }
 
   function handleSelection(elem) {

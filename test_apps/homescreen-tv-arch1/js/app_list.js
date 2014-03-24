@@ -57,7 +57,7 @@
 
     addIcon: function alpAddIcon(entry, tapHandler) {
       if (this.isFull()) {
-        return false;
+        return null;
       }
 
       var img = new Image();
@@ -78,7 +78,7 @@
       this.insertIcon(icon);
       this._updateIconNameAndIcon(icon, entry);
 
-      return true;
+      return icon;
     },
 
     insertIcon: function alpInsertIcon(iconElement) {
@@ -137,6 +137,10 @@
 
     getIconCount: function alpGetIconCount() {
       return this._iconCount;
+    },
+
+    equal: function alpEqual(pageElement) {
+      return this._dom === pageElement;
     }
   };
 
@@ -144,6 +148,8 @@
     this._appList = document.getElementById('app-list');
     this._container = document.getElementById('app-list-container');
     this._pageIndicator = document.getElementById('app-list-page-indicator');
+    this._spatialNavigator = new SpatialNavigator();
+    this._spatialNavigator.on('focus', this._handleFocus.bind(this));
     this._calcPagingSize();
   }
 
@@ -153,7 +159,7 @@
     _pageIndicator: null,
 
     _selectionBorder: null,
-    _focus: -1,
+    _spatialNavigator: null,
 
     _containerDimensions: {},
     _iconDimensions: {},
@@ -166,21 +172,39 @@
 
     oniconclick: null,
 
+    _handleFocus: function appListHandleFocus(elem) {
+      var pages = this._pages;
+      var pageElement = elem.parentNode;
+
+      if (!pages[this._currentPage].equal(pageElement)) {
+        for (var i = 0; i < pages.length; i++) {
+          if (pages[i].equal(pageElement)) {
+            this.setPage(i);
+            break;
+          }
+        }
+      }
+
+      this._selectionBorder.select(elem);
+    },
+
     _handleKeyDown: function appListHandleKeyDown(evt) {
       switch (evt.key) {
         case 'PageUp':
           this.previousPage();
-          this.setFocus(0);
+          this._spatialNavigator
+            .focus(this._pages[this._currentPage].getIconElement(0));
           break;
         case 'PageDown':
           this.nextPage();
-          this.setFocus(0);
+          this._spatialNavigator
+            .focus(this._pages[this._currentPage].getIconElement(0));
           break;
         case 'Up':
         case 'Down':
         case 'Left':
         case 'Right':
-          this._handleArrowKey(evt.key);
+          this._spatialNavigator.move(evt.key)
           break;
         case 'Enter':
           this._launchCurrentIcon();
@@ -195,65 +219,8 @@
       return true;
     },
 
-    _handleArrowKey: function appListHandleArrowKey(direction) {
-      var current_page = this._pages[this._currentPage];
-      var icon_count = current_page.getIconCount();
-      var numPerRow = this._pagingSize.numIconsPerRow;
-      var new_focus;
-
-      switch(direction) {
-        case 'Up':
-          new_focus = this._focus - numPerRow;
-          break;
-        case 'Down':
-          new_focus = this._focus + numPerRow;
-          break;
-        case 'Left':
-          if (this._focus % numPerRow == 0) {
-            if (this._currentPage == 0) {
-              return false;
-            }
-
-            this.previousPage();
-
-            current_page = this._pages[this._currentPage];
-            icon_count = current_page.getIconCount();
-            new_focus = this._focus + numPerRow - 1;
-          } else {
-            new_focus = this._focus - 1;
-          }
-          break;
-        case 'Right':
-          if (this._focus % numPerRow == numPerRow - 1) {
-            if (this._currentPage == this._pages.length - 1) {
-              return false;
-            }
-
-            this.nextPage();
-
-            current_page = this._pages[this._currentPage];
-            icon_count = current_page.getIconCount();
-            new_focus = this._focus - numPerRow + 1;
-
-            if (new_focus >= icon_count) {
-              new_focus = 0;
-            }
-          } else {
-            new_focus = this._focus + 1;
-          }
-          break;
-      }
-
-      if (new_focus < 0 || new_focus >= icon_count) {
-        return false;
-      }
-
-      return this.setFocus(new_focus);
-    },
-
     _launchCurrentIcon: function appListLaunchCurrentIcon() {
-      var current_page = this._pages[this._currentPage];
-      var icon = current_page.getIconElement(this._focus);
+      var icon = this._spatialNavigator.currentFocus();
 
       var data = {
         origin: icon.dataset.origin,
@@ -310,7 +277,8 @@
         if (page.isFull()) {
           page = self.createPage();
         }
-        page.addIcon(entry);
+        var elem = page.addIcon(entry);
+        self._spatialNavigator.add(elem);
       });
     },
 
@@ -345,7 +313,19 @@
         }
 
         if (found != -1) {
-          pages[page_index].removeIcon(found);
+          var previousIcon = null;
+
+          if (found > 0) {
+            previousIcon = pages[page_index].getIconElement(found - 1);
+          } else if (found < pages[page_index].getIconCount() - 1) {
+            previousIcon = pages[page_index].getIconElement(found + 1);
+          } else if (page_index > 0) {
+            previousIcon = pages[page_index - 1]
+              .getIconElement(pages[page_index - 1].getIconCount() - 1);
+          }
+
+          var elem = pages[page_index].removeIcon(found);
+          self._spatialNavigator.remove(elem);
 
           for (var i = page_index + 1; i < page_count; i++) {
             var icon = pages[i].removeIcon(0);
@@ -353,6 +333,7 @@
           }
 
           self.reducePage();
+          self._spatialNavigator.refocus(previousIcon);
         }
       });
     },
@@ -380,13 +361,13 @@
           }
         };
 
-        self._handleAppInstall(Applications.getAllEntries());
-        self.setPage(0);
-
         self._selectionBorder = new SelectionBorder({
           multiple: false,
           container: self._container
         });
+
+        self._handleAppInstall(Applications.getAllEntries());
+        self.setPage(0);
 
         self.fire('ready');
       });
@@ -398,12 +379,12 @@
       this.hide();
 
       this._selectionBorder.deselectAll();
+      self._spatialNavigator.reset();
       this._container.innerHTML = '';
 
       this._unbindAppEventHandler();
       this._unbindAppEventHandler = null;
 
-      window.removeEventListener('keydown', self);
       document.getElementById('app-list-close-button')
         .removeEventListener('click', this);
     },
@@ -419,8 +400,12 @@
         this._focus = 0;
       }
 
-      this.setFocus(this._focus);
+      if (!this._spatialNavigator.currentFocus()) {
+        this._spatialNavigator.focus();
+      }
+
       this.fire('opened');
+
       return true;
     },
 
@@ -436,26 +421,6 @@
 
     isShown: function appListIsShown() {
       return !this._appList.hidden;
-    },
-
-    setFocus: function appListSetFocus(index) {
-      var current_page = this._pages[this._currentPage];
-      var icon_count = current_page.getIconCount();
-
-      if (index >= 0) {
-        if (index >= icon_count) {
-          return false;
-        }
-
-        this._focus = index;
-        this._selectionBorder
-          .select(current_page.getIconElement(this._focus));
-      } else if (this._focus >= 0) {
-        this._focus = index;
-        this._selectionBorder.deselectAll();
-      }
-
-      return true;
     },
 
     createPage: function appListCreatePage() {
@@ -494,7 +459,7 @@
       }
 
       this._container.style.left =
-        (-1 * index * this._containerDimensions.width) + 'px';
+        (-1 * index * this._container.offsetWidth) + 'px';
 
       var indicators = this._pageIndicator.childNodes;
       if (this._currentPage >= 0 || this._currentPage < indicators.length) {

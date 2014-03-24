@@ -134,11 +134,8 @@
 
     reset: function snReset(collection) {
       this.unfocus();
-
-      if (!collection) {
-        this._collection = null;
-      } else {
-        this._collection = [];
+      this._collection = [];
+      if (collection) {
         for (var i = 0; i < collection.length; i++) {
           this.add(collection[i]);
         }
@@ -158,6 +155,10 @@
       var index = this._collection.indexOf(elem);
       if (index < 0) {
         return false;
+      }
+
+      if (this._focus === elem) {
+        this.unfocus();
       }
 
       var rear = this._collection.slice(index + 1);
@@ -193,6 +194,13 @@
         this.fire('unfocus', elem);
       }
       return true;
+    },
+
+    refocus: function snRefocus(defaultElement) {
+      if (!this._focus) {
+        return this.focus(defaultElement);
+      }
+      return this.focus(this._focus);
     },
 
     currentFocus: function snCurrentFocus() {

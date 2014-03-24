@@ -45,22 +45,12 @@ function initFakeAppEvent() {
 
 function initGesture() {
   function fireKeyEvent(keyCode, key) {
-    var eventObj;
-
-    eventObj = document.createEvent('Events');
+    var eventObj = document.createEvent('Events');
     eventObj.initEvent('keydown', true, true);
     eventObj.key = key;
     eventObj.keyCode = keyCode;
     eventObj.which = keyCode;
-
-    if (document.dispatchEvent(eventObj)) {
-      eventObj = document.createEvent('Events');
-      eventObj.initEvent('keypress', true, true);
-      eventObj.key = key;
-      eventObj.keyCode = keyCode;
-      eventObj.which = keyCode;
-      document.dispatchEvent(eventObj);
-    }
+    window.dispatchEvent(eventObj);
   }
 
   new GestureDetector(document.body).startDetecting();
