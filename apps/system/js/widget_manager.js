@@ -6,7 +6,7 @@
 
   var WidgetManager = function(app) {
     this.app = app;
-    this.runningWidgets = [];
+    this.runningWidgetsById = [];
     window.addEventListener('widgetcreated', this);
     window.addEventListener('widgetterminated', this);
     window.addEventListener('launchwidget', this);
@@ -16,9 +16,6 @@
   };
 
   WidgetManager.prototype = {
-    idFormat: 'Widget_',
-
-
     receiveOperation: function(commands) {
       if (!commands) {
         return;
@@ -34,7 +31,7 @@
               !!app,
               command.requestId,
               command.action,
-              app.origin);
+              app.instanceID);
           break;
           case 'remove':
             if (!command.args.widgetId) {
@@ -48,7 +45,7 @@
               command.args.widgetId);
           break;
           case 'update':
-            app = this.runningWidgets[command.args.widgetId];
+            app = this.runningWidgetsById[command.args.widgetId];
             if (!app) {
               homescreenConnection.deny(
                 command.requestId, command.action, command.args.widgetId);
@@ -72,13 +69,13 @@
       }.bind(this));
     },
 
-    getWidget: function(origin) {
-      return this.runningWidgets[origin];
+    getWidget: function(widgetId) {
+      return this.runningWidgetsById[widgetId];
     },
 
-    remove: function(origin) {
-      if (this.runningWidgets[origin]) {
-        this.runningWidgets[origin].kill();
+    remove: function(widgetId) {
+      if (this.runningWidgetsById[widgetId]) {
+        this.runningWidgetsById[widgetId].kill();
         return true;
       } else {
         return false;
@@ -89,23 +86,25 @@
       switch (evt.type) {
         case 'widgetcreated':
           var app = evt.detail;
-          this.runningWidgets[evt.detail.origin] = app;
+          this.runningWidgetsById[evt.detail.instanceID] = app;
+          console.log(this.runningWidgetsById);
           break;
         case 'launchwidget':
-          var config = evt.detail;
-          this.display(config.origin);
+          var instanceID = evt.detail;
+          this.display(instanceID);
           break;
         case 'homescreen-action-object':
           this.receiveOperation(evt.detail);
           break;
         case 'widgetterminated':
-          delete this.runningWidgets[evt.detail.origin];
+          delete this.runningWidgetsById[evt.detail.instanceID];
+          console.log(this.runningWidgetsById);
           break;
       }
     },
 
-    display: function wm_launch(origin) {
-      var app = this.runningWidgets[origin];
+    display: function wm_launch(instanceID) {
+      var app = this.runningWidgetsById[instanceID];
       if (!app) {
         return;
       }
@@ -120,6 +119,7 @@
           (window.location.port ? (':' + window.location.port) : '') + path;
   }
   if (DEBUG) {
+    var widgetid1, widgetid2;
     // XXX: For testing widget only. Remove when widget IAC is completed.
     setTimeout(function() {
       window.dispatchEvent(new CustomEvent('homescreen-action-object',
@@ -145,7 +145,7 @@
               w: 100,
               h: 150,
               opacity: 0.7,
-              widgetOrigin: getAppURL('calendar.gaiamobile.org')
+              widgetOrigin: getAppURL('clock.gaiamobile.org')
             }
           }
         ]}));
@@ -170,7 +170,8 @@
             requestId: 'w004',
             action: 'remove',
             args: {
-              widgetId: getAppURL('clock.gaiamobile.org')
+              // Change to real widget ID.
+              widgetId: 'WidgetWindow-0'
             }
           }
         ]}
