@@ -76,7 +76,7 @@
         oldIdx++;
       } else if (oldIdx === oldCfg.length && newIdx < newCfg.length) {
         // no more oldCfg, all newCfg should be added
-        eventList.push({ action: 'add', config: newCfg[oldIdx] });
+        eventList.push({ action: 'add', config: newCfg[newIdx] });
         newIdx++;
       } else if (oldCfg[oldIdx].positionId < newCfg[newIdx].positionId) {
         // oldCfg[oldIdx] should be removed
@@ -86,13 +86,13 @@
         // index the same compare origin
         if (oldCfg[oldIdx].origin !== newCfg[newIdx].origin) {
           eventList.push({ action: 'remove', config: oldCfg[oldIdx] });
-          eventList.push({ action: 'add', config: newCfg[oldIdx] });
+          eventList.push({ action: 'add', config: newCfg[newIdx] });
         }
         oldIdx++;
         newIdx++;
       } else if (oldCfg[oldIdx].positionId > newCfg[newIdx].positionId) {
         // newCfg[newIdx] should be added.
-        eventList.push({ action: 'add', config: newCfg[oldIdx] });
+        eventList.push({ action: 'add', config: newCfg[newIdx] });
         newIdx++;
       }
     }
