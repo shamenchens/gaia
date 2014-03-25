@@ -25,8 +25,7 @@
         var app;
         switch (command.action) {
           case 'add':
-            app = widgetFactory.createWidget(command.args.widgetOrigin,
-              command.args.widgetOrigin + '/manifest.webapp', command.args);
+            app = widgetFactory.createWidget(command.args);
             homescreenConnection.response(
               !!app,
               command.requestId,
@@ -133,7 +132,8 @@
               w: 100,
               h: 100,
               opacity: 0.7,
-              widgetOrigin: getAppURL('clock.gaiamobile.org'),
+              widgetOrigin: getAppURL('communications.gaiamobile.org'),
+              widgetEntryPoint: 'dialer/index.html'
             }
           },
           {
@@ -145,7 +145,8 @@
               w: 100,
               h: 150,
               opacity: 0.7,
-              widgetOrigin: getAppURL('clock.gaiamobile.org')
+              widgetOrigin: getAppURL('clock.gaiamobile.org'),
+              widgetEntryPoint: 'index.html'
             }
           }
         ]}));
