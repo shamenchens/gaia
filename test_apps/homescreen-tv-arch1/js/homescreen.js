@@ -8,6 +8,8 @@
   var staticObjectPositions = [];
   var selectionBorder;
   var focusedItem;
+  var showAllCallback;
+  var hideAllCallback;
 
   function $(id) {
     return document.getElementById(id);
@@ -32,12 +34,14 @@
     // app list
     $('app-list-open-button').addEventListener('click', function() {
       window.systemConnection.hideAll();
-      appList.show();
-      $('main-section').classList.add('app-list-shown');
+      hideAllCallback = function() {
+        appList.show();
+        $('main-section').classList.add('app-list-shown');
+      };
     });
     appList.on('closed', function() {
       $('main-section').classList.remove('app-list-shown');
-      window.systemConnection.showAll();
+      handleSomethingClosed();
     });
 
     document.addEventListener('visibilitychange', function(evt) {
@@ -60,10 +64,33 @@
     spatialNav.on('focus', handleSelection);
 
     window.addEventListener('keydown', handleKeyEvent);
+    window.addEventListener('system-action-object',
+                            handleSystemConnMsg);
 
     // for testing only
     initFakeAppEvent();
     initGesture();
+  }
+
+  function handleSomethingClosed() {
+    // widgetEditor may ask appList to show. We need to wait for widgetEditor
+    // is hide before showAll widgets in this case.
+    if (!widgetEditor.isShown() && !appList.isShown()) {
+      window.systemConnection.showAll();
+    }
+  }
+
+  function handleSystemConnMsg(evt) {
+    var detail = evt.detail;
+    for (var i = 0; i < detail.length; i++) {
+      if (detail[i].action === 'showall' && showAllCallback) {
+        showAllCallback();
+        showAllCallback = null;
+      } else if (detail[i].action === 'hideall' && hideAllCallback) {
+        hideAllCallback();
+        hideAllCallback = null;
+      }
+    }
   }
 
   function handleKeyEvent(evt) {
@@ -110,29 +137,31 @@
   function enterWidgetEditor() {
     $('main-section').classList.add('widget-editor-shown');
     window.systemConnection.hideAll();
-    // We need to init widget editor which uses the size of container to
-    // calculate the block size. So, the widget-editor should be shown before
-    // the creation of WidgetEditor.
-    $('widget-editor').hidden = false;
-    if (!widgetEditor) {
-      var widgetPane = $('widget-pane');
-      widgetEditor = new WidgetEditor({
-                                        dom: $('widget-view'),
-                                        appList: appList,
-                                        offset: {
-                                          top: widgetPane.offsetTop,
-                                          left: widgetPane.offsetLeft
-                                        },
-                                        targetSize: {
-                                          w: widgetPane.clientWidth,
-                                          h: widgetPane.clientHeight
-                                        }
-                                      });
-      widgetEditor.on('closed', handleWidgetEditorClosed);
-      widgetEditor.start();
-      widgetEditor.importConfig(widgetManager.widgetConfig);
-    }
-    widgetEditor.show();
+    hideAllCallback = function() {
+      // We need to init widget editor which uses the size of container to
+      // calculate the block size. So, the widget-editor should be shown before
+      // the creation of WidgetEditor.
+      $('widget-editor').hidden = false;
+      if (!widgetEditor) {
+        var widgetPane = $('widget-pane');
+        widgetEditor = new WidgetEditor({
+                                          dom: $('widget-view'),
+                                          appList: appList,
+                                          offset: {
+                                            top: widgetPane.offsetTop,
+                                            left: widgetPane.offsetLeft
+                                          },
+                                          targetSize: {
+                                            w: widgetPane.clientWidth,
+                                            h: widgetPane.clientHeight
+                                          }
+                                        });
+        widgetEditor.on('closed', handleWidgetEditorClosed);
+        widgetEditor.start();
+        widgetEditor.importConfig(widgetManager.widgetConfig);
+      }
+      widgetEditor.show();
+    };
   }
 
   function handleWidgetEditorClosed() {
@@ -140,7 +169,7 @@
     widgetManager.save(newConfig);
     $('widget-editor').hidden = true;
     $('main-section').classList.remove('widget-editor-shown');
-    window.systemConnection.showAll();
+    handleSomethingClosed();
   }
 
   function updateSelection(config) {
