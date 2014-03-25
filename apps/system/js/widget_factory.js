@@ -8,18 +8,26 @@
   };
 
   WidgetFactory.prototype = {
-    createWidget: function(appURL, manifestURL, styles) {
-      if (appURL === window.location.href) {
+    createWidget: function(args) {
+      var manifestURL = args.widgetOrigin + '/manifest.webapp';
+      var app = Applications.getByManifestURL(manifestURL);
+      if (!app.manifest) {
         return;
       }
+
+      var appURL = args.widgetOrigin + (args.widgetEntryPoint ?
+        app.manifest.entry_points[args.widgetEntryPoint].launch_path :
+        app.manifest.launch_path);
+
+      console.log(appURL);
+      console.log(manifestURL);
       var config = new BrowserConfigHelper(appURL, manifestURL);
-      if (!config.manifest) {
-        return;
-      }
+
       var widgetOverlay =
         document.getElementsByClassName('widget-overlay')[0];
       var app = new WidgetWindow(config, widgetOverlay);
-      app.setStyle(styles);
+      // XXX: Separate styles.
+      app.setStyle(args);
       this.publish('launchwidget', app.instanceID);
 
       return app;
