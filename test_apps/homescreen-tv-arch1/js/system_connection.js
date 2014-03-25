@@ -79,8 +79,11 @@
       };
 
       function send() {
-        that.app.connect('homescreen-request').then(
-        function onConnAccepted(ports) {
+        that.app.connect('homescreen-request', {
+          // establish a connection with system app only
+          // others cannot eavesdrop
+          manifestURLs: ['app://system.gaiamobile.org/manifest.webapp']
+        }).then(function onConnAccepted(ports) {
           ports.forEach(function(port) {
             if (!port.onmessage) {
               port.onmessage = that._onMessage.bind(that);
