@@ -79,10 +79,17 @@
       };
 
       function send() {
+        var port = (document.location.port === "") ?
+          "" : ":" + document.location.port;
+          
+        var systemManifestURLs = [];
+        systemManifestURLs.push (document.location.protocol +
+          '//system.gaiamobile.org' + port + '/manifest.webapp');
+
         that.app.connect('homescreen-request', {
           // establish a connection with system app only
           // others cannot eavesdrop
-          manifestURLs: ['app://system.gaiamobile.org/manifest.webapp']
+          manifestURLs: systemManifestURLs
         }).then(function onConnAccepted(ports) {
           ports.forEach(function(port) {
             if (!port.onmessage) {
