@@ -1,29 +1,23 @@
 'use strict';
 
 (function(exports) {
-  function AppListPage(parent, pagingSize) {
+  function AppListPage(parent, maxIconCount) {
     if (!parent) {
       throw new Error('AppListPage requires a parent object.');
     }
 
     this._dom = document.createElement('div');
     this._dom.classList.add('app-list-page');
-
-    this._numIconsPerRow = pagingSize.numIconsPerRow || 0;
-    this._numIconsPerCol = pagingSize.numIconsPerCol || 0;
-    this._maxIconCount = this._numIconsPerRow * this._numIconsPerCol;
-
     this._parent = parent;
     this._parent.appendChild(this._dom);
+    this._maxIconCount = Math.max(maxIconCount, 1);
   }
 
   AppListPage.prototype = {
     _parent: null,
     _dom: null,
 
-    _numIconsPerRow: 0,
-    _numIconsPerCol: 0,
-    _maxIconCount: 0,
+    _maxIconCount: 1,
     _defaultIconUrl: '',
 
     _iconCount: 0,
@@ -148,8 +142,6 @@
     this._appList = document.getElementById('app-list');
     this._container = document.getElementById('app-list-container');
     this._pageIndicator = document.getElementById('app-list-page-indicator');
-    this._spatialNavigator = new SpatialNavigator();
-    this._spatialNavigator.on('focus', this._handleFocus.bind(this));
     this._calcPagingSize();
   }
 
@@ -204,7 +196,7 @@
         case 'Down':
         case 'Left':
         case 'Right':
-          this._spatialNavigator.move(evt.key)
+          this._spatialNavigator.move(evt.key);
           break;
         case 'Enter':
           this._launchCurrentIcon();
@@ -361,6 +353,9 @@
           }
         };
 
+        self._spatialNavigator = new SpatialNavigator();
+        self._spatialNavigator.on('focus', self._handleFocus.bind(self));
+
         self._selectionBorder = new SelectionBorder({
           multiple: false,
           container: self._container
@@ -379,7 +374,12 @@
       this.hide();
 
       this._selectionBorder.deselectAll();
-      self._spatialNavigator.reset();
+      this._selectionBorder = null;
+
+      this._spatialNavigator.reset();
+      this._spatialNavigator.off('focus');
+      this._spatialNavigator = null;
+
       this._container.innerHTML = '';
 
       this._unbindAppEventHandler();
@@ -424,7 +424,10 @@
     },
 
     createPage: function appListCreatePage() {
-      this._pages.push(new AppListPage(this._container, this._pagingSize));
+      this._pages.push(new AppListPage(
+        this._container,
+        this._pagingSize.numIconsPerRow * this._pagingSize.numIconsPerCol
+      ));
 
       var item = document.createElement('span');
       item.classList.add('app-list-page-indicator-item');

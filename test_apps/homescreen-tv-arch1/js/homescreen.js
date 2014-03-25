@@ -62,6 +62,7 @@
 
     spatialNav = new SpatialNavigator(staticObjectPositions);
     spatialNav.on('focus', handleSelection);
+    spatialNav.focus();
 
     window.addEventListener('keydown', handleKeyEvent);
     window.addEventListener('system-action-object',
@@ -94,10 +95,6 @@
   }
 
   function handleKeyEvent(evt) {
-    if (!spatialNav) {
-      return;
-    }
-
     if (appList.isShown()) {
       appList.handleEvent(evt);
     } else if (widgetEditor && widgetEditor.isShown()) {
