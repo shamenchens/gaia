@@ -1,6 +1,6 @@
 'use strict';
 
-/* globals HomescreenConnection */
+/* globals HomescreenConnection, IACHandler*/
 
 (function(exports) {
   var HomescreenConnection = function() {
@@ -65,22 +65,18 @@
     },
     _sendMessage: function hc_sendMessage(
         message, successCallback, errorCallback) {
-      navigator.mozApps.getSelf().onsuccess = function(evt) {
-        var app = evt.target.result;
-        app.connect('system-response').then(function onConnAccepted(ports) {
-          ports.forEach(function(port) {
-            port.postMessage(message);
-          });
-          if (typeof successCallback === 'function') {
-            successCallback(message);
-          }
-        }, function onConnRejected(reason) {
-          console.log('connection rejected due to: ' + reason);
-          if (typeof errorCallback === 'function') {
-            errorCallback(reason, message);
-          }
-        });
-      };
+      var port;
+      try {
+        port = IACHandler.getPort('homescreen-request');
+        port.postMessage(message);
+        if (typeof successCallback === 'function') {
+          successCallback(message);
+        }
+      } catch (e) {
+        if (typeof errorCallback === 'function') {
+          errorCallback(e.message, message);
+        }
+      }
     },
     _packResponseObject: function hc_packResponseObject(
         requestId, action, result, widgetId) {
