@@ -68,9 +68,19 @@
     // function connRejectedCallback(reason) {}
     _connect: function sc_connect(connAcceptedCallback, connRejectedCallback) {
       var that = this;
+      if (this.app) {
+        send.apply(this);
+        return;
+      }
+
       navigator.mozApps.getSelf().onsuccess = function(evt) {
-        var app = evt.target.result;
-        app.connect('homescreen-request').then(function onConnAccepted(ports) {
+        that.app = evt.target.result;
+        send.apply(that);
+      };
+
+      function send() {
+        that.app.connect('homescreen-request').then(
+        function onConnAccepted(ports) {
           ports.forEach(function(port) {
             if (!port.onmessage) {
               port.onmessage = that._onMessage.bind(that);
@@ -85,7 +95,7 @@
             connRejectedCallback(reason);
           }
         });
-      };
+      }
     },
     _sendMessage: function sc_sendMessage(
         message, successCallback, errorCallback) {
