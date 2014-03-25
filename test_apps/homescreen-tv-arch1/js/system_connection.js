@@ -1,11 +1,9 @@
-'use strict';
+ 'use strict';
 
 /* globals SystemConnection */
 
 (function(exports) {
-  var SystemConnection = function() {
-    window.addEventListener('iac-system-response', this);
-  };
+  var SystemConnection = function() { };
 
   // Homescreen app should send request object like this
   // {
@@ -30,21 +28,12 @@
   SystemConnection.prototype = {
     start: function sc_start() {
       console.log('SystemConnection started!');
+      this._connect();
       return this;
     },
     stop: function sc_stop() {
+      // TODO: clean up all ports onmessage binding
       console.log('SystemConnection stopped!');
-    },
-    handleEvent: function sc_handleEvent(evt) {
-      var messageObject = evt.detail;
-      console.log('received system-response message: [' +
-        JSON.stringify(messageObject) + ']');
-      // TODO: validation
-      if (messageObject && messageObject.requestId) {
-        this._removeUnrespondRequest(messageObject.requestId);
-      }
-      window.dispatchEvent(
-        new CustomEvent('system-action-object', {'detail': [messageObject]}));
     },
     _unrespondRequests: [],
     _removeUnrespondRequest: function sc_removeUnrespondRequest(requestId) {
@@ -62,24 +51,56 @@
         }
       }
     },
-    _sendMessage: function sc_sendMessage(
-        message, successCallback, errorCallback) {
+    _onMessage: function sc_onMessage(evt) {
+      var messageObject = evt.data;
+      console.log('received response of homescreen-request message: [' +
+        JSON.stringify(messageObject) + ']');
+      // TODO: validation
+      if (messageObject && messageObject.requestId) {
+        this._removeUnrespondRequest(messageObject.requestId);
+      }
+      window.dispatchEvent(
+        new CustomEvent('system-action-object', {'detail': [messageObject]}));
+    },
+    // all connAcceptedCallback should have signature as
+    // function connAcceptedCallback(ports) {}
+    // all connRejectedCallback should have signature as
+    // function connRejectedCallback(reason) {}
+    _connect: function sc_connect(connAcceptedCallback, connRejectedCallback) {
+      var that = this;
       navigator.mozApps.getSelf().onsuccess = function(evt) {
         var app = evt.target.result;
         app.connect('homescreen-request').then(function onConnAccepted(ports) {
           ports.forEach(function(port) {
-            port.postMessage(message);
+            if (!port.onmessage) {
+              port.onmessage = that._onMessage.bind(that);
+            }
           });
-          if (typeof successCallback === 'function') {
-            successCallback(message);
+          if (typeof connAcceptedCallback === 'function') {
+            connAcceptedCallback(ports);
           }
         }, function onConnRejected(reason) {
           console.log('connection rejected due to: ' + reason);
-          if (typeof errorCallback === 'function') {
-            errorCallback(reason, message);
+          if (typeof connRejectedCallback === 'function') {
+            connRejectedCallback(reason);
           }
         });
       };
+    },
+    _sendMessage: function sc_sendMessage(
+        message, successCallback, errorCallback) {
+      this._connect(function connAcceptedCallback(ports) {
+        ports.forEach(function(port) {
+          port.postMessage(message);
+        });
+        if (typeof successCallback === 'function') {
+          successCallback(message);
+        }
+      }, function connRejectedCallback(reason) {
+        if (typeof errorCallback === 'function') {
+          errorCallback(reason, message);
+        }
+      });
     },
     _waitForResponse: function sc_waitForResponse(requestObject) {
       this._unrespondRequests.push(requestObject);
