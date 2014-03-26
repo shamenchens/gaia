@@ -1,4 +1,4 @@
-/* global BrowserConfigHelper, widgetManager, WidgetWindow */
+/* global BrowserConfigHelper, WidgetWindow, Applications */
 'use strict';
 
 (function(exports) {
@@ -10,17 +10,15 @@
   WidgetFactory.prototype = {
     createWidget: function(args) {
       var manifestURL = args.widgetOrigin + '/manifest.webapp';
-      var app = Applications.getByManifestURL(manifestURL);
-      if (!app.manifest) {
+      var appInfo = Applications.getByManifestURL(manifestURL);
+      if (!appInfo.manifest) {
         return;
       }
 
       var appURL = args.widgetOrigin + (args.widgetEntryPoint ?
-        app.manifest.entry_points[args.widgetEntryPoint].launch_path :
-        app.manifest.launch_path);
+        appInfo.manifest.entry_points[args.widgetEntryPoint].launch_path :
+        appInfo.manifest.launch_path);
 
-      console.log(appURL);
-      console.log(manifestURL);
       var config = new BrowserConfigHelper(appURL, manifestURL);
 
       var widgetOverlay =

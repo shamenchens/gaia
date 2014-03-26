@@ -200,5 +200,11 @@
     this.widgetOverlay.style.display = 'block';
   };
 
+  HomescreenWindow.prototype.setVisible =
+  function hw_setVisible(visible, screenshotIfInvisible) {
+    AppWindow.prototype.setVisible.call(this, visible, screenshotIfInvisible);
+    this.publish(visible ? 'shown' : 'hidden');
+  };
+
   exports.HomescreenWindow = HomescreenWindow;
 }(window));
