@@ -1,6 +1,6 @@
  'use strict';
 
-/* globals SystemConnection */
+/* globals SystemConnection, uuid */
 
 (function(exports) {
   var SystemConnection = function() { };
@@ -18,14 +18,15 @@
   //     widgetEntryPoint: 'entry'
   //   }
   // }
-  // and shoould expect incoming array of response objects like
-  // [{
+  // and shoould expect incoming response object like
+  // {
   //   requestId: ‘87548a9b-3e64-4aca-9366-f4856e5f7a65’,
   //   action: 'add',
   //   result: true,
   //   widgetId: ‘widget-idY’
-  // }]
+  // }
   SystemConnection.prototype = {
+    RESPONSE_TIMEOUT: 1000,
     start: function sc_start() {
       console.log('SystemConnection started!');
       this._connect();
@@ -35,37 +36,59 @@
       // TODO: clean up all ports onmessage binding
       console.log('SystemConnection stopped!');
     },
-    _unrespondRequests: [],
+    // each item in _wrappedUnrespondRequests is like:
+    // {
+    //   requestId: requesId           // mandatary
+    //   requestObject: requestObject, // mandatary
+    //   callback: callback            // optional
+    // }
+    _wrappedUnrespondRequests: [],
+    _findUnrespondRequest: function sc_findUnrespondRequest(requestId) {
+      var result,
+        i;
+      if (!requestId) {
+        return result;
+      }
+      for (i = 0; i < this._wrappedUnrespondRequests.length; i += 1) {
+        if (this._wrappedUnrespondRequests[i].requestId === requestId) {
+          result = this._wrappedUnrespondRequests[i];
+          break;
+        }
+      }
+      return result;
+    },
     _removeUnrespondRequest: function sc_removeUnrespondRequest(requestId) {
-      var that = this;
-      try {
-        this._unrespondRequests.forEach(function(value, index) {
-          if (value.requestId === requestId) {
-            that._unrespondRequests.splice(index, 1);
-            throw new Error('Break');
-          }
-        });
-      } catch (e) {
-        if (e.message !== 'Break') {
-          throw e;
+      var i;
+      for (i = 0; i < this._wrappedUnrespondRequests.length; i += 1) {
+        if (this._wrappedUnrespondRequests[i].requestId === requestId) {
+          this._wrappedUnrespondRequests.splice(i, 1);
+          break;
         }
       }
     },
     _onMessage: function sc_onMessage(evt) {
-      var messageObject = evt.data;
+      var messageObject = evt.data,
+        wrappedUnrespondRequest;
       console.log('received response of homescreen-request message: [' +
         JSON.stringify(messageObject) + ']');
-      // TODO: validation
-      if (messageObject && messageObject.requestId) {
+      wrappedUnrespondRequest =
+        this._findUnrespondRequest(messageObject && messageObject.requestId);
+      if (wrappedUnrespondRequest) {
+        if (typeof wrappedUnrespondRequest.callback === 'function') {
+          wrappedUnrespondRequest.callback(messageObject);
+        }
         this._removeUnrespondRequest(messageObject.requestId);
+      } else {
+        if (messageObject && messageObject.requestId) {
+          console.log('Cannot find wrappedUnrespondRequest of requestId = ' +
+            messageObject.requestId);
+        }
       }
-      window.dispatchEvent(
-        new CustomEvent('system-action-object', {'detail': [messageObject]}));
     },
     // all connAcceptedCallback should have signature as
-    // function connAcceptedCallback(ports) {}
+    //   function connAcceptedCallback(ports) {}
     // all connRejectedCallback should have signature as
-    // function connRejectedCallback(reason) {}
+    //   function connRejectedCallback(reason) {}
     _connect: function sc_connect(connAcceptedCallback, connRejectedCallback) {
       var that = this;
       if (this.app) {
@@ -79,11 +102,11 @@
       };
 
       function send() {
-        var port = (document.location.port === "") ?
-          "" : ":" + document.location.port;
-          
+        var port = (document.location.port === '') ?
+          '' : ':' + document.location.port;
+
         var systemManifestURLs = [];
-        systemManifestURLs.push (document.location.protocol +
+        systemManifestURLs.push(document.location.protocol +
           '//system.gaiamobile.org' + port + '/manifest.webapp');
 
         that.app.connect('homescreen-request', {
@@ -107,23 +130,28 @@
         });
       }
     },
-    _sendMessage: function sc_sendMessage(
-        message, successCallback, errorCallback) {
+    _sendMessage: function sc_sendMessage(message) {
+      var that = this,
+        wrappedUnrespondRequest;
       this._connect(function connAcceptedCallback(ports) {
         ports.forEach(function(port) {
           port.postMessage(message);
         });
-        if (typeof successCallback === 'function') {
-          successCallback(message);
-        }
       }, function connRejectedCallback(reason) {
-        if (typeof errorCallback === 'function') {
-          errorCallback(reason, message);
+        if ((wrappedUnrespondRequest =
+            that._findUnrespondRequest(message.requestId))) {
+          if (wrappedUnrespondRequest &&
+              typeof wrappedUnrespondRequest.callback === 'function') {
+            wrappedUnrespondRequest.callback({
+              requestId: message.requestId,
+              action: message.action,
+              result: false,
+              errorCause: reason
+            });
+          }
+          that._removeUnrespondRequest(message.requestId);
         }
       });
-    },
-    _waitForResponse: function sc_waitForResponse(requestObject) {
-      this._unrespondRequests.push(requestObject);
     },
     _packRequestObject: function sc_packRequestObject(action, args) {
       if (args) {
@@ -139,25 +167,65 @@
         };
       }
     },
-    _commonAction: function sc_commonAction(action, args) {
-      var requestObject = this._packRequestObject(action, args);
-      this._sendMessage(requestObject, this._waitForResponse.bind(this));
+    _commonAction: function sc_commonAction(action, args, callback) {
+      var requestObject = this._packRequestObject(action, args),
+        wrappedUnrespondRequest = {
+          requestId: requestObject.requestId,
+          requestObject: requestObject,
+          callback: callback
+        },
+        that = this;
+      this._wrappedUnrespondRequests.push(wrappedUnrespondRequest);
+      this._sendMessage(requestObject);
+      // TODO: set timeout and call callback
+      window.setTimeout(function() {
+        // invoke callback to inform timeout only when
+        // unresponseRequest of requestId still in the array
+        // (means: not respond yet)
+        if (that._findUnrespondRequest(requestObject.requestId)) {
+          if (typeof wrappedUnrespondRequest.callback === 'function') {
+            wrappedUnrespondRequest.callback({
+              requestId: requestObject.requestId,
+              action: requestObject.action,
+              result: false,
+              errorCause: 'timeout'
+            });
+          }
+          that._removeUnrespondRequest(requestObject.requestId);
+        }
+      }, this.RESPONSE_TIMEOUT);
       return requestObject.requestId;
     },
-    addWidget: function sc_addWidget(args) {
-      return this._commonAction('add', args);
+    // callback should have signature like this:
+    //   function callback(messageObject)
+    // and all messageObject would be like this if we DID get response
+    //   {
+    //     requestId: ‘87548a9b-3e64-4aca-9366-f4856e5f7a65’,
+    //     action: 'add',
+    //     result: true,
+    //     widgetId: ‘widget-idY’
+    //   }
+    // or be like this if timeout
+    //   {
+    //     requestId: ‘87548a9b-3e64-4aca-9366-f4856e5f7a65’,
+    //     action: 'add',
+    //     result: false,
+    //     errorCause: ‘timeout’
+    //   }
+    addWidget: function sc_addWidget(args, callback) {
+      return this._commonAction('add', args, callback);
     },
-    removeWidget: function sc_removeWidget(args) {
-      return this._commonAction('remove', args);
+    removeWidget: function sc_removeWidget(args, callback) {
+      return this._commonAction('remove', args, callback);
     },
-    updateWidget: function sc_updateWidget(args) {
-      return this._commonAction('update', args);
+    updateWidget: function sc_updateWidget(args, callback) {
+      return this._commonAction('update', args, callback);
     },
-    showAll: function sc_showAll() {
-      return this._commonAction('showall');
+    showAll: function sc_showAll(callback) {
+      return this._commonAction('showall', undefined, callback);
     },
-    hideAll: function sc_hideAll() {
-      return this._commonAction('hideall');
+    hideAll: function sc_hideAll(callback) {
+      return this._commonAction('hideall', undefined, callback);
     }
   };
   exports.SystemConnection = SystemConnection;
