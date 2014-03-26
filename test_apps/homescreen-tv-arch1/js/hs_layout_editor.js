@@ -44,15 +44,16 @@
     var ret = [];
     for (var i = 0; i < this.placeHolders.length; i++) {
       var place = this.placeHolders[i];
-      if (place.app) {
+      if (place.app || place.static) {
         ret.push({
           positionId: i,
+          static: place.static,
           x: this.offsetPosition.left + Math.round(place.x * this.scaleRatio),
           y: this.offsetPosition.top + Math.round(place.y * this.scaleRatio),
           w: Math.round(place.w * this.scaleRatio),
           h: Math.round(place.h * this.scaleRatio),
-          origin: place.app.origin,
-          entryPoint: place.app.entryPoint
+          origin: place.app ? place.app.origin : '',
+          entryPoint: place.app ? place.app.entryPoint : ''
         });
       }
     }

@@ -33,6 +33,8 @@
 
     this.currentPlace = this.editor.getFirstNonStatic();
     this.switchFocus(this.currentPlace);
+
+    this.dom.hidden = true;
   };
 
   WidgetEditor.prototype.stop = function we_stop() {

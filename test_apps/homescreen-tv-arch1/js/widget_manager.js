@@ -33,15 +33,10 @@
       if (!config) {
         return;
       }
+
+      var eventList = self.compareConfig([], config);
+      self.dispatchMessageToIAC(eventList);
       self.widgetConfig = config;
-      for (var i = config.length - 1; i >= 0; i--) {
-        var reqId = self.systemConn.addWidget({
-          widgetOrigin: config[i].origin,
-          widgetEntryPoint: config[i].entryPoint,
-          x: config[i].x, y: config[i].y, w: config[i].w, h: config[i].h
-        });
-        self.reqIdToPosId[reqId] = config[i].positionId;
-      };
       self.fire('update', self.widgetConfig);
     });
   };
@@ -102,7 +97,12 @@
   WidgetManager.prototype.dispatchMessageToIAC = function wm_dispatch(events) {
     for (var i = 0; i < events.length; i++) {
       var config = events[i].config;
-      switch(events[i].action) {
+
+      if (config.static) {
+        continue;
+      }
+
+      switch (events[i].action) {
         case 'add':
           var payload = { 'widgetOrigin': config.origin,
                           'widgetEntryPoint': config.entryPoint,

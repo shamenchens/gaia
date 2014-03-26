@@ -6,10 +6,11 @@
   var widgetManager;
   var spatialNav;
   var staticObjectPositions = [];
+  var staticObjectFunction = [];
   var selectionBorder;
-  var focusedItem;
   var showAllCallback;
   var hideAllCallback;
+  var fullScreenElement = null;
 
   function $(id) {
     return document.getElementById(id);
@@ -44,26 +45,82 @@
       handleSomethingClosed();
     });
 
-    document.addEventListener('visibilitychange', function(evt) {
-      if (document.visibilityState === 'visible') {
-        appList.hide();
-      }
-    });
-
-    document.addEventListener('contextmenu', function(evt) {
-      evt.preventDefault();
-    });
-
     // widget editor
+
+    // We need to init widget editor which uses the size of container to
+    // calculate the block size. So, the widget-editor should be shown before
+    // the creation of WidgetEditor.
+    $('widget-editor').hidden = false;
+    var widgetPane = $('widget-pane');
+    widgetEditor = new WidgetEditor({
+                                      dom: $('widget-view'),
+                                      appList: appList,
+                                      offset: {
+                                        top: widgetPane.offsetTop,
+                                        left: widgetPane.offsetLeft
+                                      },
+                                      targetSize: {
+                                        w: widgetPane.clientWidth,
+                                        h: widgetPane.clientHeight
+                                      }
+                                    });
+    widgetEditor.on('closed', handleWidgetEditorClosed);
+    widgetEditor.start();
+    $('widget-editor').hidden = true;
+
     $('edit-widget').addEventListener('click', enterWidgetEditor);
     $('widget-editor-close').addEventListener('click', function() {
       widgetEditor.hide();
+    });
+
+    var staticPane = $('main-section');
+    var staticPaneRect = staticPane.getBoundingClientRect();
+    widgetEditor.exportConfig().forEach(function(config) {
+      if (config.static) {
+        var id = config.positionId;
+        var dom = document.createElement('div');
+        dom.classList.add('static-element');
+        dom.classList.add('static-element-' + id);
+        dom.style.left = (config.x - staticPaneRect.left) + 'px';
+        dom.style.top = (config.y - staticPaneRect.top) + 'px';
+        dom.style.width = config.w + 'px';
+        dom.style.height = config.h + 'px';
+        dom.dataset.id = id;
+
+        switch (id) {
+          case 0:
+            staticObjectFunction[id] = function() {
+              window.systemConnection.hideAll();
+              hideAllCallback = function() {
+                fullScreenElement = dom;
+                dom.classList.add('fullscreen');
+                $('main-section').classList.add('fullscreen-shown');
+              };
+            };
+            break;
+          case 1:
+            staticObjectFunction[id] = function() {
+            };
+            break;
+        }
+
+        staticPane.appendChild(dom);
+        staticObjectPositions.push(dom);
+      }
     });
 
     spatialNav = new SpatialNavigator(staticObjectPositions);
     spatialNav.on('focus', handleSelection);
     spatialNav.focus();
 
+    document.addEventListener('visibilitychange', function(evt) {
+      if (document.visibilityState === 'visible') {
+        appList.hide();
+      }
+    });
+    document.addEventListener('contextmenu', function(evt) {
+      evt.preventDefault();
+    });
     window.addEventListener('keydown', handleKeyEvent);
     window.addEventListener('system-action-object',
                             handleSystemConnMsg);
@@ -76,7 +133,8 @@
   function handleSomethingClosed() {
     // widgetEditor may ask appList to show. We need to wait for widgetEditor
     // is hide before showAll widgets in this case.
-    if (!widgetEditor.isShown() && !appList.isShown()) {
+    if (!widgetEditor.isShown() && !appList.isShown() &&
+        fullScreenElement == null) {
       window.systemConnection.showAll();
     }
   }
@@ -97,11 +155,20 @@
   function handleKeyEvent(evt) {
     if (appList.isShown()) {
       appList.handleEvent(evt);
-    } else if (widgetEditor && widgetEditor.isShown()) {
+    } else if (widgetEditor.isShown()) {
       if (evt.key === 'Esc') {
         widgetEditor.hide();
       } else {
         widgetEditor.handleKeyDown(evt);
+      }
+    } else if (fullScreenElement) {
+      switch(evt.key) {
+        case 'Esc':
+          $('main-section').classList.remove('fullscreen-shown');
+          fullScreenElement.classList.remove('fullscreen');
+          fullScreenElement = null;
+          handleSomethingClosed();
+          break;
       }
     } else {
       switch(evt.key) {
@@ -112,7 +179,9 @@
           spatialNav.move(evt.key);
           break;
         case 'Enter':
-          handleEnterKey(focusedItem);
+          handleEnterKey(spatialNav.currentFocus());
+          break;
+        case 'Esc':
           break;
         default:
           return;
@@ -126,6 +195,11 @@
       $('app-list-open-button').click();
     } else if (focused === $('edit-widget')) {
       $('edit-widget').click();
+    } else if (focused.classList &&
+               focused.classList.contains('static-element')) {
+      if (staticObjectFunction[focused.dataset.id]) {
+        staticObjectFunction[focused.dataset.id].apply(focused);
+      }
     } else {
       Applications.launch(focused.origin, focused.entryPoint);
     }
@@ -135,28 +209,8 @@
     $('main-section').classList.add('widget-editor-shown');
     window.systemConnection.hideAll();
     hideAllCallback = function() {
-      // We need to init widget editor which uses the size of container to
-      // calculate the block size. So, the widget-editor should be shown before
-      // the creation of WidgetEditor.
       $('widget-editor').hidden = false;
-      if (!widgetEditor) {
-        var widgetPane = $('widget-pane');
-        widgetEditor = new WidgetEditor({
-                                          dom: $('widget-view'),
-                                          appList: appList,
-                                          offset: {
-                                            top: widgetPane.offsetTop,
-                                            left: widgetPane.offsetLeft
-                                          },
-                                          targetSize: {
-                                            w: widgetPane.clientWidth,
-                                            h: widgetPane.clientHeight
-                                          }
-                                        });
-        widgetEditor.on('closed', handleWidgetEditorClosed);
-        widgetEditor.start();
-        widgetEditor.importConfig(widgetManager.widgetConfig);
-      }
+      widgetEditor.importConfig(widgetManager.widgetConfig);
       widgetEditor.show();
     };
   }
@@ -184,7 +238,6 @@
     } else {
       selectionBorder.selectRect(elem);
     }
-    focusedItem = elem;
   }
 
   window.addEventListener('load', init);

@@ -31,6 +31,30 @@ section {
   right: 0;
 }
 
+.static-element {
+  position: absolute;
+  background-color: white;
+}
+
+.static-element-0 {
+  background-image: url('images/tv.gif');
+  background-size: 100% 100%;
+  transition: all 0.2s ease;
+}
+
+.static-element-1 {
+  background-image: url('images/static-element.jpg');
+  background-size: 100% 100%;
+}
+
+.static-element.fullscreen {
+  left: 0 !important;
+  top: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1000;
+}
+
 .selection-border {
   /*
    * the following comment out because of our target device may not have the
