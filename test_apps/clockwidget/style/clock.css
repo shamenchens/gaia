@@ -15,7 +15,7 @@ html, body {
 
 #clock-view {
   width: 100%;
-  height: calc(100% - 0.13rem);
+  height: 100%;
 
   color: black;
 }
@@ -53,6 +53,48 @@ html, body {
   top: 0;
 }
 
+@media (min-height: 180px) {
+  #clock-day-date {
+    font-weight: lighter;
+    text-align: center;
+    font-size: 2.1rem;
+    margin: 1rem auto 0px;
+    line-height: 1.7rem;
+    position: absolute;
+    color: #737D80;
+    width: 100%;
+    top: 0;
+  }
+}
+
+@media (min-height: 360px) {
+  #clock-day-date {
+    font-weight: lighter;
+    text-align: center;
+    font-size: 4.2rem;
+    margin: 2rem auto 0px;
+    line-height: 3.4rem;
+    position: absolute;
+    color: #737D80;
+    width: 100%;
+    top: 0;
+  }
+}
+
+@media (min-height: 600px) {
+  #clock-day-date {
+    font-weight: lighter;
+    text-align: center;
+    font-size: 6.5rem;
+    margin: 5rem auto 0px;
+    line-height: 6rem;
+    position: absolute;
+    color: #737D80;
+    width: 100%;
+    top: 0;
+  }
+}
+
 #clock-day-date b {
   font-weight: normal;
   color: #A1B0B2;
@@ -63,6 +105,30 @@ html, body {
   display: none;
   margin-top: 6.50rem;
   height: 100%;
+}
+
+@media (min-height: 180px) {
+  #digital-clock {
+    display: none;
+    margin-top: 6.50rem;
+    height: 100%;
+  }
+}
+
+@media (min-height: 360px) {
+  #digital-clock {
+    display: none;
+    margin-top: 13rem;
+    height: 100%;
+  }
+}
+
+@media (min-height: 600px) {
+  #digital-clock {
+    display: none;
+    margin-top: 20rem;
+    height: 100%;
+  }
 }
 
 #digital-clock.visible {
@@ -100,19 +166,27 @@ html, body {
   margin: 6.9rem auto 0;
 }
 
-@media (min-width: 320px) {
+@media (min-height: 180px) {
   #analog-clock-container.large {
-    width: 35rem;
-    height: 35rem;
-    margin: 6.9rem auto 0;
+    width: 15rem;
+    height: 15rem;
+    margin: 3.5rem auto 0;
   }
 }
 
-@media (min-width: 480px) {
+@media (min-height: 360px) {
+  #analog-clock-container.large {
+    width: 30rem;
+    height: 30rem;
+    margin: 10rem auto 0;
+  }
+}
+
+@media (min-height: 600px) {
   #analog-clock-container.large {
     width: 45rem;
     height: 45rem;
-    margin: 6.9rem auto 0;
+    margin: 15rem auto 0;
   }
 }
 

@@ -16,5 +16,8 @@ function AlarmPanel() {
 
 AlarmPanel.prototype = Object.create(Panel.prototype);
 
+console.log(window.innerWidth);
+console.log(window.innerHeight);
+
 return AlarmPanel;
 });
