@@ -1,5 +1,6 @@
 @import url(fonts/clear-sans.css);
 html, body {
+  transform: scale(0.8, 0.8);
   margin: 0;
   padding: 0;
   background: #faf8ef;
@@ -8,7 +9,7 @@ html, body {
   font-size: 18px; }
 
 body {
-  margin: 80px 0; }
+  margin: -40px auto; }
 
 .heading:after {
   content: "";
@@ -458,8 +459,8 @@ hr {
     font-size: 15px; }
 
   body {
-    margin: 20px 0;
-    padding: 0 20px; }
+    margin: -40px auto;
+    padding: 0 auto; }
 
   h1.title {
     font-size: 50px; }
@@ -475,7 +476,7 @@ hr {
     margin-bottom: 10px; }
 
   .game-container {
-    margin-top: 40px;
+    margin-top: 10px;
     position: relative;
     padding: 10px;
     cursor: default;

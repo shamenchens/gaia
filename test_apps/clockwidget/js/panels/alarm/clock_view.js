@@ -87,6 +87,7 @@ var ClockView = {
   isInitialized: false,
 
   init: function cv_init() {
+    var minRem = Math.min(window.innerHeight, window.innerWidth) / 13;
     var handler = this.handleEvent.bind(this);
 
     document.addEventListener('visibilitychange', handler);
@@ -99,6 +100,12 @@ var ClockView = {
     }, this);
     // Kick off the day date display (upper left string)
     this.updateDayDate();
+    this.updateDayDateSize(minRem);
+    if(this.mode === 'digital') {
+      this.updateDigitalSize(minRem);
+    } else {
+      this.updateAnalogSize(minRem);
+    }
 
     // If the attempt to request and set the viewMode
     // closure early has failed to respond before the
@@ -135,6 +142,25 @@ var ClockView = {
     this.timeouts.dayDate = setTimeout(
       this.updateDayDate.bind(this), remainMillisecond
     );
+  },
+
+  updateDayDateSize: function cv_updateDayDateSize(minRem) {
+    var dayDateContainer = document.getElementById('clock-day-date');
+    dayDateContainer.style.fontSize = (minRem / 10) + 'rem';
+    dayDateContainer.style.lineHeight = (minRem / 10) + 'rem';
+    dayDateContainer.style.margin = (minRem / 20) + 'rem auto 0px';
+  },
+
+  updateAnalogSize: function cv_updateAnalogSize(minRem) {
+    var analogContainer = document.getElementById('analog-clock-container');
+    analogContainer.style.width = minRem + 'rem';
+    analogContainer.style.height = minRem + 'rem';
+    analogContainer.style.margin = (minRem / 5) + 'rem auto 0px';
+  },
+
+  updateDigitalSize: function cv_updateDigitalSize(minRem) {
+    var digitalContainer = document.getElementById('digital-clock');
+    digitalContainer.style.margin = (minRem / 5) + 'rem auto 0px';
   },
 
   update: function cv_update(opts) {
