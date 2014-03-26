@@ -6,11 +6,13 @@
 
   var WidgetManager = function(app) {
     this.app = app;
-    this.runningWidgetsById = [];
+    this.runningWidgetsById = {};
     window.addEventListener('widgetcreated', this);
     window.addEventListener('widgetterminated', this);
     window.addEventListener('launchwidget', this);
     window.addEventListener('homescreen-action-object', this);
+    window.addEventListener('homescreenshown', this);
+    window.addEventListener('homescreenhidden', this);
     window.navigator.mozSetMessageHandler(
       'widget', this.handleEvent.bind(this));
   };
@@ -82,7 +84,18 @@
     },
 
     handleEvent: function(evt) {
+      var widgetId;
       switch (evt.type) {
+        case 'homescreenshown':
+          for (widgetId in this.runningWidgetsById) {
+            this.runningWidgetsById[widgetId].setVisible(true);
+          }
+          break;
+        case 'homescreenhidden':
+          for (widgetId in this.runningWidgetsById) {
+            this.runningWidgetsById[widgetId].setVisible(false);
+          }
+          break;
         case 'widgetcreated':
           var app = evt.detail;
           this.runningWidgetsById[evt.detail.instanceID] = app;
@@ -118,7 +131,6 @@
           (window.location.port ? (':' + window.location.port) : '') + path;
   }
   if (DEBUG) {
-    var widgetid1, widgetid2;
     // XXX: For testing widget only. Remove when widget IAC is completed.
     setTimeout(function() {
       window.dispatchEvent(new CustomEvent('homescreen-action-object',
