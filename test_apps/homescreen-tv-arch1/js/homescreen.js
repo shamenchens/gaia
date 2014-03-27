@@ -8,8 +8,6 @@
   var staticObjectPositions = [];
   var staticObjectFunction = [];
   var selectionBorder;
-  var showAllCallback;
-  var hideAllCallback;
   var fullScreenElement = null;
 
   function $(id) {
@@ -34,11 +32,10 @@
 
     // app list
     $('app-list-open-button').addEventListener('click', function() {
-      window.systemConnection.hideAll();
-      hideAllCallback = function() {
+      window.systemConnection.hideAll(function() {
         appList.show();
         $('main-section').classList.add('app-list-shown');
-      };
+      });
     });
     appList.on('closed', function() {
       $('main-section').classList.remove('app-list-shown');
@@ -90,12 +87,11 @@
         switch (id) {
           case 0:
             staticObjectFunction[id] = function() {
-              window.systemConnection.hideAll();
-              hideAllCallback = function() {
+              window.systemConnection.hideAll(function() {
                 fullScreenElement = dom;
                 dom.classList.add('fullscreen');
                 $('main-section').classList.add('fullscreen-shown');
-              };
+              });
             };
             break;
           case 1:
@@ -122,8 +118,6 @@
       evt.preventDefault();
     });
     window.addEventListener('keydown', handleKeyEvent);
-    window.addEventListener('system-action-object',
-                            handleSystemConnMsg);
 
     // for testing only
     initFakeAppEvent();
@@ -136,19 +130,6 @@
     if (!widgetEditor.isShown() && !appList.isShown() &&
         fullScreenElement == null) {
       window.systemConnection.showAll();
-    }
-  }
-
-  function handleSystemConnMsg(evt) {
-    var detail = evt.detail;
-    for (var i = 0; i < detail.length; i++) {
-      if (detail[i].action === 'showall' && showAllCallback) {
-        showAllCallback();
-        showAllCallback = null;
-      } else if (detail[i].action === 'hideall' && hideAllCallback) {
-        hideAllCallback();
-        hideAllCallback = null;
-      }
     }
   }
 
@@ -207,12 +188,11 @@
 
   function enterWidgetEditor() {
     $('main-section').classList.add('widget-editor-shown');
-    window.systemConnection.hideAll();
-    hideAllCallback = function() {
+    window.systemConnection.hideAll(function() {
       $('widget-editor').hidden = false;
       widgetEditor.importConfig(widgetManager.widgetConfig);
       widgetEditor.show();
-    };
+    });
   }
 
   function handleWidgetEditorClosed() {

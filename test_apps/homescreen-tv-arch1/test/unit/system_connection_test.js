@@ -31,7 +31,7 @@ suite('SystemConntection', function() {
   });
 
   teardown(function() {
-    systemConnection._unrespondRequests = [];
+    systemConnection._wrappedUnrespondRequests = [];
   });
 
   test('addWidget', function() {
@@ -43,28 +43,32 @@ suite('SystemConntection', function() {
       widgetOrigin: 'app://widget.gaiamobile.org/',
       widgetEntryPoint: 'entry'
     };
-    assert.strictEqual(systemConnection._unrespondRequests.length, 0);
+    assert.strictEqual(systemConnection._wrappedUnrespondRequests.length, 0);
     systemConnection.addWidget(args);
     MockNavigatormozApps.mTriggerLastRequestSuccess(app);
     if (MockNavigatormozApps.mLastConnectionCallback) {
       MockNavigatormozApps.mLastConnectionCallback([]);
     }
-    assert.isTrue(systemConnection._unrespondRequests.length > 0);
-    assert.deepEqual(systemConnection._unrespondRequests[0].args, args);
-    assert.strictEqual(systemConnection._unrespondRequests[0].action, 'add');
+    assert.isTrue(systemConnection._wrappedUnrespondRequests.length > 0);
+    assert.deepEqual(
+      systemConnection._wrappedUnrespondRequests[0].requestObject.args, args);
+    assert.strictEqual(
+      systemConnection._wrappedUnrespondRequests[0].requestObject.action, 'add');
   });
 
   test('showAll', function() {
-    assert.isTrue(systemConnection._unrespondRequests.length === 0);
+    assert.isTrue(systemConnection._wrappedUnrespondRequests.length === 0);
     systemConnection.showAll();
     MockNavigatormozApps.mTriggerLastRequestSuccess(app);
     if (MockNavigatormozApps.mLastConnectionCallback) {
       MockNavigatormozApps.mLastConnectionCallback([]);
     }
-    assert.isTrue(systemConnection._unrespondRequests.length > 0);
-    assert.isUndefined(systemConnection._unrespondRequests[0].args);
+    assert.isTrue(systemConnection._wrappedUnrespondRequests.length > 0);
+    assert.isUndefined(
+      systemConnection._wrappedUnrespondRequests[0].requestObject.args);
     assert.strictEqual(
-      systemConnection._unrespondRequests[0].action, 'showall');
+      systemConnection._wrappedUnrespondRequests[0].requestObject.action,
+      'showall');
   });
 
 });
