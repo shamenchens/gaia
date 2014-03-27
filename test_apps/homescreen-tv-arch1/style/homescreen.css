@@ -37,9 +37,14 @@ section {
 }
 
 .static-element-0 {
+  background-color: black;
   background-image: url('images/tv.gif');
   background-size: 100% 100%;
   transition: all 0.2s ease;
+}
+
+.static-element-0.has-video {
+  background-image: none;
 }
 
 .static-element-1 {
