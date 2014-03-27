@@ -109,7 +109,7 @@
 
   WidgetEditor.prototype.handleKeyDown = function we_handleKeyPress(e) {
     if (this.dom.hidden || this.appList.isShown()) {
-      return;
+      return false;
     }
     var targetPlace;
     switch (e.keyCode) {
@@ -140,7 +140,11 @@
       case KeyEvent.DOM_VK_RETURN:
         this.togglePlace();
         break;
+      default:
+        return false;
     }
+
+    return true;
   }
 
   WidgetEditor.prototype.togglePlace = function we_togglePlace() {

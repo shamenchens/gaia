@@ -96,25 +96,3 @@ img.icon {
   display: block;
   margin: 1rem auto 1rem auto;
 }
-
-#main-section menu[type="toolbar"] button {
-  padding-left: 30px;
-}
-
-menu[type="toolbar"] button:before {
-  position:absolute;
-  width: 10px;
-  height: 5px;
-  border: black 2px solid;
-  top: calc(50% - 3px);
-  left: 10px;
-  content: ' ';
-}
-
-#edit-widget:before {
-  background-color: #E33;
-}
-
-#app-list-open-button:before {
-  background-color: #33E;
-}

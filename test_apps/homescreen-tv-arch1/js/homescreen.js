@@ -182,14 +182,16 @@
 
   function handleKeyEvent(evt) {
     if (appList.isShown()) {
-      if (!appList.handleEvent(evt)) {
+      if (!appList.handleKeyDown(evt)) {
         return;
       }
     } else if (widgetEditor.isShown()) {
       if (evt.key === 'Esc') {
         widgetEditor.hide();
       } else {
-        widgetEditor.handleKeyDown(evt);
+        if (!widgetEditor.handleKeyDown(evt)) {
+          return;
+        }
       }
     } else if (fullScreenElement) {
       switch(evt.key) {
@@ -199,6 +201,8 @@
           fullScreenElement = null;
           handleSomethingClosed();
           break;
+        default:
+          return;
       }
     } else {
       switch(evt.key) {

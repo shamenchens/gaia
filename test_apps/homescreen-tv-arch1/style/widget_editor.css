@@ -28,6 +28,7 @@
   background-position: center center;
   background-repeat: no-repeat;
   background-size: contain;
+  cursor: pointer;
 }
 
 .place-holder:after {
@@ -39,4 +40,5 @@
 
 .static-place-holder {
   background-color: #FFFFFF;
+  cursor: default;
 }

@@ -179,37 +179,6 @@
       this._selectionBorder.select(elem);
     },
 
-    _handleKeyDown: function appListHandleKeyDown(evt) {
-      switch (evt.key) {
-        case 'PageUp':
-          this.previousPage();
-          this._spatialNavigator
-            .focus(this._pages[this._currentPage].getIconElement(0));
-          break;
-        case 'PageDown':
-          this.nextPage();
-          this._spatialNavigator
-            .focus(this._pages[this._currentPage].getIconElement(0));
-          break;
-        case 'Up':
-        case 'Down':
-        case 'Left':
-        case 'Right':
-          this._spatialNavigator.move(evt.key);
-          break;
-        case 'Enter':
-          this._launchCurrentIcon();
-          break;
-        case 'Esc':
-          this.hide();
-          break;
-        default:
-          return false;
-      }
-
-      return true;
-    },
-
     _launchCurrentIcon: function appListLaunchCurrentIcon() {
       var icon = this._spatialNavigator.currentFocus();
 
@@ -488,21 +457,43 @@
       return this.setPage(this._currentPage + 1);
     },
 
+    handleKeyDown: function appListHandleKeyDown(evt) {
+      switch (evt.key) {
+        case 'PageUp':
+          this.previousPage();
+          this._spatialNavigator
+            .focus(this._pages[this._currentPage].getIconElement(0));
+          break;
+        case 'PageDown':
+          this.nextPage();
+          this._spatialNavigator
+            .focus(this._pages[this._currentPage].getIconElement(0));
+          break;
+        case 'Up':
+        case 'Down':
+        case 'Left':
+        case 'Right':
+          this._spatialNavigator.move(evt.key);
+          break;
+        case 'Enter':
+          this._launchCurrentIcon();
+          break;
+        case 'Esc':
+          this.hide();
+          break;
+        default:
+          return false;
+      }
+
+      return true;
+    },
+
     handleEvent: function appListHandleEvent(evt) {
       var target = evt.target;
 
       if (target.id == 'app-list-close-button' && evt.type == 'click') {
         this.hide();
         return;
-      }
-
-      switch (evt.type) {
-        case 'keydown':
-          if (!this.isShown()) {
-            return;
-          }
-          this._handleKeyDown(evt)
-          break;
       }
     }
   });

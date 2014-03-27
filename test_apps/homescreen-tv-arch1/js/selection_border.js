@@ -27,11 +27,35 @@
     }
 
     var border = this.requestBorder();
+    var domParentWidth = dom.offsetParent.offsetWidth;
+    var domParentHeight = dom.offsetParent.offsetHeight;
 
-    border.style.left = dom.offsetLeft + 'px';
-    border.style.top = dom.offsetTop + 'px';
-    border.style.width = dom.offsetWidth + 'px';
-    border.style.height = dom.offsetHeight + 'px';
+    var pos = {
+      left: dom.offsetLeft,
+      top: dom.offsetTop,
+      width: dom.offsetWidth,
+      height: dom.offsetHeight
+    };
+
+    if (pos.left + pos.width > domParentWidth - 2) {
+      pos.width = domParentWidth - pos.left - 2;
+    }
+    if (pos.left < 2) {
+      pos.width -= 2 - pos.left;
+      pos.left = 2;
+    }
+    if (pos.top + pos.height > domParentHeight - 2) {
+      pos.height = domParentHeight - pos.top - 2;
+    }
+    if (pos.top < 2) {
+      pos.height -= 2 - pos.top;
+      pos.top = 2;
+    }
+
+    border.style.left = pos.left + 'px';
+    border.style.top = pos.top + 'px';
+    border.style.width = pos.width + 'px';
+    border.style.height = pos.height + 'px';
     this.selectedItems.push({ dom: dom, border: border });
   };
 
