@@ -4,7 +4,7 @@
   position: absolute;
   left: 1rem;
   top: 1rem;
-  z-index: 90;
+  z-index: 200;
   background-color: rgba(0, 0, 0, 0.9);
   box-shadow: 0 0 1rem 0.2rem #000;
 }
