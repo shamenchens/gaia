@@ -19,8 +19,6 @@
   WidgetManager.prototype = new window.evt();
 
   WidgetManager.prototype.start = function wm_start() {
-    window.addEventListener('system-action-object',
-                            this.handleSystemWidgetMsg.bind(this));
     Applications.on('uninstall',
                     this.handleAppRemoved.bind(this));
     this.syncWidgets();
@@ -41,14 +39,11 @@
     });
   };
 
-  WidgetManager.prototype.handleSystemWidgetMsg = function(evt) {
-    var detail = evt.detail;
-    for (var i = 0; i < detail.length; i++) {
-      if (detail[i].action === 'remove' || detail[i].action === 'add') {
-        var posId = this.reqIdToPosId[detail[i].requestId];
-        this.posIdToWidgetId[posId] = detail[i].widgetId;
-        delete this.reqIdToPosId[detail[i].requestId];
-      }
+  WidgetManager.prototype.handleSystemWidgetMsg = function(detail) {
+    if (detail.action === 'remove' || detail.action === 'add') {
+      var posId = this.reqIdToPosId[detail.requestId];
+      this.posIdToWidgetId[posId] = detail.widgetId;
+      delete this.reqIdToPosId[detail.requestId];
     }
   };
 
@@ -108,12 +103,16 @@
                           'widgetEntryPoint': config.entryPoint,
                           'x': config.x, 'y': config.y,
                           'w': config.w, 'h': config.h };
-          var reqId = this.systemConn.addWidget(payload);
+          var reqId = this.systemConn.addWidget(
+            payload,
+            this.handleSystemWidgetMsg.bind(this));
           this.reqIdToPosId[reqId] = config.positionId;
           break;
         case 'remove':
           var widgetId = this.posIdToWidgetId[config.positionId];
-          this.systemConn.removeWidget({ 'widgetId': widgetId });
+          this.systemConn.removeWidget(
+            { 'widgetId': widgetId },
+            this.handleSystemWidgetMsg.bind(this));
           delete this.posIdToWidgetId[config.positionId];
           break;
       }

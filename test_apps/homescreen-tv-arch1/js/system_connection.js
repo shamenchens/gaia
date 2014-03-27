@@ -177,7 +177,6 @@
         that = this;
       this._wrappedUnrespondRequests.push(wrappedUnrespondRequest);
       this._sendMessage(requestObject);
-      // TODO: set timeout and call callback
       window.setTimeout(function() {
         // invoke callback to inform timeout only when
         // unresponseRequest of requestId still in the array
