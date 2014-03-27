@@ -28,8 +28,13 @@
     if (!targetSize) {
       this.scaleRatio = 1;
     } else {
-      this.scaleRatio = Math.min(targetSize.w / dom.clientWidth,
+      this.scaleRatio = Math.max(targetSize.w / dom.clientWidth,
                                  targetSize.h / dom.clientHeight);
+    }
+
+    this.containerSize = {
+      w: targetSize.w / this.scaleRatio,
+      h: targetSize.h / this.scaleRatio
     }
 
     this.offsetPosition = offset;
@@ -184,10 +189,14 @@
       div.classList.add('static-place-holder');
     }
 
+    var leftDiff = (this.container.clientWidth - this.containerSize.w) / 2;
+    var topDiff = (this.container.clientHeight - this.containerSize.h) / 2;
+
+
     div.style.width = place.w + 'px';
     div.style.height = place.h + 'px';
-    div.style.left = place.x + 'px';
-    div.style.top = place.y + 'px';
+    div.style.left = leftDiff + place.x + 'px';
+    div.style.top = topDiff + place.y + 'px';
 
     this.container.appendChild(div);
     place.elm = div;
@@ -262,11 +271,11 @@
   };
 
   HSLayoutEditor.prototype.initSingleRect = function hsle_initSingleRect() {
-    var width = (this.container.clientWidth
+    var width = (this.containerSize.w
                  - (this.options.layout.h - 1) * this.options.gap.h
                  - this.options.padding.l
                  - this.options.padding.r) / this.options.layout.h;
-    var height = (this.container.clientHeight
+    var height = (this.containerSize.h
                   - (this.options.layout.v - 1) * this.options.gap.v
                   - this.options.padding.t
                   - this.options.padding.b) / this.options.layout.v;
