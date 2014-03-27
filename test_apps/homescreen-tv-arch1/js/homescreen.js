@@ -182,7 +182,9 @@
 
   function handleKeyEvent(evt) {
     if (appList.isShown()) {
-      appList.handleEvent(evt);
+      if (!appList.handleEvent(evt)) {
+        return;
+      }
     } else if (widgetEditor.isShown()) {
       if (evt.key === 'Esc') {
         widgetEditor.hide();

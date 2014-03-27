@@ -34,10 +34,10 @@ section {
 .static-element {
   position: absolute;
   background-color: white;
+  z-index: 150;
 }
 
 .static-element-0 {
-  z-index: 150;
   background-color: black;
   background-image: url('images/tv.gif');
   background-size: 100% 100%;
@@ -45,12 +45,10 @@ section {
 }
 
 .static-element-0.has-video {
-  z-index: 150;
   background-image: none;
 }
 
 .static-element-1 {
-  z-index: 150;
   background-image: url('images/static-element.jpg');
   background-size: 100% 100%;
 }

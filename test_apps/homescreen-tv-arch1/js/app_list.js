@@ -161,8 +161,7 @@
     _pages: [],
 
     _unbindAppEventHandler: null,
-
-    oniconclick: null,
+    _iconTapHandler: null,
 
     _handleFocus: function appListHandleFocus(elem) {
       var pages = this._pages;
@@ -269,7 +268,7 @@
         if (page.isFull()) {
           page = self.createPage();
         }
-        var elem = page.addIcon(entry);
+        var elem = page.addIcon(entry, self._iconTapHandler);
         self._spatialNavigator.add(elem);
       });
     },
@@ -347,7 +346,7 @@
           Applications.on(type, appEventHandler[type]);
         }
 
-        this._unbindAppEventHandler = function() {
+        self._unbindAppEventHandler = function() {
           for(var type in appEventHandler) {
             Applications.off(type, appEventHandler[type]);
           }
@@ -361,6 +360,13 @@
           container: self._container
         });
 
+        self._iconTapHandler = function(evt) {
+          self._spatialNavigator.focus(this);
+          self._launchCurrentIcon();
+          evt.stopImmediatePropagation();
+          evt.preventDefault();
+        };
+
         self._handleAppInstall(Applications.getAllEntries());
         self.setPage(0);
 
@@ -369,8 +375,6 @@
     },
 
     uninit: function appListUninit() {
-      this.oniconclick = null;
-
       this.hide();
 
       this._selectionBorder.deselectAll();
@@ -384,6 +388,8 @@
 
       this._unbindAppEventHandler();
       this._unbindAppEventHandler = null;
+
+      this._iconTapHandler = null;
 
       document.getElementById('app-list-close-button')
         .removeEventListener('click', this);

@@ -28,8 +28,10 @@
     //keep reference for removal
     this.boundHandleAppRemoved = this.handleAppRemoved.bind(this);
     this.boundHandleAppUpdate = this.handleAppUpdated.bind(this);
+    this.boundPlaceClicked = this.handlePlaceClicked.bind(this);
     Applications.on('uninstall', this.boundHandleAppRemoved);
     Applications.on('update', this.boundHandleAppUpdate);
+    this.dom.addEventListener('click', this.boundPlaceClicked);
 
     this.currentPlace = this.editor.getFirstNonStatic();
     this.switchFocus(this.currentPlace);
@@ -40,6 +42,7 @@
   WidgetEditor.prototype.stop = function we_stop() {
     Applications.off('uninstall', this.boundHandleAppRemoved);
     Applications.off('update', this.boundHandleAppUpdate);
+    this.dom.removeEventListener('touchstart', this.boundPlaceClicked);
   };
 
   WidgetEditor.prototype.show = function we_show() {
@@ -216,6 +219,21 @@
         }
       });
     }
+  };
+
+  WidgetEditor.prototype.handlePlaceClicked = function we_handlePlaceClick(e) {
+    var target = e.target;
+    var places = this.editor.placeHolders;
+    var found = false;
+    for (var i = 0; !found && i < places.length; i++) {
+      if (target === places[i].elm && !places[i].static) {
+        this.switchFocus(places[i]);
+        this.togglePlace();
+        found = true;
+      }
+    }
+    e.stopImmediatePropagation();
+    e.preventDefault();
   };
 
   exports.WidgetEditor = WidgetEditor;
