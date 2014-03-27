@@ -1,6 +1,7 @@
 'use strict';
 
 (function() {
+  const PLAY_VIDEO = false;
   var appList;
   var widgetEditor;
   var widgetManager;
@@ -11,6 +12,8 @@
   var showAllCallback;
   var hideAllCallback;
   var fullScreenElement = null;
+  var mainVideo;
+  var playEndTimer;
 
   function $(id) {
     return document.getElementById(id);
@@ -89,6 +92,11 @@
 
         switch (id) {
           case 0:
+            if (PLAY_VIDEO) {
+              createVideo();
+              dom.appendChild(mainVideo);
+              dom.classList.add('has-video');
+            }
             staticObjectFunction[id] = function() {
               window.systemConnection.hideAll();
               hideAllCallback = function() {
@@ -100,6 +108,7 @@
             break;
           case 1:
             staticObjectFunction[id] = function() {
+              window.open('http://www.mozilla.org');
             };
             break;
         }
@@ -116,6 +125,16 @@
     document.addEventListener('visibilitychange', function(evt) {
       if (document.visibilityState === 'visible') {
         appList.hide();
+        if (mainVideo) {
+          mainVideo.src = 'data/video.mp4';
+          mainVideo.play();
+        }
+      } else {
+        if (mainVideo) {
+          mainVideo.pause();
+          mainVideo.removeAttribute('src');
+          mainVideo.load();
+        }
       }
     });
     document.addEventListener('contextmenu', function(evt) {
@@ -128,6 +147,33 @@
     // for testing only
     initFakeAppEvent();
     initGesture();
+  }
+
+  function createVideo() {
+    mainVideo = document.createElement('video');
+    mainVideo.src = 'data/video.mp4';
+    mainVideo.loop = false;
+    mainVideo.controls = false;
+    mainVideo.autoPlay = true;
+    mainVideo.style.width = '100%';
+    mainVideo.style.height = '100%';
+    mainVideo.addEventListener('ended', function() {
+      console.log('ended');
+      mainVideo.currentTime = 0;
+      mainVideo.play();
+    });
+    mainVideo.addEventListener('timeupdate', function() {
+      var diff  = mainVideo.duration - mainVideo.currentTime;
+      if (diff < 1) {
+        mainVideo.pause();
+        mainVideo.src = ''
+        mainVideo.load();
+        window.setTimeout(function() {
+          mainVideo.src = 'data/video.mp4';
+          mainVideo.play();
+        });
+      }
+    });
   }
 
   function handleSomethingClosed() {
