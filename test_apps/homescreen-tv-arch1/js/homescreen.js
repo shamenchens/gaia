@@ -104,7 +104,8 @@
             break;
           case 1:
             staticObjectFunction[id] = function() {
-              window.open('http://www.mozilla.org');
+              window.open('http://www.mozilla.org', '_blank',
+                          'remote=true,useAsyncPanZoom=true');
             };
             break;
         }
