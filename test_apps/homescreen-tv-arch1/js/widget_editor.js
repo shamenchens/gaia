@@ -152,16 +152,16 @@
       this.revokeUrl(this.currentPlace.app);
       this.editor.removeWidget(this.currentPlace);
     } else {
-      var self = this;
-      OverlayManager.readyToOpen('app-list', function() {
-        if (self.appList.show()) {
+      if (this.appList.show()) {
+        var self = this;
+        self.appList.once('opened', function() {
           var handleAppChosen = self.handleAppChosen.bind(self);
           self.appList.on('iconclick', handleAppChosen);
           self.appList.once('closed', function() {
             this.off('iconclick', handleAppChosen);
           });
-        }
-      });
+        });
+      }
     }
   };
 

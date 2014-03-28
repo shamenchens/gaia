@@ -8,7 +8,7 @@
 
     _execCallbacks: function() {
       while(this._callbacks.length) {
-        var cb = this._callbacks.pop();
+        var cb = this._callbacks.shift();
         cb();
       }
     },
@@ -20,6 +20,10 @@
     },
 
     readyToOpen: function(name, callback) {
+      if (!name) {
+        return false;
+      }
+
       switch (this._widgetState) {
         case 'shown':
           var self = this;
@@ -50,11 +54,16 @@
       }
 
       document.body.classList.add('overlay-shown');
+      document.body.classList.add(name + '-shown');
 
       return true;
     },
 
     afterClosed: function(name) {
+      if (!name) {
+        return false;
+      }
+
       var index = this._overlays.indexOf(name);
 
       if (index >= 0) {
@@ -64,6 +73,7 @@
       }
 
       if (this._overlays.length > 0) {
+        document.body.classList.remove(name + '-shown');
         return false;
       }
 
@@ -73,6 +83,7 @@
       window.systemConnection.showAll(function() {
         self._widgetState = 'shown';
         document.body.classList.remove('overlay-shown');
+        document.body.classList.remove(name + '-shown');
       });
 
       return true;

@@ -35,12 +35,7 @@
 
     // app list
     $('app-list-open-button').addEventListener('click', function() {
-      OverlayManager.readyToOpen('app-list', function() {
-        appList.show();
-      });
-    });
-    appList.on('closed', function() {
-      OverlayManager.afterClosed('app-list');
+      appList.show();
     });
 
     // widget editor

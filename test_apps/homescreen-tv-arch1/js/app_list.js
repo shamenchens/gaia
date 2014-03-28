@@ -369,17 +369,16 @@
         return false;
       }
 
-      this._appList.hidden = false;
+      var self = this;
+      OverlayManager.readyToOpen('app-list', function() {
+        self._appList.hidden = false;
 
-      if (this._focus < 0) {
-        this._focus = 0;
-      }
+        if (!self._spatialNavigator.currentFocus()) {
+          self._spatialNavigator.focus();
+        }
 
-      if (!this._spatialNavigator.currentFocus()) {
-        this._spatialNavigator.focus();
-      }
-
-      this.fire('opened');
+        self.fire('opened');
+      });
 
       return true;
     },
@@ -390,6 +389,8 @@
       }
 
       this._appList.hidden = true;
+      OverlayManager.afterClosed('app-list');
+
       this.fire('closed');
       return true;
     },
