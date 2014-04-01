@@ -35,7 +35,7 @@
     this.containerSize = {
       w: targetSize.w / this.scaleRatio,
       h: targetSize.h / this.scaleRatio
-    }
+    };
 
     this.offsetPosition = offset;
     this.container = dom;
@@ -79,7 +79,7 @@
       return this.placeHolders[i];
     }
     return null;
-  }
+  };
 
   HSLayoutEditor.prototype.getAdjacentPlace = function getP(place, direction,
                                                             skipStatic) {
@@ -148,14 +148,14 @@
       var dist = calcDistanceWithoutSQRT(place, targetPlace, direction);
       if (!adjacent) {
         adjacent = targetPlace;
-        adjacentDist = dist
+        adjacentDist = dist;
       } else if (dist < adjacentDist) {
         adjacent = targetPlace;
-        adjacentDist = dist
+        adjacentDist = dist;
       }
     }
     return adjacent;
-  }
+  };
 
   HSLayoutEditor.prototype.createPlaceHolders = function hsle_createHolders() {
     this.placeHolders = [];
@@ -236,16 +236,17 @@
         !affectedFunc || (typeof affectedFunc) !== 'function') {
       return;
     }
+    function handleResult(affected, place) {
+      if (affected) {
+        affectedFunc(place);
+      }
+    }
     for (var i = 0; i < this.placeHolders.length; i++) {
       if (!this.placeHolders[i].app) {
         continue;
       }
       try {
-        checkingFunc(this.placeHolders[i], function result(affected, place) {
-          if (affected) {
-            affectedFunc(place);
-          }
-        });
+        checkingFunc(this.placeHolders[i], handleResult);
       } catch (ex) {
         console.error('Error while trying to execute callback of ' +
                       'batch tasks with place #' + i, ex);
@@ -271,14 +272,14 @@
   };
 
   HSLayoutEditor.prototype.initSingleRect = function hsle_initSingleRect() {
-    var width = (this.containerSize.w
-                 - (this.options.layout.h - 1) * this.options.gap.h
-                 - this.options.padding.l
-                 - this.options.padding.r) / this.options.layout.h;
-    var height = (this.containerSize.h
-                  - (this.options.layout.v - 1) * this.options.gap.v
-                  - this.options.padding.t
-                  - this.options.padding.b) / this.options.layout.v;
+    var width = (this.containerSize.w -
+                 (this.options.layout.h - 1) * this.options.gap.h -
+                 this.options.padding.l -
+                 this.options.padding.r) / this.options.layout.h;
+    var height = (this.containerSize.h -
+                  (this.options.layout.v - 1) * this.options.gap.v -
+                  this.options.padding.t -
+                  this.options.padding.b) / this.options.layout.v;
     this.singleRect = {width: Math.round(width),
                        height: Math.round(height)};
   };

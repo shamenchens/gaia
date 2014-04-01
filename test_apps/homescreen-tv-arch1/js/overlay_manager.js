@@ -7,7 +7,7 @@
     _widgetState: 'shown',
 
     _execCallbacks: function() {
-      while(this._callbacks.length) {
+      while (this._callbacks.length) {
         var cb = this._callbacks.shift();
         cb();
       }

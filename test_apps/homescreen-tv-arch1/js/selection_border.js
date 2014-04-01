@@ -75,7 +75,7 @@
     border.style.width = rect.w + 'px';
     border.style.height = rect.h + 'px';
     this.selectedItems.push({ rect: rect, border: border });
-  }
+  };
 
   SelectionBorder.prototype.deselect = function sb_deselect(dom) {
     for (var i = 0; i < this.selectedItems.length; i++) {
@@ -106,7 +106,7 @@
       this.releaseBorder(this.selectedItems[i].border);
     }
     this.selectedItems = [];
-  }
+  };
 
   SelectionBorder.prototype.releaseBorder = function sb_releaseBorder(border) {
     border.hidden = true;

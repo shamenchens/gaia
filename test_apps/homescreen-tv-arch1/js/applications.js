@@ -1,4 +1,5 @@
 'use strict';
+/* global evt */
 
 (function(exports) {
   var Applications = evt({
@@ -92,10 +93,10 @@
       }
 
       var url = manifest.icons[closestSize];
-      if (url.indexOf('data:') == 0 ||
-          url.indexOf('app://') == 0 ||
-          url.indexOf('http://') == 0 ||
-          url.indexOf('https://') == 0) {
+      if (url.indexOf('data:') === 0 ||
+          url.indexOf('app://') === 0 ||
+          url.indexOf('http://') === 0 ||
+          url.indexOf('https://') === 0) {
         return url;
       }
       if (url.charAt(0) != '/') {
@@ -105,8 +106,9 @@
         return '';
       }
 
-      if (app.origin.slice(-1) == '/')
+      if (app.origin.slice(-1) === '/') {
         return app.origin.slice(0, -1) + url;
+      }
 
       return app.origin + url;
     },
@@ -139,7 +141,7 @@
           callback();
         }
 
-        while(self._readyCallbacks.length) {
+        while (self._readyCallbacks.length) {
           setTimeout(self._readyCallbacks.shift());
         }
       };

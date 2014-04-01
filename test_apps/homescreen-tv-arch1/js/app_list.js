@@ -1,4 +1,6 @@
 'use strict';
+/* global Applications, SpatialNavigator, SelectionBorder, evt,
+          OverlayManager */
 
 (function(exports) {
   function AppListPage(parent, maxIconCount) {
@@ -119,7 +121,7 @@
     },
 
     isEmpty: function alpIsEmpty() {
-      return (this._iconCount == 0);
+      return (this._iconCount === 0);
     },
 
     getIconElement: function alpGetIconElement(index) {
@@ -206,13 +208,13 @@
       var icon_computed_style = getComputedStyle(icon);
 
       this._iconDimensions.width =
-        parseInt(icon_computed_style.getPropertyValue('width')) +
-        parseInt(icon_computed_style.getPropertyValue('margin-left')) +
-        parseInt(icon_computed_style.getPropertyValue('margin-right'));
+        parseInt(icon_computed_style.getPropertyValue('width'), 10) +
+        parseInt(icon_computed_style.getPropertyValue('margin-left'), 10) +
+        parseInt(icon_computed_style.getPropertyValue('margin-right'), 10);
       this._iconDimensions.height =
-        parseInt(icon_computed_style.getPropertyValue('height')) +
-        parseInt(icon_computed_style.getPropertyValue('margin-top')) +
-        parseInt(icon_computed_style.getPropertyValue('margin-bottom'));
+        parseInt(icon_computed_style.getPropertyValue('height'), 10) +
+        parseInt(icon_computed_style.getPropertyValue('margin-top'), 10) +
+        parseInt(icon_computed_style.getPropertyValue('margin-bottom'), 10);
 
       this._container.removeChild(icon);
 
@@ -247,7 +249,7 @@
       var page_count = pages.length;
 
       entries.forEach(function(entry) {
-        for(var i = 0; i < page_count; i++) {
+        for (var i = 0; i < page_count; i++) {
           if (pages[i].updateIcon(entry)) {
             break;
           }
@@ -311,12 +313,12 @@
           'uninstall': self._handleAppUninstall.bind(self)
         };
 
-        for(var type in appEventHandler) {
+        for (var type in appEventHandler) {
           Applications.on(type, appEventHandler[type]);
         }
 
         self._unbindAppEventHandler = function() {
-          for(var type in appEventHandler) {
+          for (var type in appEventHandler) {
             Applications.off(type, appEventHandler[type]);
           }
         };
@@ -415,7 +417,7 @@
     },
 
     reducePage: function appListReducePage(index) {
-      while(this._pages.length) {
+      while (this._pages.length) {
         var last_page = this._pages[this._pages.length - 1];
 
         if (!last_page.isEmpty()) {
