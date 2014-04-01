@@ -1,6 +1,6 @@
 'use strict';
 /* global Applications, AppList, SelectionBorder, WidgetManager,
-          WidgetEditor, OverlayManager, SpatialNavigator */
+          WidgetEditor, OverlayManager, SpatialNavigator, KeyEvent */
 
 
 (function() {
@@ -192,49 +192,49 @@
     });
   }
 
-  function handleKeyEvent(evt) {
-    if (appList.isShown()) {
-      if (!appList.handleKeyDown(evt)) {
-        return;
-      }
-    } else if (widgetEditor.isShown()) {
-      if (evt.key === 'Esc') {
-        widgetEditor.hide();
-      } else {
-        if (!widgetEditor.handleKeyDown(evt)) {
-          return;
-        }
-      }
-    } else if (fullScreenElement) {
-      switch (evt.key) {
-        case 'Esc':
-          restoreFullscreen();
-          break;
-        default:
-          return;
-      }
-    } else {
-      if (OverlayManager.hasOverlay()) {
-        return;
-      }
-
-      switch (evt.key) {
-        case 'Left':
-        case 'Right':
-        case 'Up':
-        case 'Down':
-          spatialNav.move(evt.key);
-          break;
-        case 'Enter':
-          handleEnterKey(spatialNav.currentFocus());
-          break;
-        case 'Esc':
-          break;
-        default:
-          return;
-      }
+  function convertKeyToString(evt) {
+    console.log('Trying to check key code: ' + evt.keyCode);
+    switch (evt.keyCode) {
+      case KeyEvent.DOM_VK_UP:
+        return 'Up';
+      case KeyEvent.DOM_VK_RIGHT:
+        return 'Right';
+      case KeyEvent.DOM_VK_DOWN:
+        return 'Down';
+      case KeyEvent.DOM_VK_LEFT:
+        return 'Left';
+      case KeyEvent.DOM_VK_RETURN:
+        return 'Enter';
+      case KeyEvent.DOM_VK_ESCAPE:
+        return 'Esc';
+      case KeyEvent.DOM_VK_BACK_SPACE:
+        return 'Esc';
+      default:// we don't consume other keys.
+        return null;
     }
-    evt.preventDefault();
+  }
+
+  function handleKeyEvent(evt) {
+    var key = convertKeyToString(evt);
+
+    if (appList.isShown() && appList.handleKeyDown(key)) {
+      evt.preventDefault();
+    } else if (widgetEditor.isShown() && key === 'Esc') {
+      widgetEditor.hide();
+      evt.preventDefault();
+    } else if (widgetEditor.isShown() && widgetEditor.handleKeyDown(key)){
+      evt.preventDefault();
+    } else if (fullScreenElement && key === 'Esc') {
+      restoreFullscreen();
+      evt.preventDefault();
+    } else if (!OverlayManager.hasOverlay() && key) {
+      if (key === 'Enter') {
+        handleEnterKey(spatialNav.currentFocus());
+      } else if (key !== 'Esc') {
+        spatialNav.move(key);
+      }
+      evt.preventDefault();
+    }
   }
 
   function handleEnterKey(focused) {
