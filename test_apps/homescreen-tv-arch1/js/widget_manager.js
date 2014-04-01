@@ -1,12 +1,10 @@
 /* -*- Mode: Java; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- /
 /* vim: set shiftwidth=2 tabstop=2 autoindent cindent expandtab: */
 
+/* globals Applications */
+
 (function(exports) {
   'use strict';
-
-  function $(id) {
-    return document.getElementById(id);
-  }
 
   function WidgetManager(systemConn, appList) {
     this.systemConn = systemConn;
@@ -59,7 +57,7 @@
     var oldIdx = 0;
     var newIdx = 0;
     // to iterate all oldCfg + newCfg.
-    while(oldIdx < oldCfg.length || newIdx < newCfg.length) {
+    while (oldIdx < oldCfg.length || newIdx < newCfg.length) {
       if (oldIdx < oldCfg.length && newIdx === newCfg.length) {
         // no more newCfg, all oldCfg should be removed
         eventList.push({ action: 'remove', config: oldCfg[oldIdx] });

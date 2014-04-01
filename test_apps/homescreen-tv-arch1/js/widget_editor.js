@@ -1,6 +1,8 @@
 /* -*- Mode: Java; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- /
 /* vim: set shiftwidth=2 tabstop=2 autoindent cindent expandtab: */
 
+/* globals Applications, SelectionBorder, HSLayoutEditor, KeyEvent */
+
 (function(exports) {
   'use strict';
 
@@ -79,12 +81,15 @@
     }
 
     var self = this;
+
+    function fillReady(config) {
+      self.editor.loadWidget(config);
+    }
+
     this.editor.reset(this.revokeUrl.bind(this));
     for (var i = config.length - 1; i >= 0; i--) {
-      this.fillAppInfo(config[i], function fillReady(config) {
-        self.editor.loadWidget(config);
-      });
-    };
+      this.fillAppInfo(config[i], fillReady);
+    }
   };
 
   WidgetEditor.prototype.revokeUrl = function we_revokeUrl(app) {
@@ -145,7 +150,7 @@
     }
 
     return true;
-  }
+  };
 
   WidgetEditor.prototype.togglePlace = function we_togglePlace() {
     if (this.currentPlace.app) {
@@ -190,41 +195,42 @@
 
   WidgetEditor.prototype.handleAppRemoved = function we_handleAppRemoved(apps) {
     var self = this;
+    function removeWidgetUrl(place, resultCallback) {
+      if (place.app.origin === app.origin &&
+          place.app.entryPoint === app.entry_point) {
+        self.revokeUrl(place.app.iconUrl);
+        resultCallback(true, place);
+      } else {
+        resultCallback(false, place);
+      }
+    }
     for (var i = 0; i < apps.length; i++) {
       var app = apps[i];
-      this.editor.removeWidgets(function(place, resultCallback) {
-
-        if (place.app.origin === app.origin &&
-            place.app.entryPoint === app.entry_point) {
-          self.revokeUrl(place.app.iconUrl);
-          resultCallback(true, place);
-        } else {
-          resultCallback(false, place);
-        }
-      });
+      this.editor.removeWidgets(removeWidgetUrl);
     }
   };
 
   WidgetEditor.prototype.handleAppUpdated = function we_handleAppUpdated(apps) {
     var self = this;
+
+    function handleWidgetUpdate(place, resultCallback) {
+      if (place.app.origin === app.origin &&
+          place.app.entryPoint === app.entry_point) {
+
+        place.app.name = app.name;
+        self.revokeUrl(place.app.iconUrl);
+        Applications.getIconBlob(app.origin, app.entry_point, 0, function(b) {
+          var iconUrl = b ? URL.createObjectURL(b) : DEFAULT_ICON;
+          place.app.iconUrl = iconUrl;
+          resultCallback(true, place);
+        });
+      } else {
+        resultCallback(false, place);
+      }
+    }
     for (var i = 0; i < apps.length; i++) {
       var app = apps[i];
-      this.editor.updateWidgets(function(place, resultCallback) {
-
-        if (place.app.origin === app.origin &&
-            place.app.entryPoint === app.entry_point) {
-
-          place.app.name = app.name;
-          self.revokeUrl(place.app.iconUrl);
-          Applications.getIconBlob(app.origin, app.entry_point, 0, function(b) {
-            var iconUrl = b ? URL.createObjectURL(b) : DEFAULT_ICON;
-            place.app.iconUrl = iconUrl;
-            resultCallback(true, place);
-          });
-        } else {
-          resultCallback(false, place);
-        }
-      });
+      this.editor.updateWidgets(handleWidgetUpdate);
     }
   };
 

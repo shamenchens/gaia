@@ -1,4 +1,7 @@
 'use strict';
+/* global Applications, AppList, SelectionBorder, WidgetManager,
+          WidgetEditor, OverlayManager, SpatialNavigator */
+
 
 (function() {
   const PLAY_VIDEO = false;
@@ -10,8 +13,8 @@
   var staticObjectFunction = [];
   var selectionBorder;
   var fullScreenElement = null;
+  var originalElementSize;
   var mainVideo;
-  var playEndTimer;
 
   function $(id) {
     return document.getElementById(id);
@@ -88,10 +91,7 @@
               dom.classList.add('has-video');
             }
             staticObjectFunction[id] = function() {
-              OverlayManager.readyToOpen('fullscreen', function() {
-                fullScreenElement = dom;
-                fullScreenElement.classList.add('fullscreen');
-              });
+              setAsFullscreen(dom);
             };
             break;
           case 1:
@@ -132,8 +132,38 @@
     window.addEventListener('keydown', handleKeyEvent);
 
     // for testing only
-    initFakeAppEvent();
-    initGesture();
+    window.initFakeAppEvent();
+    window.initGesture();
+  }
+
+  function setAsFullscreen(dom) {
+    OverlayManager.readyToOpen('fullscreen', function() {
+      originalElementSize = {
+        'left': dom.style.left,
+        'top': dom.style.top,
+        'width': dom.style.width,
+        'height': dom.style.height,
+      };
+      dom.style.left = '0px';
+      dom.style.top = '0px';
+      dom.style.width = '100%';
+      dom.style.height = '100%';
+      fullScreenElement = dom;
+      fullScreenElement.classList.add('fullscreen');
+    });
+  }
+
+  function restoreFullscreen() {
+    fullScreenElement.style.left = originalElementSize.left;
+    fullScreenElement.style.top = originalElementSize.top;
+    fullScreenElement.style.width = originalElementSize.width;
+    fullScreenElement.style.height = originalElementSize.height;
+    fullScreenElement.classList.remove('fullscreen');
+    fullScreenElement = null;
+    originalElementSize = null;
+    setTimeout(function() {
+      OverlayManager.afterClosed('fullscreen');
+    }, 200);
   }
 
   function createVideo() {
@@ -145,15 +175,14 @@
     mainVideo.style.width = '100%';
     mainVideo.style.height = '100%';
     mainVideo.addEventListener('ended', function() {
-      console.log('ended');
       mainVideo.currentTime = 0;
       mainVideo.play();
     });
     mainVideo.addEventListener('timeupdate', function() {
-      var diff  = mainVideo.duration - mainVideo.currentTime;
+      var diff = mainVideo.duration - mainVideo.currentTime;
       if (diff < 1) {
         mainVideo.pause();
-        mainVideo.src = ''
+        mainVideo.src = '';
         mainVideo.load();
         window.setTimeout(function() {
           mainVideo.src = 'data/video.mp4';
@@ -177,13 +206,9 @@
         }
       }
     } else if (fullScreenElement) {
-      switch(evt.key) {
+      switch (evt.key) {
         case 'Esc':
-          fullScreenElement.classList.remove('fullscreen');
-          fullScreenElement = null;
-          setTimeout(function() {
-            OverlayManager.afterClosed('fullscreen');
-          }, 200);
+          restoreFullscreen();
           break;
         default:
           return;
@@ -193,7 +218,7 @@
         return;
       }
 
-      switch(evt.key) {
+      switch (evt.key) {
         case 'Left':
         case 'Right':
         case 'Up':

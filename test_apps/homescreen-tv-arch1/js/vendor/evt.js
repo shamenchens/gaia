@@ -1,4 +1,4 @@
-
+/* global module, define */
 /**
  * Event
  *
@@ -11,6 +11,7 @@
 
 ;(function() {
 
+'use strict';
 /**
  * Locals
  */
@@ -47,10 +48,11 @@ proto.on = function(name, cb) {
 };
 
 proto.once = function(name, cb) {
+  var self = this;
   this.on(name, one);
   function one() {
-    cb.apply(this, arguments);
-    this.off(name, one);
+    cb.apply(self, arguments);
+    self.off(name, one);
   }
 };
 

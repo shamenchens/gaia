@@ -1,10 +1,11 @@
 'use strict';
+/* global evt */
 
 (function(exports) {
   function SpatialNavigator(collection, rectCalcFunc) {
     this.setRectCalcFunc(rectCalcFunc);
     this.reset(collection);
-  };
+  }
 
   SpatialNavigator.prototype = evt({
     _DEBUG: false,
@@ -26,17 +27,17 @@
         };
       } else if (item.left || item.x) {
         rect = {
-          left: parseInt(item.left || item.x || 0),
-          top: parseInt(item.top || item.y || 0),
-          width: parseInt(item.width || item.w || 0),
-          height: parseInt(item.height || item.h || 0)
+          left: parseInt(item.left || item.x || 0, 10),
+          top: parseInt(item.top || item.y || 0, 10),
+          width: parseInt(item.width || item.w || 0, 10),
+          height: parseInt(item.height || item.h || 0, 10)
         };
       } else if (Array.isArray(item)) {
         rect = {
-          left: parseInt(item[0]),
-          top: parseInt(item[1]),
-          width: parseInt(item[2]),
-          height: parseInt(item[3])
+          left: parseInt(item[0], 10),
+          top: parseInt(item[1], 10),
+          width: parseInt(item[2], 10),
+          height: parseInt(item[3], 10)
         };
       } else if (this._rectCalcFunc) {
         rect = this._rectCalcFunc(item);
@@ -123,7 +124,7 @@
       }
 
       dest_group.sort(function(a, b) {
-        for(var i = 0; i < distance.length; i++) {
+        for (var i = 0; i < distance.length; i++) {
           var d = distance[i](a) - distance[i](b);
           if (d) {
             return d;
@@ -284,7 +285,7 @@
       };
       var priority;
 
-      switch(direction.toLowerCase()) {
+      switch (direction.toLowerCase()) {
         case 'left':
           priority = [
             {
