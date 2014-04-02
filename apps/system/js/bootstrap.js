@@ -57,6 +57,8 @@ window.addEventListener('load', function startup() {
   // Enable checkForUpdate as well if booted without FTU
   window.addEventListener('ftuskip', doneWithFTU);
 
+  window.widgetFactory = new WidgetFactory();
+  window.widgetManager = new WidgetManager();
 
   SourceView.init();
   Shortcuts.init();
@@ -74,9 +76,6 @@ window.addEventListener('load', function startup() {
 
   window.title = new Title();
   window.ttlView = new TTLView();
-
-  window.widgetFactory = new WidgetFactory();
-  window.widgetManager = new WidgetManager();
 
   // We need to be sure to get the focus in order to wake up the screen
   // if the phone goes to sleep before any user interaction.
