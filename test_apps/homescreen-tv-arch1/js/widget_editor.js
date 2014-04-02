@@ -1,7 +1,7 @@
 /* -*- Mode: Java; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- /
 /* vim: set shiftwidth=2 tabstop=2 autoindent cindent expandtab: */
 
-/* globals Applications, SelectionBorder, HSLayoutEditor, KeyEvent */
+/* globals Applications, SelectionBorder, HSLayoutEditor, URL */
 
 (function(exports) {
   'use strict';
@@ -112,37 +112,37 @@
     });
   };
 
-  WidgetEditor.prototype.handleKeyDown = function we_handleKeyPress(e) {
+  WidgetEditor.prototype.handleKeyDown = function we_handleKeyPress(key) {
     if (this.dom.hidden || this.appList.isShown()) {
       return false;
     }
     var targetPlace;
-    switch (e.keyCode) {
-      case KeyEvent.DOM_VK_UP:
+    switch (key) {
+      case 'Up':
         targetPlace = this.editor.getAdjacentPlace(this.currentPlace,
                                                   HSLayoutEditor.DIRECTION.TOP,
                                                   true);
         this.switchFocus(targetPlace);
         break;
-      case KeyEvent.DOM_VK_RIGHT:
+      case 'Right':
         targetPlace = this.editor.getAdjacentPlace(this.currentPlace,
                                                  HSLayoutEditor.DIRECTION.RIGHT,
                                                  true);
         this.switchFocus(targetPlace);
         break;
-      case KeyEvent.DOM_VK_DOWN:
+      case 'Down':
         targetPlace = this.editor.getAdjacentPlace(this.currentPlace,
                                                 HSLayoutEditor.DIRECTION.BOTTOM,
                                                 true);
         this.switchFocus(targetPlace);
         break;
-      case KeyEvent.DOM_VK_LEFT:
+      case 'Left':
         targetPlace = this.editor.getAdjacentPlace(this.currentPlace,
                                                   HSLayoutEditor.DIRECTION.LEFT,
                                                   true);
         this.switchFocus(targetPlace);
         break;
-      case KeyEvent.DOM_VK_RETURN:
+      case 'Enter':
         this.togglePlace();
         break;
       default:

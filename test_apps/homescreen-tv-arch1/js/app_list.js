@@ -460,8 +460,8 @@
       return this.setPage(this._currentPage + 1);
     },
 
-    handleKeyDown: function appListHandleKeyDown(evt) {
-      switch (evt.key) {
+    handleKeyDown: function appListHandleKeyDown(key) {
+      switch (key) {
         case 'PageUp':
           this.previousPage();
           this._spatialNavigator
@@ -476,7 +476,7 @@
         case 'Down':
         case 'Left':
         case 'Right':
-          this._spatialNavigator.move(evt.key);
+          this._spatialNavigator.move(key);
           break;
         case 'Enter':
           this._launchCurrentIcon();
