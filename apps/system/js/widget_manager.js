@@ -11,8 +11,8 @@
     window.addEventListener('widgetterminated', this);
     window.addEventListener('launchwidget', this);
     window.addEventListener('homescreen-action-object', this);
-    window.addEventListener('homescreenshowwidget', this);
-    window.addEventListener('homescreenhidewidget', this);
+    window.addEventListener('homescreenopened', this);
+    window.addEventListener('appwillopen', this);
     window.navigator.mozSetMessageHandler(
       'widget', this.handleEvent.bind(this));
   };
@@ -86,12 +86,12 @@
     handleEvent: function(evt) {
       var widgetId;
       switch (evt.type) {
-        case 'homescreenshowwidget':
+        case 'homescreenopened':
           for (widgetId in this.runningWidgetsById) {
             this.runningWidgetsById[widgetId].setVisible(true);
           }
           break;
-        case 'homescreenhidewidget':
+        case 'appwillopen':
           for (widgetId in this.runningWidgetsById) {
             this.runningWidgetsById[widgetId].setVisible(false);
           }
