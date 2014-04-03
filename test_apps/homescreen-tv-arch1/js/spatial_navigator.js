@@ -150,12 +150,7 @@
 
     reset: function snReset(collection) {
       this.unfocus();
-      this._collection = [];
-      if (collection) {
-        for (var i = 0; i < collection.length; i++) {
-          this.add(collection[i]);
-        }
-      }
+      this._collection = collection ? [].conat(collection) : [];
     },
 
     add: function snAdd(elem) {
