@@ -93,6 +93,9 @@
       }
 
       var url = manifest.icons[closestSize];
+      if (!url) {
+        return;
+      }
       if (url.indexOf('data:') === 0 ||
           url.indexOf('app://') === 0 ||
           url.indexOf('http://') === 0 ||
