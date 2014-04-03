@@ -270,8 +270,15 @@
   }
 
   function updateSelection(config) {
+    var nonstatics = [];
+    for (var i = 0; i < config.length; i++) {
+      if (config[i].static) {
+        continue;
+      }
+      nonstatics.push(config[i]);
+    }
     var previousFocusedItem = spatialNav.currentFocus();
-    var allSelectable = staticObjectPositions.concat(config);
+    var allSelectable = staticObjectPositions.concat(nonstatics);
     spatialNav.reset(allSelectable);
     if (!previousFocusedItem || !spatialNav.focus(previousFocusedItem)) {
       spatialNav.focus();
