@@ -59,7 +59,7 @@
 
       var type = evt.type === 'mozChromeEvent' ? detail.type : evt.type;
 
-      switch (evt.type) {
+      switch (type) {
         case 'webapps-launch':
           // TODO: Look up current opened window list,
           // and then create a new instance here.
