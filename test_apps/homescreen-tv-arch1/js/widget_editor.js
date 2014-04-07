@@ -1,7 +1,7 @@
 /* -*- Mode: Java; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- /
 /* vim: set shiftwidth=2 tabstop=2 autoindent cindent expandtab: */
 
-/* globals Applications, SelectionBorder, HSLayoutEditor, URL */
+/* globals Applications, SelectionBorder, LayoutEditor, URL, SpatialNavigator */
 
 (function(exports) {
   'use strict';
@@ -17,7 +17,6 @@
     this.targetSize = options.targetSize;
     this.offset = options.offset;
     this.editor = null;
-    this.currentPlace = null;
     this.selectionBorder = new SelectionBorder({ multiple: false,
                                                  container: this.dom });
   }
@@ -25,18 +24,31 @@
   WidgetEditor.prototype = new window.evt();
 
   WidgetEditor.prototype.start = function we_start() {
-    this.editor = new HSLayoutEditor();
+    this.editor = new LayoutEditor();
     this.editor.init(this.dom, this.targetSize, this.offset);
+
+    var places = [];
+    for (var i = this.editor.placeHolders.length - 1; i >= 0; i--) {
+      var place = this.editor.placeHolders[i];
+      if (place.static) {
+        continue;
+      }
+      places.push(place);
+    }
+
     //keep reference for removal
     this.boundHandleAppRemoved = this.handleAppRemoved.bind(this);
     this.boundHandleAppUpdate = this.handleAppUpdated.bind(this);
     this.boundPlaceClicked = this.handlePlaceClicked.bind(this);
+    this.boundSwitchFocus = this.switchFocus.bind(this);
     Applications.on('uninstall', this.boundHandleAppRemoved);
     Applications.on('update', this.boundHandleAppUpdate);
     this.dom.addEventListener('click', this.boundPlaceClicked);
 
-    this.currentPlace = this.editor.getFirstNonStatic();
-    this.switchFocus(this.currentPlace);
+    // spatial navigator
+    this.spatialNav = new SpatialNavigator(places);
+    this.spatialNav.on('focus', this.boundSwitchFocus);
+    this.spatialNav.focus();
 
     this.dom.hidden = true;
   };
@@ -45,6 +57,7 @@
     Applications.off('uninstall', this.boundHandleAppRemoved);
     Applications.off('update', this.boundHandleAppUpdate);
     this.dom.removeEventListener('touchstart', this.boundPlaceClicked);
+    this.spatialNav.off('focus', this.boundSwitchFocus);
   };
 
   WidgetEditor.prototype.show = function we_show() {
@@ -53,8 +66,8 @@
     }
 
     this.dom.hidden = false;
-    this.currentPlace = this.editor.getFirstNonStatic();
-    this.switchFocus(this.currentPlace);
+
+    this.spatialNav.focus(this.editor.getFirstNonStatic());
     this.fire('shown');
   };
 
@@ -116,31 +129,13 @@
     if (this.dom.hidden || this.appList.isShown()) {
       return false;
     }
-    var targetPlace;
+
     switch (key) {
       case 'Up':
-        targetPlace = this.editor.getAdjacentPlace(this.currentPlace,
-                                                  HSLayoutEditor.DIRECTION.TOP,
-                                                  true);
-        this.switchFocus(targetPlace);
-        break;
       case 'Right':
-        targetPlace = this.editor.getAdjacentPlace(this.currentPlace,
-                                                 HSLayoutEditor.DIRECTION.RIGHT,
-                                                 true);
-        this.switchFocus(targetPlace);
-        break;
       case 'Down':
-        targetPlace = this.editor.getAdjacentPlace(this.currentPlace,
-                                                HSLayoutEditor.DIRECTION.BOTTOM,
-                                                true);
-        this.switchFocus(targetPlace);
-        break;
       case 'Left':
-        targetPlace = this.editor.getAdjacentPlace(this.currentPlace,
-                                                  HSLayoutEditor.DIRECTION.LEFT,
-                                                  true);
-        this.switchFocus(targetPlace);
+        this.spatialNav.move(key);
         break;
       case 'Enter':
         this.togglePlace();
@@ -153,9 +148,9 @@
   };
 
   WidgetEditor.prototype.togglePlace = function we_togglePlace() {
-    if (this.currentPlace.app) {
-      this.revokeUrl(this.currentPlace.app);
-      this.editor.removeWidget(this.currentPlace);
+    if (this.spatialNav.currentFocus().app) {
+      this.revokeUrl(this.spatialNav.currentFocus().app);
+      this.editor.removeWidget(this.spatialNav.currentFocus());
     } else {
       if (this.appList.show()) {
         var self = this;
@@ -174,7 +169,6 @@
     if (!place) {
       return;
     }
-    this.currentPlace = place;
     this.selectionBorder.select(place.elm);
   };
 
@@ -187,7 +181,7 @@
                               iconUrl: iconUrl,
                               origin: data.origin,
                               entryPoint: data.entry_point},
-                            self.currentPlace);
+                            self.spatialNav.currentFocus());
     });
     this.appList.hide();
     return true;
@@ -195,42 +189,50 @@
 
   WidgetEditor.prototype.handleAppRemoved = function we_handleAppRemoved(apps) {
     var self = this;
-    function removeWidgetUrl(place, resultCallback) {
-      if (place.app.origin === app.origin &&
-          place.app.entryPoint === app.entry_point) {
-        self.revokeUrl(place.app.iconUrl);
-        resultCallback(true, place);
-      } else {
-        resultCallback(false, place);
+
+    function checkWidgets(app) {
+      function removeWidgetUrl(place, resultCallback) {
+        if (place.app.origin === app.origin &&
+            place.app.entryPoint === app.entry_point) {
+          self.revokeUrl(place.app.iconUrl);
+          resultCallback(true, place);
+        } else {
+          resultCallback(false, place);
+        }
       }
+
+      self.editor.removeWidgets(removeWidgetUrl);
     }
+    
     for (var i = 0; i < apps.length; i++) {
-      var app = apps[i];
-      this.editor.removeWidgets(removeWidgetUrl);
+      checkWidgets(apps[i]);
     }
   };
 
   WidgetEditor.prototype.handleAppUpdated = function we_handleAppUpdated(apps) {
     var self = this;
 
-    function handleWidgetUpdate(place, resultCallback) {
-      if (place.app.origin === app.origin &&
-          place.app.entryPoint === app.entry_point) {
+    function checkWidgets(app) {
+      function handleWidgetUpdate(place, resultCallback) {
+        if (place.app.origin === app.origin &&
+            place.app.entryPoint === app.entry_point) {
 
-        place.app.name = app.name;
-        self.revokeUrl(place.app.iconUrl);
-        Applications.getIconBlob(app.origin, app.entry_point, 0, function(b) {
-          var iconUrl = b ? URL.createObjectURL(b) : DEFAULT_ICON;
-          place.app.iconUrl = iconUrl;
-          resultCallback(true, place);
-        });
-      } else {
-        resultCallback(false, place);
+          place.app.name = app.name;
+          self.revokeUrl(place.app.iconUrl);
+          Applications.getIconBlob(app.origin, app.entry_point, 0, function(b) {
+            var iconUrl = b ? URL.createObjectURL(b) : DEFAULT_ICON;
+            place.app.iconUrl = iconUrl;
+            resultCallback(true, place);
+          });
+        } else {
+          resultCallback(false, place);
+        }
       }
+      self.editor.updateWidgets(handleWidgetUpdate);
     }
+
     for (var i = 0; i < apps.length; i++) {
-      var app = apps[i];
-      this.editor.updateWidgets(handleWidgetUpdate);
+      checkWidgets(apps[i]);
     }
   };
 
