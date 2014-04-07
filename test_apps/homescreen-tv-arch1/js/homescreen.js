@@ -142,7 +142,7 @@
         'left': dom.style.left,
         'top': dom.style.top,
         'width': dom.style.width,
-        'height': dom.style.height,
+        'height': dom.style.height
       };
       dom.style.left = '0px';
       dom.style.top = '0px';
@@ -222,7 +222,7 @@
     } else if (widgetEditor.isShown() && key === 'Esc') {
       widgetEditor.hide();
       evt.preventDefault();
-    } else if (widgetEditor.isShown() && widgetEditor.handleKeyDown(key)){
+    } else if (widgetEditor.isShown() && widgetEditor.handleKeyDown(key)) {
       evt.preventDefault();
     } else if (fullScreenElement && key === 'Esc') {
       restoreFullscreen();
