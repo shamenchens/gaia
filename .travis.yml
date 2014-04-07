@@ -9,6 +9,7 @@ after_script: ./node_modules/.bin/travisaction $CI_ACTION after_script
 branches:
   only:
   - master
+  - TV_arch1
 env:
   matrix:
   - CI_ACTION=linters
