@@ -1,5 +1,6 @@
-'use strict';
+/* global MockNavigatormozApps, systemConnection */
 
+'use strict';
 require('/shared/test/unit/mocks/mock_navigator_moz_apps.js');
 requireApp('homescreen-tv-arch1/js/system_connection.js');
 requireApp('homescreen-tv-arch1/test/unit/mock_uuid.js');
@@ -53,7 +54,8 @@ suite('SystemConntection', function() {
     assert.deepEqual(
       systemConnection._wrappedUnrespondRequests[0].requestObject.args, args);
     assert.strictEqual(
-      systemConnection._wrappedUnrespondRequests[0].requestObject.action, 'add');
+      systemConnection._wrappedUnrespondRequests[0].requestObject.action,
+      'add');
   });
 
   test('showAll', function() {
