@@ -90,10 +90,10 @@
 
   SelectionBorder.prototype.deselectRect = function sb_deselectRect(rect) {
     for (var i = 0; i < this.selectedItems.length; i++) {
-      if (this.selectedItems[i].x === rect.x &&
-          this.selectedItems[i].y === rect.y &&
-          this.selectedItems[i].w === rect.w &&
-          this.selectedItems[i].h === rect.h) {
+      if (this.selectedItems[i].rect.x === rect.x &&
+          this.selectedItems[i].rect.y === rect.y &&
+          this.selectedItems[i].rect.w === rect.w &&
+          this.selectedItems[i].rect.h === rect.h) {
         this.releaseBorder(this.selectedItems[i].border);
         this.selectedItems.splice(i, 1);
         break;
