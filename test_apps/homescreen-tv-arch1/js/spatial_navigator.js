@@ -257,10 +257,22 @@
         return d < 0 ? 0 : d;
       };
       var nearTargetLeftIsBetter = function(rect) {
-        return target_rect.left - rect.right;
+        var d;
+        if (rect.center.x < target_rect.center.x) {
+          d = target_rect.left - rect.right;
+        } else {
+          d = rect.left - target_rect.left;
+        }
+        return d < 0 ? 0 : d;
       };
       var nearTargetTopIsBetter = function(rect) {
-        return target_rect.top - rect.bottom;
+        var d;
+        if (rect.center.y < target_rect.center.y) {
+          d = target_rect.top - rect.bottom;
+        } else {
+          d = rect.top - target_rect.top;
+        }
+        return d < 0 ? 0 : d;
       };
       var topIsBetter = function(rect) {
         return rect.top;
