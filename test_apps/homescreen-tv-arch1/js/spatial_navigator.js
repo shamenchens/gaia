@@ -134,11 +134,7 @@
       });
 
       if (this._DEBUG) {
-        var temp = [];
-        dest_group.forEach(function(dest) {
-          temp.push(dest.source.id);
-        });
-        console.log(temp);
+        console.log(dest_group);
       }
 
       return dest_group[0];
@@ -270,13 +266,13 @@
         return rect.top;
       };
       var bottomIsBetter = function(rect) {
-        return rect.bottom;
+        return -1 * rect.bottom;
       };
       var leftIsBetter = function(rect) {
         return rect.left;
       };
       var rightIsBetter = function(rect) {
-        return rect.right;
+        return -1 * rect.right;
       };
       var priority;
 
