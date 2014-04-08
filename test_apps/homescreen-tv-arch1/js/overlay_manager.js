@@ -36,9 +36,6 @@
         case 'showing':
           return false;
         case 'hiding':
-          if (callback) {
-            this._callbacks.push(callback);
-          }
           break;
         case 'hidden':
           setTimeout(this._execCallbacks.bind(this));
