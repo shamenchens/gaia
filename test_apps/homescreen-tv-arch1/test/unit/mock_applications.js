@@ -2,6 +2,12 @@
   exports.MockApplications = {
     mCallbacks: {},
     mEntries: [],
+    init: function() {
+      this._inited = true;
+    },
+    uninit: function() {
+      this._inited = false;
+    },
     on: function(type, callback) {
       if (!this.mCallbacks[type]) {
         this.mCallbacks[type] = [];
