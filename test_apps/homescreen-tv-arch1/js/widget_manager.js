@@ -17,8 +17,13 @@
   WidgetManager.prototype = new window.evt();
 
   WidgetManager.prototype.start = function wm_start() {
-    Applications.on('uninstall',
-                    this.handleAppRemoved.bind(this));
+    this.boundHandleAppRemoved = this.handleAppRemoved.bind(this);
+    Applications.on('uninstall', this.boundHandleAppRemoved);
+    this.syncWidgets();
+  };
+
+  WidgetManager.prototype.stop = function wm_start() {
+    Applications.off('uninstall', this.boundHandleAppRemoved);
     this.syncWidgets();
   };
 
