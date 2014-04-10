@@ -3,44 +3,34 @@
           WidgetEditor, OverlayManager, SpatialNavigator, KeyEvent */
 
 
-(function() {
+(function(exports) {
   const PLAY_VIDEO = false;
   const VIDEO_URL = 'data/video.mp4';
 
-  var appList;
-  var widgetEditor;
-  var widgetManager;
-  var spatialNav;
-  var staticObjectPositions = [];
-  var staticObjectFunction = [];
-  var selectionBorder;
-  var fullScreenElement = null;
-  var originalElementSize;
-  var mainVideo;
+  function Homescreen() {
+    this.staticObjectPositions = [];
+    this.staticObjectFunction = [];
+  }
 
   function $(id) {
     return document.getElementById(id);
   }
 
-  function init() {
+  Homescreen.prototype.init = function init() {
     Applications.init();
     // app list
-    appList = new AppList();
-    appList.init();
+    this.appList = new AppList();
+    this.appList.init();
     // selection border
-    selectionBorder = new SelectionBorder({ multiple: false,
-                                            container: $('main-section'),
-                                            forground: true });
+    this.selectionBorder = new SelectionBorder({ multiple: false,
+                                                 container: $('main-section'),
+                                                 forground: true });
     // widgetManager
-    widgetManager = new WidgetManager(window.systemConnection);
-    widgetManager.on('update', updateSelection);
-    widgetManager.start();
+    this.widgetManager = new WidgetManager(window.systemConnection);
+    this.widgetManager.on('update', this.updateSelection.bind(this));
+    this.widgetManager.start();
 
-    // app list
-    $('app-list-open-button').addEventListener('click', function() {
-      appList.show();
-    });
-
+    var self = this;
     // widget editor
 
     // We need to init widget editor which uses the size of container to
@@ -48,10 +38,10 @@
     // the creation of WidgetEditor.
     $('widget-editor').hidden = false;
     var widgetPane = $('widget-pane');
-    widgetEditor = new WidgetEditor({
+    this.widgetEditor = new WidgetEditor({
                                       dom: $('widget-editor'),
                                       container: $('widget-view'),
-                                      appList: appList,
+                                      appList: this.appList,
                                       offset: {
                                         top: widgetPane.offsetTop,
                                         left: widgetPane.offsetLeft
@@ -61,43 +51,66 @@
                                         h: widgetPane.clientHeight
                                       }
                                     });
-    widgetEditor.on('closed', handleWidgetEditorClosed);
-    widgetEditor.start();
-    widgetManager.on('update', function firstSyncWidgetManger() {
-      widgetManager.off('update', firstSyncWidgetManger);
-      widgetEditor.importConfig(widgetManager.widgetConfig);
-      console.log('sync finished');
+    this.widgetEditor.on('closed', this.handleWidgetEditorClosed.bind(this));
+    this.widgetEditor.start();
+    this.widgetManager.on('update', function firstSyncWidgetManger() {
+      self.widgetManager.off('update', firstSyncWidgetManger);
+      self.widgetEditor.importConfig(self.widgetManager.widgetConfig);
     });
 
     $('widget-editor').hidden = true;
 
-    $('edit-widget').addEventListener('click',
-                                      widgetEditor.show.bind(widgetEditor));
-    $('widget-editor-close').addEventListener('click',
-                                          widgetEditor.hide.bind(widgetEditor));
-    initStaticObjects();
+    $('app-list-open-button').addEventListener('click', this);
+    $('edit-widget').addEventListener('click', this);
+    $('widget-editor-close').addEventListener('click', this);
+
+    this.initStaticObjects();
 
     // init spatial navigator
-    spatialNav = new SpatialNavigator(staticObjectPositions);
-    spatialNav.on('focus', handleSelection);
-    spatialNav.focus();
+    this.spatialNav = new SpatialNavigator(this.staticObjectPositions);
+    this.spatialNav.on('focus', this.handleSelection.bind(this));
+    this.spatialNav.focus();
 
-    document.addEventListener('contextmenu', function(evt) {
-      evt.preventDefault();
-    });
-    window.addEventListener('keydown', handleKeyEvent);
+    document.addEventListener('contextmenu', this);
+    window.addEventListener('keydown', this);
 
     // for testing only
     window.initFakeAppEvent();
     window.initGesture();
-  }
 
-  function initStaticObjects() {
-    staticObjectPositions = [$('app-list-open-button'), $('edit-widget')];
+    return this;
+  };
+
+  Homescreen.prototype.uninit = function uninit() {
+    // how to uninit FakeAppEvent and Gesture?
+    window.removeEventListener('keydown', this);
+    document.removeEventListener('contextmenu', this);
+    $('edit-widget').removeEventListener('click', this);
+    $('widget-editor-close').removeEventListener('click', this);
+    $('app-list-open-button').removeEventListener('click', this);
+
+    this.appList.uninit();
+    this.spatialNav.reset();
+    this.widgetManager.stop();
+    this.widgetEditor.stop();
+
+    this.appList = null;
+    this.spatialNav = null;
+    this.widgetManager = null;
+    this.widgetEditor = null;
+    this.selectionBorder = null;
+
+    this.staticObjectPositions = [];
+    this.staticObjectFunction = [];
+  };
+
+  Homescreen.prototype.initStaticObjects = function initStaticObjects() {
+    var self = this;
+    this.staticObjectPositions = [$('app-list-open-button'), $('edit-widget')];
 
     var staticPane = $('main-section');
     var staticPaneRect = staticPane.getBoundingClientRect();
-    widgetEditor.exportConfig().forEach(function(config) {
+    this.widgetEditor.exportConfig().forEach(function(config) {
       if (!config.static) {
         return;
       }
@@ -114,14 +127,14 @@
       switch (id) {
         case 0:
           if (PLAY_VIDEO) {
-            createVideo(dom);
+            self.createVideo(dom);
           }
-          staticObjectFunction[id] = function() {
-            setAsFullscreen(dom);
+          self.staticObjectFunction[id] = function() {
+            self.setAsFullscreen(dom);
           };
           break;
         case 1:
-          staticObjectFunction[id] = function() {
+          self.staticObjectFunction[id] = function() {
             window.open('http://www.mozilla.org', '_blank',
                         'remote=true,useAsyncPanZoom=true');
           };
@@ -129,28 +142,29 @@
       }
 
       staticPane.appendChild(dom);
-      staticObjectPositions.push(dom);
+      self.staticObjectPositions.push(dom);
     });
 
     if (PLAY_VIDEO) {
       // we need to take care the hardware codec removal.
       document.addEventListener('visibilitychange', function(evt) {
         if (document.visibilityState === 'visible') {
-          appList.hide();
-          mainVideo.src = VIDEO_URL;
-          mainVideo.play();
+          self.appList.hide();
+          self.mainVideo.src = VIDEO_URL;
+          self.mainVideo.play();
         } else {
-          mainVideo.pause();
-          mainVideo.removeAttribute('src');
-          mainVideo.load();
+          self.mainVideo.pause();
+          self.mainVideo.removeAttribute('src');
+          self.mainVideo.load();
         }
       });
     }
-  }
+  };
 
-  function setAsFullscreen(dom) {
+  Homescreen.prototype.setAsFullscreen = function setAsFullscreen(dom) {
+    var self = this;
     OverlayManager.readyToOpen('fullscreen', function() {
-      originalElementSize = {
+      self.originalElementSize = {
         'left': dom.style.left,
         'top': dom.style.top,
         'width': dom.style.width,
@@ -160,38 +174,38 @@
       dom.style.top = '0px';
       dom.style.width = '100%';
       dom.style.height = '100%';
-      fullScreenElement = dom;
-      fullScreenElement.classList.add('fullscreen');
+      self.fullScreenElement = dom;
+      self.fullScreenElement.classList.add('fullscreen');
     });
-  }
+  };
 
-  function restoreFullscreen() {
-    fullScreenElement.style.left = originalElementSize.left;
-    fullScreenElement.style.top = originalElementSize.top;
-    fullScreenElement.style.width = originalElementSize.width;
-    fullScreenElement.style.height = originalElementSize.height;
-    fullScreenElement.classList.remove('fullscreen');
-    fullScreenElement = null;
-    originalElementSize = null;
+  Homescreen.prototype.restoreFullscreen = function restoreFullscreen() {
+    this.fullScreenElement.style.left = this.originalElementSize.left;
+    this.fullScreenElement.style.top = this.originalElementSize.top;
+    this.fullScreenElement.style.width = this.originalElementSize.width;
+    this.fullScreenElement.style.height = this.originalElementSize.height;
+    this.fullScreenElement.classList.remove('fullscreen');
+    this.fullScreenElement = null;
+    this.originalElementSize = null;
     setTimeout(function() {
       OverlayManager.afterClosed('fullscreen');
     }, 200);
-  }
+  };
 
-  function createVideo(dom) {
-    mainVideo = document.createElement('video');
-    mainVideo.src = VIDEO_URL;
-    mainVideo.mozAudioChannelType = 'content';
-    mainVideo.loop = true;
-    mainVideo.controls = false;
-    mainVideo.autoplay = true;
-    mainVideo.style.width = '100%';
-    mainVideo.style.height = '100%';
-    dom.appendChild(mainVideo);
+  Homescreen.prototype.createVideo = function createVideo(dom) {
+    this.mainVideo = document.createElement('video');
+    this.mainVideo.src = VIDEO_URL;
+    this.mainVideo.mozAudioChannelType = 'content';
+    this.mainVideo.loop = true;
+    this.mainVideo.controls = false;
+    this.mainVideo.autoplay = true;
+    this.mainVideo.style.width = '100%';
+    this.mainVideo.style.height = '100%';
+    dom.appendChild(this.mainVideo);
     dom.classList.add('has-video');
-  }
+  };
 
-  function convertKeyToString(evt) {
+  Homescreen.prototype.convertKeyToString = function convertKeyToString(evt) {
     switch (evt.keyCode) {
       case KeyEvent.DOM_VK_UP:
         return 'Up';
@@ -210,32 +224,57 @@
       default:// we don't consume other keys.
         return null;
     }
-  }
+  };
 
-  function handleKeyEvent(evt) {
-    var key = convertKeyToString(evt);
+  Homescreen.prototype.handleEvent = function handleEvent(evt) {
+    switch(evt.type) {
+      case 'keydown':
+        this.handleKeyEvent(evt);
+        break;
+      case 'contextmenu':
+        evt.preventDefault();
+        break;
+      case 'click':
+        switch (evt.target.id) {
+          case 'edit-widget':
+            this.widgetEditor.show();
+            break;
+          case 'widget-editor-close':
+            this.widgetEditor.hide();
+            break;
+          case 'app-list-open-button':
+            this.appList.show();
+            break;
+        }
+        break;
+    }
+  };
 
-    if (appList.isShown() && appList.handleKeyDown(key)) {
+  Homescreen.prototype.handleKeyEvent = function handleKeyEvent(evt) {
+    var key = this.convertKeyToString(evt);
+
+    if (this.appList.isShown() && this.appList.handleKeyDown(key)) {
       evt.preventDefault();
-    } else if (widgetEditor.isShown() && key === 'Esc') {
-      widgetEditor.hide();
+    } else if (this.widgetEditor.isShown() && key === 'Esc') {
+      this.widgetEditor.hide();
       evt.preventDefault();
-    } else if (widgetEditor.isShown() && widgetEditor.handleKeyDown(key)) {
+    } else if (this.widgetEditor.isShown() &&
+               this.widgetEditor.handleKeyDown(key)) {
       evt.preventDefault();
-    } else if (fullScreenElement && key === 'Esc') {
-      restoreFullscreen();
+    } else if (this.fullScreenElement && key === 'Esc') {
+      this.restoreFullscreen();
       evt.preventDefault();
     } else if (!OverlayManager.hasOverlay() && key) {
       if (key === 'Enter') {
-        handleEnterKey(spatialNav.currentFocus());
+        this.handleEnterKey(this.spatialNav.currentFocus());
       } else if (key !== 'Esc') {
-        spatialNav.move(key);
+        this.spatialNav.move(key);
       }
       evt.preventDefault();
     }
-  }
+  };
 
-  function handleEnterKey(focused) {
+  Homescreen.prototype.handleEnterKey = function handleEnterKey(focused) {
     if (OverlayManager.hasOverlay()) {
       return;
     }
@@ -244,20 +283,20 @@
       focused.click();
     } else if (focused.classList &&
                focused.classList.contains('static-element')) {
-      if (staticObjectFunction[focused.dataset.id]) {
-        staticObjectFunction[focused.dataset.id].apply(focused);
+      if (this.staticObjectFunction[focused.dataset.id]) {
+        this.staticObjectFunction[focused.dataset.id].apply(focused);
       }
     } else {
       Applications.launch(focused.origin, focused.entryPoint);
     }
-  }
+  };
 
-  function handleWidgetEditorClosed() {
-    var newConfig = widgetEditor.exportConfig();
-    widgetManager.save(newConfig);
-  }
+  Homescreen.prototype.handleWidgetEditorClosed = function wdgEditorClosed() {
+    var newConfig = this.widgetEditor.exportConfig();
+    this.widgetManager.save(newConfig);
+  };
 
-  function updateSelection(config) {
+  Homescreen.prototype.updateSelection = function updateSelection(config) {
     var nonstatics = [];
     for (var i = 0; i < config.length; i++) {
       if (config[i].static) {
@@ -265,21 +304,22 @@
       }
       nonstatics.push(config[i]);
     }
-    var previousFocusedItem = spatialNav.currentFocus();
-    var allSelectable = staticObjectPositions.concat(nonstatics);
-    spatialNav.reset(allSelectable);
-    if (!previousFocusedItem || !spatialNav.focus(previousFocusedItem)) {
-      spatialNav.focus();
+    var previousFocusedItem = this.spatialNav.currentFocus();
+    var allSelectable = this.staticObjectPositions.concat(nonstatics);
+    this.spatialNav.reset(allSelectable);
+    if (!previousFocusedItem || !this.spatialNav.focus(previousFocusedItem)) {
+      this.spatialNav.focus();
     }
-  }
+  };
 
-  function handleSelection(elem) {
+  Homescreen.prototype.handleSelection = function handleSelection(elem) {
     if (elem.nodeName) {
-      selectionBorder.select(elem);
+      this.selectionBorder.select(elem);
     } else {
-      selectionBorder.selectRect(elem);
+      this.selectionBorder.selectRect(elem);
     }
-  }
+  };
 
-  window.addEventListener('load', init);
-})();
+  exports.Homescreen = Homescreen;
+
+})(window);
