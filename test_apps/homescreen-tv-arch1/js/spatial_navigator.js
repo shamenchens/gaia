@@ -3,16 +3,15 @@
 
 (function(exports) {
   function SpatialNavigator(collection, rectCalcFunc) {
+    this._collection = null;
+    this._rectCalcFunc = null;
+    this._focus = null;
     this.setRectCalcFunc(rectCalcFunc);
     this.reset(collection);
   }
 
   SpatialNavigator.prototype = evt({
     _DEBUG: false,
-
-    _collection: null,
-    _rectCalcFunc: null,
-    _focus: null,
 
     _getRect: function snGetRect(item) {
       var rect;
