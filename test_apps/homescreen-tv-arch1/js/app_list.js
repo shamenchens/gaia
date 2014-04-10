@@ -144,27 +144,23 @@
     this._appList = document.getElementById('app-list');
     this._container = document.getElementById('app-list-container');
     this._pageIndicator = document.getElementById('app-list-page-indicator');
+    this._selectionBorder = null;
+    this._spatialNavigator = null;
+
+    this._containerDimensions = {};
+    this._iconDimensions = {};
+    this._pagingSize = {};
+
+    this._currentPage = 0;
+    this._pages = [];
+
+    this._unbindAppEventHandler = null;
+    this._iconTapHandler = null;
+
     this._calcPagingSize();
   }
 
   AppList.prototype = evt({
-    _appList: null,
-    _container: null,
-    _pageIndicator: null,
-
-    _selectionBorder: null,
-    _spatialNavigator: null,
-
-    _containerDimensions: {},
-    _iconDimensions: {},
-    _pagingSize: {},
-
-    _currentPage: 0,
-    _pages: [],
-
-    _unbindAppEventHandler: null,
-    _iconTapHandler: null,
-
     _handleFocus: function appListHandleFocus(elem) {
       var pages = this._pages;
       var pageElement = elem.parentNode;
@@ -228,7 +224,6 @@
     _handleAppInstall: function appListHandleAppInstall(entries) {
       var self = this;
       var page;
-
       if (!self._pages.length) {
         page = self.createPage();
       } else {
@@ -337,7 +332,6 @@
           evt.stopImmediatePropagation();
           evt.preventDefault();
         };
-
         self._handleAppInstall(Applications.getAllEntries());
         self.setPage(0);
 
@@ -356,11 +350,19 @@
       this._spatialNavigator = null;
 
       this._container.innerHTML = '';
+      this._pageIndicator.innerHTML = '';
 
       this._unbindAppEventHandler();
       this._unbindAppEventHandler = null;
 
       this._iconTapHandler = null;
+
+      this._containerDimensions = {};
+      this._iconDimensions = {};
+      this._pagingSize = {};
+
+      this._currentPage = 0;
+      this._pages = [];
 
       document.getElementById('app-list-close-button')
         .removeEventListener('click', this);
