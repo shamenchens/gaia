@@ -1,0 +1,20 @@
+[
+  {
+    "givenName": ["Atencion"],
+    "familyName": ["Cliente"],
+    "tel": [
+      {
+        "value": "123456"
+      }
+    ]
+  },
+  {
+    "givenName": ["Atencion"],
+    "familyName": ["Negocios"],
+    "tel": [
+      {
+        "value": "654321"
+      }
+    ]
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "homescreens": [
+    [
+      ["apps", "communications", "dialer"],
+      ["apps", "sms"],
+      ["apps", "communications", "contacts"],
+      ["apps", "browser"]
+    ], [
+      ["apps", "gallery"],
+      ["apps", "fm"],
+      ["apps", "settings"]
+    ], [
+        ["apps", "camera"],
+        ["apps", "calendar"],
+        ["apps", "clock"],
+        ["apps", "email"],
+        ["apps", "music"],
+        ["apps", "video"]
+    ]
+  ]
+}
