@@ -1,0 +1,1204 @@
+Manifest-Version: 1.0
+
+Name: GPL.txt
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: T+hp7ph6NAGY+w1UxVxH8Q==
+SHA1-Digest: Hee6y0+717bTkaaav+F0wlCewwM=
+
+Name: index.html
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: hxqanIzY8hZ6eqbJSBm5tQ==
+SHA1-Digest: p8l9oCWbwIqmnf2W286lUXGoX1Y=
+
+Name: manifest.webapp
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: P/TSjSHYBpJWp3p4DebtGQ==
+SHA1-Digest: eBnWjD+z9eHGoSzCKCRG0x9F3FU=
+
+Name: css/app.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 7tVZd8qUkTbW2O3KTfCqQQ==
+SHA1-Digest: 3SQP6+Nh0saK+Tk9nzXSJYB+UaI=
+
+Name: css/icons.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Xc4WxCw2GMMqUQqqX5WWfA==
+SHA1-Digest: CcFEOcRozMBoc8j4hIBs1SLieRs=
+
+Name: css/sidebar.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: LucTV/4emyjNlOYBIr2d0A==
+SHA1-Digest: OUiy9jZYhCWsj4dElONmfG6wG+k=
+
+Name: css/text.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: TrNqI0cqnXtwoxFUlKHygg==
+SHA1-Digest: +ZQzRZmuwnxadOrHtq+T7jLyDGs=
+
+Name: elements/folder.html
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: loCAHO5xzJO23DWBwWHtww==
+SHA1-Digest: +wb0yETlORxRcPIjplc1fwg4cWM=
+
+Name: elements/text.html
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Gnls1SIMPyqqA+NDTEwI0g==
+SHA1-Digest: nZxwRACars+eS0N6SybY5FQDiE0=
+
+Name: images/icon-128.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: o7KvoBtOd2HLt54QWH//og==
+SHA1-Digest: LbzOBiO5oE0zQbY+YYjnetEip0M=
+
+Name: images/icon-60.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Tjuxb5DobQCyshiMyMENog==
+SHA1-Digest: acYIEY5UNY7d2tz3P0Q2t+KJGog=
+
+Name: images/icon-64.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: qNBFKHfGAGMEjSuuYKZQNA==
+SHA1-Digest: coW5N+dM86cg8/7QMrjhIY5IU3s=
+
+Name: images/icons.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: PNU1jgWog4Cm9ortuYQXyA==
+SHA1-Digest: aSewCzKhA+2fha8lFp9fZJR+SLY=
+
+Name: images/shadow.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: bM5CAKBKO8UAlrw77ynRYg==
+SHA1-Digest: OvKivDpM3d8GAK1SyaSgc16Rajg=
+
+Name: js/app.js
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: xsnRLe6M6OqrdaFExgeIzA==
+SHA1-Digest: 5n5GYTm5HlwUDyUQWRlpLuxmM28=
+
+Name: js/files.js
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: dLebg5LDI1aVeiwSfdWaMQ==
+SHA1-Digest: tTh2p6dBZ7QCdZuJzN/VY+F8KPc=
+
+Name: js/folder.js
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: vr5d1ZIaaVAzFtwlNpVTtA==
+SHA1-Digest: li7T7YfL282UBDIl58KFIGVQNtU=
+
+Name: js/mime.js
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: /aIt3GHu3B1uZflB+oaBHA==
+SHA1-Digest: xjux/95HP++l6uD641JFbb8hEHs=
+
+Name: js/storage.js
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: NFrjgD6mKlOwBlA91uo5jw==
+SHA1-Digest: 9+QLb+DAcWydoVTqy71/Cl0w5YY=
+
+Name: js/text.js
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: mbPVNcf5h6cXcBzPnIggKw==
+SHA1-Digest: jI73i5vbrFi8uJ1LAYhRL1rCkWw=
+
+Name: libraries/l10n.js
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 1I1uetnc6NaZBiF6rTNO5A==
+SHA1-Digest: 4jpjsBvNwf9uXMvUpP/Vl2KbNaw=
+
+Name: libraries/buildingblocks/cross_browser.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Tz1oMr3Sf6WRFrsP6Nas/w==
+SHA1-Digest: 5FmVCSQYLZZPmPYH4ECaGdbbqLg=
+
+Name: libraries/buildingblocks/extra.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: gxZ0RIQflprJ8QoNoWA6gQ==
+SHA1-Digest: cHpN19EXiUVOp2otIHG7Vods8mY=
+
+Name: libraries/buildingblocks/fonts.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: uzE5jwFCtMfmHRsMrzPNgw==
+SHA1-Digest: Y0gmrNvjN8Xs5Drf+LzEgP08vfQ=
+
+Name: libraries/buildingblocks/style.min.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 3XwcIIAyhE6u1qLSmm5hbQ==
+SHA1-Digest: tSuXnnAgkefbEDEPaML89i459Z4=
+
+Name: libraries/buildingblocks/style_unstable.min.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: rJCaRlqlrjUh1fw+sFNj1w==
+SHA1-Digest: TpJwclDLfMYkcenYK8FcSTwL78c=
+
+Name: libraries/buildingblocks/transitions.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 1lk+ZjnJwNXNMo6mj2ufqw==
+SHA1-Digest: AkUj0A2WMd+oy0psyNi5qMPTcaw=
+
+Name: libraries/buildingblocks/util.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: b3xlBFDB+SsUJXXzhs2l1Q==
+SHA1-Digest: iiLPf6c56hCHBGVmsJijfGsIPBE=
+
+Name: libraries/buildingblocks/fonts/FiraSans/FiraSans-Bold.woff
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: znhy3DV+/dG00VPFZqCgvw==
+SHA1-Digest: jt2b+c9+vj8M+V7ffkgIn16zs4s=
+
+Name: libraries/buildingblocks/fonts/FiraSans/FiraSans-Light.woff
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: zjU28m3FsMnrMPv9tmC3hQ==
+SHA1-Digest: OCq3Uct8CgoJrxnnYBcq5qKfFjM=
+
+Name: libraries/buildingblocks/fonts/FiraSans/FiraSans-Medium.woff
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: HRoY9EtHytXqheHNfniVjw==
+SHA1-Digest: r9ff34riH6lXL2msa6xAUQeDN1s=
+
+Name: libraries/buildingblocks/fonts/FiraSans/FiraSans-Regular.woff
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 4bcK2lSzfBKB4fpdMoTClg==
+SHA1-Digest: t45AMxXSN6oPkkbP9b6BNDXMlLI=
+
+Name: libraries/buildingblocks/icons/index.html
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: UdXqccYIFQZ+M7QKkpcn8A==
+SHA1-Digest: AmXNdQM7mEZiRpNHLTZVCdaalWw=
+
+Name: libraries/buildingblocks/icons/styles/action_icons.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Qc10eA1oiCEB+7aL6IOAwg==
+SHA1-Digest: AhnVRoP74fsvxEGiw4CEjON1bA4=
+
+Name: libraries/buildingblocks/icons/styles/action_icons.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: iwoL0CEVqSp/eeVnJsJK1Q==
+SHA1-Digest: IvRbuQ4dQgFObGv+EWGqO4Lguo8=
+
+Name: libraries/buildingblocks/icons/styles/minus.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: CES2CDjPCQ9flcDWq4hV/g==
+SHA1-Digest: LZkTrSnCdwujvDjgxKRy/WoTOtQ=
+
+Name: libraries/buildingblocks/js/action_menu.js
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 4uqEbNuGnZODs3r0OMzSPA==
+SHA1-Digest: sEODPuZ2gArYKNKRSDvL9349xa4=
+
+Name: libraries/buildingblocks/js/status.js
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: JMAlrdMoIyVzjjnCZVitCg==
+SHA1-Digest: mDsWKilSCju6U1W1GB7ElRaZ4Pc=
+
+Name: libraries/buildingblocks/style/action_menu.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: xlLkHHFyCC2T1kOjVQ6H9g==
+SHA1-Digest: lx/2veWpssA1Jq2FQ3RaxmrLx4A=
+
+Name: libraries/buildingblocks/style/buttons.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: m8SSWWhTlLUFnuyiNn7pDQ==
+SHA1-Digest: 49HsbodKbl9YBHhiN4yxZvenJuM=
+
+Name: libraries/buildingblocks/style/confirm.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: mHJ8inULyrB9LZBngbeOwA==
+SHA1-Digest: lTD0/Ioiqz0MmrUr0016cBHdl0I=
+
+Name: libraries/buildingblocks/style/headers.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Z2jx+1DTaHn6EsMphvpIdg==
+SHA1-Digest: USvjN+hZm7wNre68kRqSjr6yCZQ=
+
+Name: libraries/buildingblocks/style/responsive.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: b+N9/7x3yDNCAf7TVDltng==
+SHA1-Digest: SrNeGo4jiEPpSNFx7x/x0bYP5x0=
+
+Name: libraries/buildingblocks/style/status.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: wymXSHch6dbRdiKNBip9xw==
+SHA1-Digest: RjccpHHk+4KF2heAsgEosjG5B0A=
+
+Name: libraries/buildingblocks/style/action_menu/images/icons/back-rtl.p
+ ng
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: LTk4K8glTXmFysnlgSidmA==
+SHA1-Digest: WcScZxVzl1JUisjsaqZC70cp0b4=
+
+Name: libraries/buildingblocks/style/action_menu/images/icons/back-rtl@1
+ .5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: +ItTm9ZYuc0FZirg8fhCIQ==
+SHA1-Digest: MDkVa4uzB3N/2P4LmSXSUnL8GEI=
+
+Name: libraries/buildingblocks/style/action_menu/images/icons/back-rtl@2
+ x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: aFeeVek6o8HPv1Eruyftgw==
+SHA1-Digest: C5LEXGh7EtJXbb1neRGLHE9bPQ0=
+
+Name: libraries/buildingblocks/style/action_menu/images/icons/back.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: UFnuzwAaNcu5krL8ScGK2g==
+SHA1-Digest: kpvrtOZaru7EdcC1zBShQ4ym6gQ=
+
+Name: libraries/buildingblocks/style/action_menu/images/icons/back@1.5x.
+ png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: YKqlDOYuwMwq+cwJUGcMmw==
+SHA1-Digest: DsIlD0VTCx7fxAQ24kqz52dJ6pQ=
+
+Name: libraries/buildingblocks/style/action_menu/images/icons/back@2x.pn
+ g
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: DWZeABODur3rJPqjU6k49A==
+SHA1-Digest: d+cNmSei8ZcJJiTivoGZqtKEgmg=
+
+Name: libraries/buildingblocks/style/action_menu/images/icons/close.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 9PcjiGFL44v2T7Qw5FJdeg==
+SHA1-Digest: mCX0SV5j6G84MAPyzv47Dc5Al4s=
+
+Name: libraries/buildingblocks/style/action_menu/images/icons/close@1.5x
+ .png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 8VhN4b9ZT6j8559OnEgcbA==
+SHA1-Digest: YTcwQgtaFEMVpBuTr+sWh/GOmI4=
+
+Name: libraries/buildingblocks/style/action_menu/images/icons/close@2x.p
+ ng
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: McwQVuDbmT1wK5Fs0bJe7g==
+SHA1-Digest: 0JSVqc+bKQzMwh263UD80dYyh3I=
+
+Name: libraries/buildingblocks/style/action_menu/images/ui/alpha.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: dWvIFsjBdRTtpeZHzbjUUg==
+SHA1-Digest: zAdcyfRP65u8aAYl1RsEZcYgUwk=
+
+Name: libraries/buildingblocks/style/action_menu/images/ui/default.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: T49gUH8t2dHuaS9C5MK0rw==
+SHA1-Digest: Z9EeCG6amlR4wWYnY0OD7hozO2w=
+
+Name: libraries/buildingblocks/style/action_menu/images/ui/gradient.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: jDzT+W8UspzMlrZ9qpD5UQ==
+SHA1-Digest: Kipw+SMeU+a7NVYkLMAyRhdsCEQ=
+
+Name: libraries/buildingblocks/style/action_menu/images/ui/pattern.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Yek4DOAdBMfFoM/PTpC+pQ==
+SHA1-Digest: fZlpNBasT0o5YMVYp5e/d825kdk=
+
+Name: libraries/buildingblocks/style/action_menu/images/ui/separator.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: SAcXU+jp/G5yBdI7OzPUEQ==
+SHA1-Digest: Io9gFm5KLBakjCbiC/0KUjh0z6w=
+
+Name: libraries/buildingblocks/style/buttons/images/icons/dialog.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: hwhF1CZTO2nv/U2TRySzkQ==
+SHA1-Digest: HGiOMuXxOeS2EK+k0SMXAMXheg8=
+
+Name: libraries/buildingblocks/style/buttons/images/icons/dialog@1.5x.pn
+ g
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: fqOICOdq6QHBYe/WA4gRlQ==
+SHA1-Digest: dQJXiJwIEJ0Pv1HqekoOKvdNTLg=
+
+Name: libraries/buildingblocks/style/buttons/images/icons/dialog@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: MOiJtNO8WD1C6dhlPOznBA==
+SHA1-Digest: ferg9WEUyrHEuxFPgX/8zx5qYQ4=
+
+Name: libraries/buildingblocks/style/buttons/images/icons/view.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 2/MSjW/sTkmyvFJKdW+pAQ==
+SHA1-Digest: yzOqelb+CD5VlI8mIhtyZsHLRic=
+
+Name: libraries/buildingblocks/style/buttons/images/icons/view@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: rYdQIOayeIq03RWGFRWESw==
+SHA1-Digest: tcqXbwbY61zX/IkF9ai2zaQZsmA=
+
+Name: libraries/buildingblocks/style/buttons/images/icons/view@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: N0sgf4fXEhwmWQzeM+Ygfg==
+SHA1-Digest: Xl8+Us3Q87Ab0JeNKkI5po+5DYA=
+
+Name: libraries/buildingblocks/style/buttons/images/ui/danger-disabled.p
+ ng
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: VfssU3x6f0/aMhYXf9Pf6Q==
+SHA1-Digest: byN73EqyznXqxS4nd6NrWMGtjnw=
+
+Name: libraries/buildingblocks/style/buttons/images/ui/danger-press.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: n+UI2Fn4mul5UX8U7EWJDw==
+SHA1-Digest: 7T7oRp1jV+44PGezoInzXOSSLvI=
+
+Name: libraries/buildingblocks/style/buttons/images/ui/danger.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: lMJt/i14ryTb6luV5HM4hQ==
+SHA1-Digest: UJJJtm3drV6+qrF8+0vP7KH87ts=
+
+Name: libraries/buildingblocks/style/buttons/images/ui/default.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: T49gUH8t2dHuaS9C5MK0rw==
+SHA1-Digest: Z9EeCG6amlR4wWYnY0OD7hozO2w=
+
+Name: libraries/buildingblocks/style/buttons/images/ui/disabled.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 3C6p+5AhNXm4AamlJtsmPA==
+SHA1-Digest: XIsBQVZUZ1D2B/Kibkx83KiP19E=
+
+Name: libraries/buildingblocks/style/buttons/images/ui/recommend.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: yvboQUxMtZWdWd/AoPjMUQ==
+SHA1-Digest: zNjqY2xx6gGBKFvuc5QsE4kprVE=
+
+Name: libraries/buildingblocks/style/buttons/images/ui/shadow.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: pNqPAfsOtAkkt9WbZnoBFQ==
+SHA1-Digest: qCo2sBkclbrsoUJ4Gw49aMG624c=
+
+Name: libraries/buildingblocks/style/buttons/images/ui/shadow@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: OxJooiaRT/z1uXBLOOl3YA==
+SHA1-Digest: F77JPGoaDa3SxsNU24IwBkmnZLg=
+
+Name: libraries/buildingblocks/style/buttons/images/ui/shadow@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Vr82ddq2Sv7JRJBTsWOfJQ==
+SHA1-Digest: sq4zG7fVSoHFVdOyvltsYnT27XI=
+
+Name: libraries/buildingblocks/style/confirm/images/ui/danger-disabled.p
+ ng
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: VfssU3x6f0/aMhYXf9Pf6Q==
+SHA1-Digest: byN73EqyznXqxS4nd6NrWMGtjnw=
+
+Name: libraries/buildingblocks/style/confirm/images/ui/danger-press.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: n+UI2Fn4mul5UX8U7EWJDw==
+SHA1-Digest: 7T7oRp1jV+44PGezoInzXOSSLvI=
+
+Name: libraries/buildingblocks/style/confirm/images/ui/danger.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: lMJt/i14ryTb6luV5HM4hQ==
+SHA1-Digest: UJJJtm3drV6+qrF8+0vP7KH87ts=
+
+Name: libraries/buildingblocks/style/confirm/images/ui/default.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: T49gUH8t2dHuaS9C5MK0rw==
+SHA1-Digest: Z9EeCG6amlR4wWYnY0OD7hozO2w=
+
+Name: libraries/buildingblocks/style/confirm/images/ui/disabled.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 3C6p+5AhNXm4AamlJtsmPA==
+SHA1-Digest: XIsBQVZUZ1D2B/Kibkx83KiP19E=
+
+Name: libraries/buildingblocks/style/confirm/images/ui/gradient.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: jDzT+W8UspzMlrZ9qpD5UQ==
+SHA1-Digest: Kipw+SMeU+a7NVYkLMAyRhdsCEQ=
+
+Name: libraries/buildingblocks/style/confirm/images/ui/pattern.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Yek4DOAdBMfFoM/PTpC+pQ==
+SHA1-Digest: fZlpNBasT0o5YMVYp5e/d825kdk=
+
+Name: libraries/buildingblocks/style/confirm/images/ui/recommend.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: yvboQUxMtZWdWd/AoPjMUQ==
+SHA1-Digest: zNjqY2xx6gGBKFvuc5QsE4kprVE=
+
+Name: libraries/buildingblocks/style/headers/images/icons/add.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 1e+w/UvV9cp03WY5Z1O2gQ==
+SHA1-Digest: M814QWntNC/TPCoPZa+J1+d0o90=
+
+Name: libraries/buildingblocks/style/headers/images/icons/add@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: TVEgTDX5vdE4e5JjsK5mpg==
+SHA1-Digest: RWVWxeNvjViEzY4OG4BVuRULT/s=
+
+Name: libraries/buildingblocks/style/headers/images/icons/add@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: jpmXeJgqBB+dI29zXt4+4A==
+SHA1-Digest: xL67Cu0kxVcoY784HIV+TosrEs8=
+
+Name: libraries/buildingblocks/style/headers/images/icons/back-rtl.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: LTk4K8glTXmFysnlgSidmA==
+SHA1-Digest: WcScZxVzl1JUisjsaqZC70cp0b4=
+
+Name: libraries/buildingblocks/style/headers/images/icons/back-rtl@1.5x.
+ png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: +ItTm9ZYuc0FZirg8fhCIQ==
+SHA1-Digest: MDkVa4uzB3N/2P4LmSXSUnL8GEI=
+
+Name: libraries/buildingblocks/style/headers/images/icons/back-rtl@2x.pn
+ g
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: aFeeVek6o8HPv1Eruyftgw==
+SHA1-Digest: C5LEXGh7EtJXbb1neRGLHE9bPQ0=
+
+Name: libraries/buildingblocks/style/headers/images/icons/back.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: UFnuzwAaNcu5krL8ScGK2g==
+SHA1-Digest: kpvrtOZaru7EdcC1zBShQ4ym6gQ=
+
+Name: libraries/buildingblocks/style/headers/images/icons/back@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: YKqlDOYuwMwq+cwJUGcMmw==
+SHA1-Digest: DsIlD0VTCx7fxAQ24kqz52dJ6pQ=
+
+Name: libraries/buildingblocks/style/headers/images/icons/back@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: DWZeABODur3rJPqjU6k49A==
+SHA1-Digest: d+cNmSei8ZcJJiTivoGZqtKEgmg=
+
+Name: libraries/buildingblocks/style/headers/images/icons/clear.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: W40INaPKEZzeSEIO3RqIZQ==
+SHA1-Digest: VDsYG2SGZuT4HqyGh40GNWVGTwA=
+
+Name: libraries/buildingblocks/style/headers/images/icons/clear@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: r6+qn/ZI+e4BG8M2XDbUbw==
+SHA1-Digest: lY0Q6280CnsnRSf99EJ66XoOd9A=
+
+Name: libraries/buildingblocks/style/headers/images/icons/clear@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: yNNlTwCzkBLOKFhDsl5ADg==
+SHA1-Digest: cpis7LrQydnKvxAcnK7WBjx+v2Y=
+
+Name: libraries/buildingblocks/style/headers/images/icons/close.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 9PcjiGFL44v2T7Qw5FJdeg==
+SHA1-Digest: mCX0SV5j6G84MAPyzv47Dc5Al4s=
+
+Name: libraries/buildingblocks/style/headers/images/icons/close@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 8VhN4b9ZT6j8559OnEgcbA==
+SHA1-Digest: YTcwQgtaFEMVpBuTr+sWh/GOmI4=
+
+Name: libraries/buildingblocks/style/headers/images/icons/close@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: McwQVuDbmT1wK5Fs0bJe7g==
+SHA1-Digest: 0JSVqc+bKQzMwh263UD80dYyh3I=
+
+Name: libraries/buildingblocks/style/headers/images/icons/compose.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 0VMvi2PwjgGnwsZSMC1agA==
+SHA1-Digest: n3hng1+oTM0uYpYBQqO99TykoZA=
+
+Name: libraries/buildingblocks/style/headers/images/icons/compose@1.5x.p
+ ng
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 57Bj+leTTaJAWpSMhqVtzg==
+SHA1-Digest: A5wwL+iDeXhDyWI6aKH0CR36zIk=
+
+Name: libraries/buildingblocks/style/headers/images/icons/compose@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: ZpKhaty2/txCEwBSOB+IiQ==
+SHA1-Digest: GnE3BFWwvM49fVDpKIYVNfOPBiU=
+
+Name: libraries/buildingblocks/style/headers/images/icons/edit.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Qn9BUHg/gGPasZtBrRvLVA==
+SHA1-Digest: 3KOrrR1KQxchkeiRnIlNYDyyMLY=
+
+Name: libraries/buildingblocks/style/headers/images/icons/edit@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: HiebQdluh3sAzp60yypmUA==
+SHA1-Digest: 7ceoJ7VYGsNi4PNIy4z0afu75II=
+
+Name: libraries/buildingblocks/style/headers/images/icons/edit@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: PPcXhDlHxWQhWQL8300/Bw==
+SHA1-Digest: aV3LbPqyWM9N53nK8fTFHTaJ6Yc=
+
+Name: libraries/buildingblocks/style/headers/images/icons/menu.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: ROaGmbPJ8JqA0zdZs4ORHw==
+SHA1-Digest: Wq8Ct05fPgC2C8t4jKztW+p/yks=
+
+Name: libraries/buildingblocks/style/headers/images/icons/menu@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: WsddlH02CipZIyqTQyZEEA==
+SHA1-Digest: bUBa5SeR9Hfbdyv8qhNkiLQBU/g=
+
+Name: libraries/buildingblocks/style/headers/images/icons/menu@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: obydcVT1BFyZFbjv9Ypt1g==
+SHA1-Digest: Bjf6SkaMDBAJiSRZ0dbAV2qknAg=
+
+Name: libraries/buildingblocks/style/headers/images/icons/reply-all.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: ofNbpCYFj70wq37nzkR7+A==
+SHA1-Digest: Z5eE6RLe3bxcySJRPRyQXVa89U0=
+
+Name: libraries/buildingblocks/style/headers/images/icons/reply-all@1.5x
+ .png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: g8+5ohOP5QYcZ5iZ/onIEA==
+SHA1-Digest: zZu4PtfXH6JfATtQcZuKGcWCSzE=
+
+Name: libraries/buildingblocks/style/headers/images/icons/reply-all@2x.p
+ ng
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: QkSVvchDLPgY9hatgeN5SQ==
+SHA1-Digest: OMLnNIzO+NLni63CXtz2DqPEWsE=
+
+Name: libraries/buildingblocks/style/headers/images/icons/reply.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: g6PUAbnQXODG1gqTmEzYTA==
+SHA1-Digest: 44GIOJ93MPdu0PMW2PJ2QG95T6E=
+
+Name: libraries/buildingblocks/style/headers/images/icons/reply@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: JPNP56Jp+AcrMtKm8nnOBQ==
+SHA1-Digest: F6/34yb6IAaRmwi0qRXXqirmeNA=
+
+Name: libraries/buildingblocks/style/headers/images/icons/reply@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Ptuqrwwc+t1xuVN3g8UudA==
+SHA1-Digest: SFFoPD44mwzT8EMOm0+vVfqAN0k=
+
+Name: libraries/buildingblocks/style/headers/images/icons/send.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: zOWyURqOj/+SYrCl3s/t0g==
+SHA1-Digest: KGbV8XZLRZMY2/pl/oiwUdDw5KA=
+
+Name: libraries/buildingblocks/style/headers/images/icons/send@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: NjIftFJpd7ZeAloU+n/Qog==
+SHA1-Digest: BPodl40xUaBZWYLn8PFfnsTDx88=
+
+Name: libraries/buildingblocks/style/headers/images/icons/send@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 2oPeRTm/GaEYhAPa6IXOYg==
+SHA1-Digest: MNjyJ10ie9X++4RCSg4vHPSk190=
+
+Name: libraries/buildingblocks/style/headers/images/icons/user.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: wCvJKaKGq1/gJez9sQPw1A==
+SHA1-Digest: mXBnOOJeAR+svjs+P0l33v6IdIE=
+
+Name: libraries/buildingblocks/style/headers/images/icons/user@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: J1Rq0TfrMfZ+aDJzIRJEmw==
+SHA1-Digest: QA2gEAWfN/Y5Zfciv8tDpG08U74=
+
+Name: libraries/buildingblocks/style/headers/images/icons/user@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: D6FBG6Nsk4kUGFsSeqJZKw==
+SHA1-Digest: Pg+1NljbgnYlnQBDo2SxigkGOvM=
+
+Name: libraries/buildingblocks/style/headers/images/ui/header.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: qINYWEOyNkNWAzhGnPc4mA==
+SHA1-Digest: Lj+d0RuJWn9knfKM4HrKh3yPh28=
+
+Name: libraries/buildingblocks/style/headers/images/ui/negative.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: soi1yaKzh9hq1uD39V93nA==
+SHA1-Digest: jnqpmdnqmjWqChDcGJi1/ynU5AE=
+
+Name: libraries/buildingblocks/style/headers/images/ui/noise-pattern.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: ZH3aZUJyMhOEWr6jndf3sg==
+SHA1-Digest: gS4TBRBUeK0zH0jOi3MTB2+KHeY=
+
+Name: libraries/buildingblocks/style/headers/images/ui/search.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: u+b9AETu6SXshw0Cn/BjHQ==
+SHA1-Digest: ls9BF49K3Pqvef4Bo5YqfIESaY8=
+
+Name: libraries/buildingblocks/style/headers/images/ui/separator-large.p
+ ng
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: f3QA9ZwNHB5zvQ5bkJa37g==
+SHA1-Digest: yvJmgLvOACP/imw4xmLs3MNLB38=
+
+Name: libraries/buildingblocks/style/headers/images/ui/separator.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: CZV6rWC7a2Ez4z18+RKBEg==
+SHA1-Digest: fryUM/Kd2SjXggZ9YxJe6LHhWuE=
+
+Name: libraries/buildingblocks/style/headers/images/ui/shadow.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Rt5EaaiAhigoMGrTB6PBKw==
+SHA1-Digest: Oz6H49afFB83s86cmba4MjFWDCw=
+
+Name: libraries/buildingblocks/style/headers/images/ui/shadow@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: T0gqsvWqU6frfqRfzZINHQ==
+SHA1-Digest: OEkb1cQH/GazFxRh6FYmT8Ya5S4=
+
+Name: libraries/buildingblocks/style/headers/images/ui/shadow@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 7fvT9etcCQmVNmYpU9vDGg==
+SHA1-Digest: 3PQQuTmjZ8TbV2wNXDlu1jw8MQE=
+
+Name: libraries/buildingblocks/style/headers/images/ui/subheader.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: xpq+Y4YHDcEJ6MxF5GE03Q==
+SHA1-Digest: JGGETpMAzIzKqD1pSFu22GGNIvQ=
+
+Name: libraries/buildingblocks/style/headers/images/ui/dark/header.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: X4VF/8MOmdTY3f+aILSf+Q==
+SHA1-Digest: iZ3Ox3bEPjztnKDQJBEOpi2Cqpo=
+
+Name: libraries/buildingblocks/style/headers/images/ui/dark/negative.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: XytGcp9nEX69dXPAkdyWRg==
+SHA1-Digest: el9vIQvRxUmHeEkoPWbV/+MEEBo=
+
+Name: libraries/buildingblocks/style/headers/images/ui/dark/separator-la
+ rge.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: L0StUfr71OL4Ojp+g9kyUw==
+SHA1-Digest: v6J20GgZdjP7ZpZlnkd3w0hDknA=
+
+Name: libraries/buildingblocks/style/headers/images/ui/dark/separator.pn
+ g
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Q+xT+V6Ze9cz37OEupnELg==
+SHA1-Digest: +K7D5klTQkq1yeZXrzxaGFZ+F3M=
+
+Name: libraries/buildingblocks/style/headers/images/ui/dark/separator@1.
+ 5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: AAcpmziY0sT0w8c1JWBdyA==
+SHA1-Digest: 3W8D6Dqsr2FTI9NGkBn8hCqK7o4=
+
+Name: libraries/buildingblocks/style/headers/images/ui/dark/subheader.pn
+ g
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: nq7P8PeWY8nQYBTNit53qw==
+SHA1-Digest: Skk6kHcHbuLT/5u4XNPO+u4yRiI=
+
+Name: libraries/buildingblocks/style/headers/images/ui/organic/header.pn
+ g
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: J3E121FFdKV2786DBLS8rA==
+SHA1-Digest: cQICZEncoq2ZY9I4XomgF4cziTk=
+
+Name: libraries/buildingblocks/style/headers/images/ui/organic/negative.
+ png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Lpbsr22I/SrEhZskuSA9RA==
+SHA1-Digest: VL0hKeoJcC0zyLbLWHg1sgxM2xs=
+
+Name: libraries/buildingblocks/style/headers/images/ui/organic/pattern.p
+ ng
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: J+kkDYoKqyFVzoiSbx5Yow==
+SHA1-Digest: Co921b3+B7obFlbtj25AFL7L1fQ=
+
+Name: libraries/buildingblocks/style/headers/images/ui/organic/separator
+ -large.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: CvnyN0hWNBwhcb14hn7NkA==
+SHA1-Digest: ojGks2vrEVo1W2xRurgVPAiD3mA=
+
+Name: libraries/buildingblocks/style/headers/images/ui/organic/separator
+ .png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: W0Ld7xRbTIwqknwRtlPX7Q==
+SHA1-Digest: 4Z1838MukPlvfi/Qouqw7d8mnq4=
+
+Name: libraries/buildingblocks/style/headers/images/ui/organic/subheader
+ .png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: RQo1H4vuY4ODhcZF9I+8Wg==
+SHA1-Digest: I01mjTUciPUdj7ApdJT+ZJtSMaw=
+
+Name: libraries/buildingblocks/style/headers/images/ui/overlay/header.pn
+ g
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: CLMmx1+gYJUKJ0485txxYw==
+SHA1-Digest: TQaavcNNizlksZ4m2Anuu4SSKcQ=
+
+Name: libraries/buildingblocks/style/headers/images/ui/overlay/separator
+ .png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 0nEEBLLCt3Y8/psoqV2e2w==
+SHA1-Digest: a4Y3Jioqs3gPrJaKZ+R6LuiCm8c=
+
+Name: libraries/buildingblocks/style/status/images/ui/pattern.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Yek4DOAdBMfFoM/PTpC+pQ==
+SHA1-Digest: fZlpNBasT0o5YMVYp5e/d825kdk=
+
+Name: libraries/buildingblocks/style_unstable/date_selector.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: V5EdcLm4fzgjpil19SzMRQ==
+SHA1-Digest: LxEcmIsSI1RJss4ga8gShVUeD8I=
+
+Name: libraries/buildingblocks/style_unstable/drawer.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: MljzDVcAFsUOMuMukUec6Q==
+SHA1-Digest: C7uHxSF3cb+u3yXpW7CfQSNawPA=
+
+Name: libraries/buildingblocks/style_unstable/lists.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 4eisPWwMn6+IE9JrBLnk+w==
+SHA1-Digest: v2BJcbwtkRxXJl306HpUc3ja+cw=
+
+Name: libraries/buildingblocks/style_unstable/scrolling.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 6FZ28VWJwy/865h0OOFlNg==
+SHA1-Digest: sSv+RysyITlnnM5NJll5H784dJU=
+
+Name: libraries/buildingblocks/style_unstable/time_selector.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: sPwTqAAkZi6bK1GbsPi1Gw==
+SHA1-Digest: wVtm95WJCGhB7bLzxIZ5Rj3f0zo=
+
+Name: libraries/buildingblocks/style_unstable/toolbars.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: LVf43RLjuQN8a7pR9BTF5Q==
+SHA1-Digest: IkFRspPs0O9bBiF9FMuICuTxV+M=
+
+Name: libraries/buildingblocks/style_unstable/value_selector.css
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: GPkdvcxqpX1jRCVXzSl8eA==
+SHA1-Digest: nkD8CMF9x1DjtKWdzkC3UMvom8U=
+
+Name: libraries/buildingblocks/style_unstable/date_selector/images/icons
+ /checked.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: /m7XpLDpghd4YLPAt1yUeA==
+SHA1-Digest: CZbWyQ5U4PM98GvpZLC8NsjhapA=
+
+Name: libraries/buildingblocks/style_unstable/date_selector/images/icons
+ /checked@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: tLozJB+UgqykDmiJgnHHNQ==
+SHA1-Digest: INBbeV2Nr2opO/jGcB++CxlGi3I=
+
+Name: libraries/buildingblocks/style_unstable/date_selector/images/icons
+ /checked@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Kb9/gVbd4VLqqH+hgsrPjQ==
+SHA1-Digest: uEE2haH2ltRzZuPfODsmgo/wRGE=
+
+Name: libraries/buildingblocks/style_unstable/date_selector/images/ui/af
+ firmative.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: yvboQUxMtZWdWd/AoPjMUQ==
+SHA1-Digest: zNjqY2xx6gGBKFvuc5QsE4kprVE=
+
+Name: libraries/buildingblocks/style_unstable/date_selector/images/ui/de
+ fault.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: T49gUH8t2dHuaS9C5MK0rw==
+SHA1-Digest: Z9EeCG6amlR4wWYnY0OD7hozO2w=
+
+Name: libraries/buildingblocks/style_unstable/date_selector/images/ui/gr
+ adient.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: jDzT+W8UspzMlrZ9qpD5UQ==
+SHA1-Digest: Kipw+SMeU+a7NVYkLMAyRhdsCEQ=
+
+Name: libraries/buildingblocks/style_unstable/date_selector/images/ui/gr
+ adient@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: VbubkAWGo/O2zxx30wQb1Q==
+SHA1-Digest: 3+BeN+1jLSEfEiNMAvxGWizPV5g=
+
+Name: libraries/buildingblocks/style_unstable/date_selector/images/ui/pa
+ ttern-time.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: PNQ1ICp9HU9BDV2bXGRjaA==
+SHA1-Digest: Hwm9LlqWfxlYjNHKwRqJDT4kH58=
+
+Name: libraries/buildingblocks/style_unstable/date_selector/images/ui/pa
+ ttern.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Yek4DOAdBMfFoM/PTpC+pQ==
+SHA1-Digest: fZlpNBasT0o5YMVYp5e/d825kdk=
+
+Name: libraries/buildingblocks/style_unstable/date_selector/images/ui/sh
+ adow-invert.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: hY0sx0T+82Fcok1qhJ/xzA==
+SHA1-Digest: 9bvluXuQ+TJSb9KL5l8WtCThv24=
+
+Name: libraries/buildingblocks/style_unstable/date_selector/images/ui/sh
+ adow-invert@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: xl9HFJAovr0E6LHdkqSlyg==
+SHA1-Digest: AT8ADTN25/R+oK0TjnIHG1SjQTk=
+
+Name: libraries/buildingblocks/style_unstable/date_selector/images/ui/sh
+ adow-invert@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: bCSxMj03dymLbt5RGqrAJw==
+SHA1-Digest: 4eEaFIeoJ0JuADfYNugCDusrvQ8=
+
+Name: libraries/buildingblocks/style_unstable/date_selector/images/ui/sh
+ adow.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: midgxanpfa+0noH+9dRkjA==
+SHA1-Digest: i4QvcXK2TP5GdL/YGOYMoseW2B4=
+
+Name: libraries/buildingblocks/style_unstable/date_selector/images/ui/sh
+ adow@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: qu9Yw/NjdFfLgasZO6pn9w==
+SHA1-Digest: F2UNC3seGjNVZREJ/Kgwwl9Bn/s=
+
+Name: libraries/buildingblocks/style_unstable/date_selector/images/ui/sh
+ adow@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: pqmrEbjjSCX5XLN4jxbM1g==
+SHA1-Digest: 537LZ0u7TxQ+kuhZqOc7j7H2Yu8=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/icons/menu.p
+ ng
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: xoVBZHLdj/faPLqD2YqYSQ==
+SHA1-Digest: sLEhi4+J57CDxHXJCCRpN4rnrG0=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/icons/menu@1
+ .5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: WsddlH02CipZIyqTQyZEEA==
+SHA1-Digest: bUBa5SeR9Hfbdyv8qhNkiLQBU/g=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/icons/menu@2
+ x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: obydcVT1BFyZFbjv9Ypt1g==
+SHA1-Digest: Bjf6SkaMDBAJiSRZ0dbAV2qknAg=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/ui/header.pn
+ g
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: YO3KxOxJrHEuGUPPXgNkxQ==
+SHA1-Digest: YRoWA8vB2GyJowG6qNDOU/iJchs=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/ui/negative.
+ png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: soi1yaKzh9hq1uD39V93nA==
+SHA1-Digest: jnqpmdnqmjWqChDcGJi1/ynU5AE=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/ui/pattern.p
+ ng
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: fo5X7VimxEw9QeSoUzQEBQ==
+SHA1-Digest: PJ/ZhNQs2jt3zyeSm7Vb5eN73xQ=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/ui/pattern_s
+ ubheader.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 7MSHTVWwfQDcHJ6u8T3iMQ==
+SHA1-Digest: jNjkcMe1HvebxaQeVHBKC4+uLkE=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/ui/separator
+ .png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: tnrdoxBQU/KUlyzrhWaW/Q==
+SHA1-Digest: yb6trk+SbdVh2cEP89dbokBx9p4=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/ui/separator
+ _large.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: DPkvIGckanE//BqjgRWUyA==
+SHA1-Digest: RIdcLs9xO03OjzgwqKA9fstuItQ=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/ui/shadow.pn
+ g
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: wm2q+E/kUHOo4zT5vGxk+Q==
+SHA1-Digest: Lyqhb7glYW2siWldZHmPz2igJyA=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/ui/shadow@1.
+ 5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: QRbvFJ2YguJOD6gTgtDX7Q==
+SHA1-Digest: FDnfraFfUw/kKmfaKDKj+uVLu+o=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/ui/shadow@2x
+ .png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: BcnZNEnYFpFzJEtxzlAO8A==
+SHA1-Digest: tmgl7gqnGcacxsg669NsYGdydUQ=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/ui/shadow_he
+ ader.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: DyEjCpd+1cSAA1fU4PT3lg==
+SHA1-Digest: DgazzvqMKGcFaqDPH755SR+jjEA=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/ui/shadow_he
+ ader@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: T0gqsvWqU6frfqRfzZINHQ==
+SHA1-Digest: OEkb1cQH/GazFxRh6FYmT8Ya5S4=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/ui/shadow_he
+ ader@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 7fvT9etcCQmVNmYpU9vDGg==
+SHA1-Digest: 3PQQuTmjZ8TbV2wNXDlu1jw8MQE=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/ui/header/he
+ ader.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: yL3bxySkUCU1ds8j0s4Uuw==
+SHA1-Digest: xU+/kutY+IuTeUw606E26DM0hhw=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/ui/header/sh
+ adow.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: QX9bRjEu2/04M6GewazKeg==
+SHA1-Digest: WZI8J+Sd71u8Eq95moWeZVQu4h0=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/ui/header/sh
+ adow@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 2EM5RBbnCW4oqddAT1hVQQ==
+SHA1-Digest: vyS2IqkEf+SILI5KtudsJ4nHgfg=
+
+Name: libraries/buildingblocks/style_unstable/drawer/images/ui/header/sh
+ adow@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: b5uuoerV6/oT73ggcH/rCg==
+SHA1-Digest: /3Flz3Um1zj46LS5BlBEpNy0Ic4=
+
+Name: libraries/buildingblocks/style_unstable/scrolling/images/icons/fav
+ orites.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Cj++iog3bZn9QckNmC+USQ==
+SHA1-Digest: mIzbkpEG7JogsGkLZhAiRzfrMrE=
+
+Name: libraries/buildingblocks/style_unstable/scrolling/images/icons/fav
+ orites@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 6DChGJIrF3gNw1kjlrzwuw==
+SHA1-Digest: D83fcwsqrazPFA3Q+1VC9OSXZRA=
+
+Name: libraries/buildingblocks/style_unstable/scrolling/images/icons/fav
+ orites@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: 0+OAAjXFObKlIPMfGmhgCw==
+SHA1-Digest: WgHV/vBZLbAPd365kn3S+1zQcW8=
+
+Name: libraries/buildingblocks/style_unstable/scrolling/images/icons/sea
+ rch.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: uhAV1/VZKw2gSMJLCqz40w==
+SHA1-Digest: zGf5m7/4g80X4aMcjst1eIKRxIo=
+
+Name: libraries/buildingblocks/style_unstable/scrolling/images/icons/sea
+ rch@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: J0+6+NT1J21pxz8Eu8IMhg==
+SHA1-Digest: wh4kTLeLIq5JR2mjQN5Y7qsSSb0=
+
+Name: libraries/buildingblocks/style_unstable/scrolling/images/icons/sea
+ rch@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: o71TX263H5Z4uWNl4zUTcg==
+SHA1-Digest: d6JCBaobLENI3JI6OEwdYDMhf1Q=
+
+Name: libraries/buildingblocks/style_unstable/scrolling/images/ui/backgr
+ ound.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: PtZNrPwcjY1Xb8edH8DP0Q==
+SHA1-Digest: 7UIuCtF4wO9k2FkPCjgePiJlW2M=
+
+Name: libraries/buildingblocks/style_unstable/time_selector/images/icons
+ /checked.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: /m7XpLDpghd4YLPAt1yUeA==
+SHA1-Digest: CZbWyQ5U4PM98GvpZLC8NsjhapA=
+
+Name: libraries/buildingblocks/style_unstable/time_selector/images/icons
+ /checked@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: tLozJB+UgqykDmiJgnHHNQ==
+SHA1-Digest: INBbeV2Nr2opO/jGcB++CxlGi3I=
+
+Name: libraries/buildingblocks/style_unstable/time_selector/images/icons
+ /checked@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Kb9/gVbd4VLqqH+hgsrPjQ==
+SHA1-Digest: uEE2haH2ltRzZuPfODsmgo/wRGE=
+
+Name: libraries/buildingblocks/style_unstable/time_selector/images/ui/af
+ firmative.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: yvboQUxMtZWdWd/AoPjMUQ==
+SHA1-Digest: zNjqY2xx6gGBKFvuc5QsE4kprVE=
+
+Name: libraries/buildingblocks/style_unstable/time_selector/images/ui/de
+ fault.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: T49gUH8t2dHuaS9C5MK0rw==
+SHA1-Digest: Z9EeCG6amlR4wWYnY0OD7hozO2w=
+
+Name: libraries/buildingblocks/style_unstable/time_selector/images/ui/gr
+ adient.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: jDzT+W8UspzMlrZ9qpD5UQ==
+SHA1-Digest: Kipw+SMeU+a7NVYkLMAyRhdsCEQ=
+
+Name: libraries/buildingblocks/style_unstable/time_selector/images/ui/gr
+ adient@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: VbubkAWGo/O2zxx30wQb1Q==
+SHA1-Digest: 3+BeN+1jLSEfEiNMAvxGWizPV5g=
+
+Name: libraries/buildingblocks/style_unstable/time_selector/images/ui/pa
+ ttern-time.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: PNQ1ICp9HU9BDV2bXGRjaA==
+SHA1-Digest: Hwm9LlqWfxlYjNHKwRqJDT4kH58=
+
+Name: libraries/buildingblocks/style_unstable/time_selector/images/ui/pa
+ ttern.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Yek4DOAdBMfFoM/PTpC+pQ==
+SHA1-Digest: fZlpNBasT0o5YMVYp5e/d825kdk=
+
+Name: libraries/buildingblocks/style_unstable/time_selector/images/ui/sh
+ adow-invert.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: hY0sx0T+82Fcok1qhJ/xzA==
+SHA1-Digest: 9bvluXuQ+TJSb9KL5l8WtCThv24=
+
+Name: libraries/buildingblocks/style_unstable/time_selector/images/ui/sh
+ adow-invert@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: xl9HFJAovr0E6LHdkqSlyg==
+SHA1-Digest: AT8ADTN25/R+oK0TjnIHG1SjQTk=
+
+Name: libraries/buildingblocks/style_unstable/time_selector/images/ui/sh
+ adow-invert@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: bCSxMj03dymLbt5RGqrAJw==
+SHA1-Digest: 4eEaFIeoJ0JuADfYNugCDusrvQ8=
+
+Name: libraries/buildingblocks/style_unstable/time_selector/images/ui/sh
+ adow.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: midgxanpfa+0noH+9dRkjA==
+SHA1-Digest: i4QvcXK2TP5GdL/YGOYMoseW2B4=
+
+Name: libraries/buildingblocks/style_unstable/time_selector/images/ui/sh
+ adow@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: qu9Yw/NjdFfLgasZO6pn9w==
+SHA1-Digest: F2UNC3seGjNVZREJ/Kgwwl9Bn/s=
+
+Name: libraries/buildingblocks/style_unstable/time_selector/images/ui/sh
+ adow@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: pqmrEbjjSCX5XLN4jxbM1g==
+SHA1-Digest: 537LZ0u7TxQ+kuhZqOc7j7H2Yu8=
+
+Name: libraries/buildingblocks/style_unstable/value_selector/images/icon
+ s/checked.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: /m7XpLDpghd4YLPAt1yUeA==
+SHA1-Digest: CZbWyQ5U4PM98GvpZLC8NsjhapA=
+
+Name: libraries/buildingblocks/style_unstable/value_selector/images/icon
+ s/checked@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: tLozJB+UgqykDmiJgnHHNQ==
+SHA1-Digest: INBbeV2Nr2opO/jGcB++CxlGi3I=
+
+Name: libraries/buildingblocks/style_unstable/value_selector/images/icon
+ s/checked@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Kb9/gVbd4VLqqH+hgsrPjQ==
+SHA1-Digest: uEE2haH2ltRzZuPfODsmgo/wRGE=
+
+Name: libraries/buildingblocks/style_unstable/value_selector/images/ui/a
+ ffirmative.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: yvboQUxMtZWdWd/AoPjMUQ==
+SHA1-Digest: zNjqY2xx6gGBKFvuc5QsE4kprVE=
+
+Name: libraries/buildingblocks/style_unstable/value_selector/images/ui/d
+ efault.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: T49gUH8t2dHuaS9C5MK0rw==
+SHA1-Digest: Z9EeCG6amlR4wWYnY0OD7hozO2w=
+
+Name: libraries/buildingblocks/style_unstable/value_selector/images/ui/g
+ radient.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: jDzT+W8UspzMlrZ9qpD5UQ==
+SHA1-Digest: Kipw+SMeU+a7NVYkLMAyRhdsCEQ=
+
+Name: libraries/buildingblocks/style_unstable/value_selector/images/ui/g
+ radient@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: VbubkAWGo/O2zxx30wQb1Q==
+SHA1-Digest: 3+BeN+1jLSEfEiNMAvxGWizPV5g=
+
+Name: libraries/buildingblocks/style_unstable/value_selector/images/ui/p
+ attern.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: Yek4DOAdBMfFoM/PTpC+pQ==
+SHA1-Digest: fZlpNBasT0o5YMVYp5e/d825kdk=
+
+Name: libraries/buildingblocks/style_unstable/value_selector/images/ui/s
+ hadow-invert.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: hY0sx0T+82Fcok1qhJ/xzA==
+SHA1-Digest: 9bvluXuQ+TJSb9KL5l8WtCThv24=
+
+Name: libraries/buildingblocks/style_unstable/value_selector/images/ui/s
+ hadow-invert@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: xl9HFJAovr0E6LHdkqSlyg==
+SHA1-Digest: AT8ADTN25/R+oK0TjnIHG1SjQTk=
+
+Name: libraries/buildingblocks/style_unstable/value_selector/images/ui/s
+ hadow-invert@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: bCSxMj03dymLbt5RGqrAJw==
+SHA1-Digest: 4eEaFIeoJ0JuADfYNugCDusrvQ8=
+
+Name: libraries/buildingblocks/style_unstable/value_selector/images/ui/s
+ hadow.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: midgxanpfa+0noH+9dRkjA==
+SHA1-Digest: i4QvcXK2TP5GdL/YGOYMoseW2B4=
+
+Name: libraries/buildingblocks/style_unstable/value_selector/images/ui/s
+ hadow@1.5x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: qu9Yw/NjdFfLgasZO6pn9w==
+SHA1-Digest: F2UNC3seGjNVZREJ/Kgwwl9Bn/s=
+
+Name: libraries/buildingblocks/style_unstable/value_selector/images/ui/s
+ hadow@2x.png
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: pqmrEbjjSCX5XLN4jxbM1g==
+SHA1-Digest: 537LZ0u7TxQ+kuhZqOc7j7H2Yu8=
+
+Name: locales/locales.ini
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: ySrCTX53FHYpoKhni03eDw==
+SHA1-Digest: 6URo3PQrk23c+vcLwDAwKVJovBc=
+
+Name: META-INF/ids.json
+Digest-Algorithms: MD5 SHA1
+MD5-Digest: QCrvhuZF5D1kYmw9IT/4wg==
+SHA1-Digest: P7lcfl5rbNPrP/c2EGmcPFFME0U=
