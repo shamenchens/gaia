@@ -168,11 +168,9 @@ function execute(options) {
   }
 
   if (config.DEVICE_DEBUG) {
-    // Bug 832000: Until unix domain socket are implemented,
-    // force enable content actor
-    prefs.push(['devtools.debugger.enable-content-actors', true]);
     prefs.push(['devtools.debugger.prompt-connection', false]);
     prefs.push(['devtools.debugger.forbid-certified-apps', false]);
+    prefs.push(['javascript.options.discardSystemSource', false]);
     prefs.push(['b2g.adb.timeout', 0]);
   }
 
