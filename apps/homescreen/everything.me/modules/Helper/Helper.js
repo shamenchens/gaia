@@ -23,6 +23,7 @@ Evme.Helper = new function Evme_Helper() {
       ftr = {};
 
   this.init = function init(options) {
+    console.log('-*- chens: enter Helper.init');
     !options && (options = {});
 
     // features
@@ -33,7 +34,9 @@ Evme.Helper = new function Evme_Helper() {
     }
 
     el = options.el;
+
     elTitle = options.elTitle;
+
     elTip = options.elTip;
     elSaveSearch = options.elSaveSearch;
     elWrapper = el.parentNode;
@@ -42,6 +45,7 @@ Evme.Helper = new function Evme_Helper() {
     elList.addEventListener('click', elementClick, false);
     elTitle.addEventListener('click', titleClicked, false);
     elSaveSearch.addEventListener('click', saveSearchClicked, false);
+    console.log('-*- chens: elList: ', elList);
 
     self.reset();
 
@@ -62,6 +66,7 @@ Evme.Helper = new function Evme_Helper() {
     }
 
     Evme.EventHandler.trigger(NAME, 'init');
+    console.log('-*- chens: exit Helper.init');
   };
 
   this.reset = function reset() {
@@ -215,6 +220,7 @@ Evme.Helper = new function Evme_Helper() {
   };
 
   this.showHistory = function showHistory() {
+    console.log('-*- chens: enter Helper.showHistory');
     self.disableAnimation();
 
     self.showList({
@@ -226,6 +232,8 @@ Evme.Helper = new function Evme_Helper() {
     Evme.EventHandler.trigger(NAME, 'showHistory', {
       'data': _data.history
     });
+    console.log('-*- chens: exit Helper.showHistory');
+
   };
 
   this.showSpelling = function showSpelling() {
@@ -535,6 +543,8 @@ Evme.Helper = new function Evme_Helper() {
   }
 
   function elementClick(e) {
+    console.log('-*- chens: enter Helper.elementClick');
+
     e.stopPropagation();
     e.preventDefault();
 
@@ -544,6 +554,8 @@ Evme.Helper = new function Evme_Helper() {
     }, 500);
 
     var elClicked = e.originalTarget || e.target;
+    console.log('-*- chens: elClicked: ', elClicked);
+
 
     while (elClicked && elClicked.nodeName !== 'LI') {
       elClicked = elClicked.parentNode;
@@ -566,9 +578,12 @@ Evme.Helper = new function Evme_Helper() {
       type = elClicked.dataset.type;
 
     if (val) {
+      console.log('-*- chens: click val: ', val);
+
       cbClick(elClicked, index, isVisibleItem(index), val,
                 valToSend, source, type);
     }
+    console.log('-*- chens: exit Helper.elementClick');
   }
 
   function saveSearchClicked(e) {

@@ -611,6 +611,7 @@ Evme.Utils = new function Evme_Utils() {
   };
 
   this.setKeyboardVisibility = function setKeyboardVisibility(value) {
+    console.log('-*- chens: enter Utils.setKeyboardVisibility');
     if (self.isKeyboardVisible === value) { return; }
 
     self.isKeyboardVisible = value;
@@ -620,6 +621,7 @@ Evme.Utils = new function Evme_Utils() {
     } else {
       document.body.classList.remove(CLASS_WHEN_KEYBOARD_IS_VISIBLE);
     }
+    console.log('-*- chens: exit Utils.setKeyboardVisibility');
   };
 
   this.systemXHR = function systemXHR(options) {

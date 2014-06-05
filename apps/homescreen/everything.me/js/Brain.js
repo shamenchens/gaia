@@ -169,6 +169,8 @@
 
     // Searchbar blurred. Keyboard hides.
     this.blur = function blur(data) {
+      console.log('-*- chens: enter Searchbar.blur');
+
       // Gaia bug workaround because of this
       // http://b2g.everything.me/tests/input-blur.html
       if (data && data.e && data.e.stopPropagation) {
@@ -206,6 +208,7 @@
           self.returnPressed(true);
         }, TIMEOUT_BEFORE_RUNNING_BLUR);
       }
+      console.log('-*- chens: exit Searchbar.blur');
     };
 
     this.onfocus = this.focus;
