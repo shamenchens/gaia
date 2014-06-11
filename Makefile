@@ -145,7 +145,7 @@ LOCAL_DOMAINS?=1
 ADB?=adb
 
 ifeq ($(DEBUG),1)
-SCHEME=http://
+SCHEME=app://
 else
 SCHEME=app://
 endif

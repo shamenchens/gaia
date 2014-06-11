@@ -63,11 +63,11 @@ function psParser(out) {
 }
 
 function gaiaOriginURL(name, scheme, domain, port) {
-  return scheme + name + '.' + domain + (port ? port : '');
+  return scheme + name + '.' + domain;
 }
 
 function gaiaManifestURL(name, scheme, domain, port) {
-  return gaiaOriginURL(name, scheme, domain, port) + '/manifest.webapp';
+  return gaiaOriginURL(name, scheme, domain) + '/manifest.webapp';
 }
 
 function getAppStatus(status) {
