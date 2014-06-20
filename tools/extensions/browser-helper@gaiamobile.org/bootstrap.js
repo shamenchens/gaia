@@ -239,25 +239,34 @@ function startup(data, reason) {
       // SystemAppProxy.jsm doesn't ship into Firefox.
       // Keyboard.jsm is the only one user of it outside of b2g/ folder.
       // So hack it, in order to allow keyboard to send events to the system app
-      Object.defineProperty(KeyboardGlobal, "SystemAppProxy", {
-        value: {
-          dispatchEvent: function (detail) {
-            let contentWindow = browserWindow.content;
-            var contentDetail = Components.utils.createObjectIn(contentWindow);
-            for (var i in detail) {
-              contentDetail[i] = detail[i];
-            }
-            Components.utils.makeObjectPropsNormal(contentDetail);
-
-            var customEvt = contentWindow.document.createEvent('CustomEvent');
-            customEvt.initCustomEvent('mozChromeEvent', true, true, contentDetail);
-            contentWindow.dispatchEvent(customEvt);
+      let SystemAppProxy = {
+        dispatchEvent: function (detail) {
+          this._sendCustomEvent('mozChromeEvent', detail);
+        },
+        _sendCustomEvent: function (evt, detail) {
+          let contentWindow = browserWindow.content;
+          var contentDetail = Components.utils.createObjectIn(contentWindow);
+          for (var i in detail) {
+            contentDetail[i] = detail[i];
           }
-        }
+          Components.utils.makeObjectPropsNormal(contentDetail);
+
+          var customEvt = contentWindow.document.createEvent('CustomEvent');
+          customEvt.initCustomEvent(evt, true, true, contentDetail);
+          contentWindow.dispatchEvent(customEvt);
+        },
+        addEventListener: browserWindow.content.addEventListener.bind(browserWindow.content)
+      };
+      Object.defineProperty(KeyboardGlobal, "SystemAppProxy", {
+        value: SystemAppProxy
       });
 
       Keyboard.initFormsFrameScript(mm);
       mm.loadFrameScript('chrome://global/content/forms.js', true);
+
+      // Load a copy of some b2g glue components
+      Services.scriptloader.loadSubScript('chrome://browser-helper.js/content/InterAppCommUIGlue.js', {SystemAppProxy: SystemAppProxy});
+      Services.scriptloader.loadSubScript('chrome://browser-helper.js/content/SystemMessageGlue.js', {SystemAppProxy: SystemAppProxy});
     }, 'sessionstore-windows-restored', false);
 
     try {
