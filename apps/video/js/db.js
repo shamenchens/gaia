@@ -39,15 +39,18 @@ function initDB() {
   };
 
   videodb.onscanend = function() {
+    console.log('--- Vixen: enter onscanend');
     // If this was the first scan after startup, then tell
     // performance monitors that the app is finally fully loaded and stable.
     if (!firstScanEnded) {
       firstScanEnded = true;
+      console.log('--- Vixen: firstScanEnded: ', firstScanEnded);
       window.dispatchEvent(new CustomEvent('moz-app-loaded'));
     }
 
     updateDialog();
     updateLoadingSpinner();
+    console.log('--- Vixen: exit onscanend');
   };
 
   videodb.oncreated = function(event) {

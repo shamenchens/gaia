@@ -699,10 +699,16 @@ function updateLoadingSpinner() {
 }
 
 function thumbnailClickHandler(videodata) {
+  console.log('--- Vixen: enter thumbnailClickHandler');
+  console.log('--- Vixen: isPhone: ', isPhone);
+  console.log('--- Vixen: isPortrait: ', isPortrait);
   if (!isPhone && !isPortrait) {
     // if the screen is large and landscape, we need to lock the operations
     // while scanning and metadata parsing.
+    console.log('--- Vixen: firstScanEnded: ', firstScanEnded);
+    console.log('--- Vixen: processingQueue: ', processingQueue);
     if (!firstScanEnded || processingQueue) {
+      console.log('--- Vixen: first scan not ended or still processing queue');
       return;
     }
   }
@@ -726,6 +732,7 @@ function thumbnailClickHandler(videodata) {
   else if (currentLayoutMode === LAYOUT_MODE.selection) {
     updateSelection(videodata);
   }
+  console.log('--- Vixen: exit thumbnailClickHandler');
 }
 
 function setPosterImage(dom, poster) {
