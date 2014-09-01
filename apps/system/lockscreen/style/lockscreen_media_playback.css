@@ -56,12 +56,12 @@
   padding-right: 1.5rem;
 }
 
-#lockscreen .media-playback-controls > button {
+#lockscreen .media-playback-controls > a {
   transition: 0s 0.3s; /* Delay transition post tap by some milliseconds. */
 }
 
-[role="dialog"] #lockscreen .media-playback-controls > button:active,
-#lockscreen .media-playback-controls > button:active {
+[role="dialog"] #lockscreen .media-playback-controls > a:active,
+#lockscreen .media-playback-controls > a:active {
   background-color: transparent;
   color: #0ac;
   transition: 0s;
