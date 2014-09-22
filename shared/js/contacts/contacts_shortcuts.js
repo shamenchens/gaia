@@ -162,6 +162,7 @@ if (!utils.alphaScroll) {
       } else if (dataset.img) {
         overlay.textContent = '';
         var img = new Image();
+        img.alt = '';
         img.src = 'style/images/' + dataset.img;
         overlay.appendChild(img);
       }
