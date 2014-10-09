@@ -554,13 +554,22 @@ HTMLOptimizer.prototype.getFileByRelativePath = function(relativePath) {
       return;
     }
     file.append(name);
-    if (utils.isSubjectToBranding(file.path)) {
-      file.append((this.config.OFFICIAL === '1') ? 'official' : 'unofficial');
-    }
-    if (utils.isSubjectToDeviceType(file.path)) {
-      file.append(this.config.GAIA_DEVICE_TYPE);
-    }
   }, this);
+
+  var dirName = file.parent.path;
+  var fileName = file.leafName;
+
+  if (utils.isSubjectToBranding(dirName)) {
+    file = file.parent;
+    file.append((this.config.OFFICIAL === '1') ? 'official' : 'unofficial');
+    file.append(fileName);
+  }
+  if (utils.isSubjectToDeviceType(file.path)) {
+    utils.log('================', file.path);
+    file = file.parent;
+    file.append(this.config.GAIA_DEVICE_TYPE);
+    file.append(fileName);
+  }
 
   try {
     return {
