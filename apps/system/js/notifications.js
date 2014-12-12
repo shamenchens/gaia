@@ -58,6 +58,7 @@ var NotificationScreen = {
   resendExpecting: 0,
 
   init: function ns_init() {
+    console.log('@@ [Notification] init()');
     window.addEventListener('mozChromeNotificationEvent', this);
     this.container =
       document.getElementById('desktop-notifications-container');
@@ -70,6 +71,7 @@ var NotificationScreen = {
     this.clearAllButton = document.getElementById('notification-clear');
 
     this._toasterGD = new GestureDetector(this.toaster);
+    console.log('@@ [Notification] create toaster GD');
     ['tap', 'mousedown', 'swipe', 'wheel'].forEach(function(evt) {
       this.container.addEventListener(evt, this);
       this.toaster.addEventListener(evt, this);
@@ -269,6 +271,7 @@ var NotificationScreen = {
   },
 
   updateToaster: function ns_updateToaster(detail, type, dir) {
+    console.log('@@ [Notification] updateToaster()');
     if (detail.icon) {
       this.toasterIcon.src = detail.icon;
       this.toasterIcon.hidden = false;
@@ -288,12 +291,15 @@ var NotificationScreen = {
   },
 
   addNotification: function ns_addNotification(detail) {
+    console.log('@@ [Notification] addNotification()');
     // LockScreen window may not opened while this singleton got initialized.
     this.lockScreenContainer = this.lockScreenContainer ||
       document.getElementById('notifications-lockscreen-container');
+    console.log('@@ [Notification] get lockscreen container');
     var notificationNode = document.createElement('div');
     notificationNode.classList.add('notification');
     notificationNode.setAttribute('role', 'link');
+    console.log('@@ [Notification] create notificationNode');
 
     notificationNode.dataset.notificationId = detail.id;
     notificationNode.dataset.obsoleteAPI = 'false';
@@ -311,6 +317,7 @@ var NotificationScreen = {
       icon.src = detail.icon;
       icon.setAttribute('role', 'presentation');
       notificationNode.appendChild(icon);
+      console.log('@@ [Notification] add icon');
     }
 
     var dir = (detail.bidi === 'ltr' ||
@@ -328,6 +335,7 @@ var NotificationScreen = {
     title.lang = detail.lang;
     title.dir = dir;
     titleContainer.appendChild(title);
+    console.log('@@ [Notification] add title: ' + detail.title);
 
     var time = document.createElement('span');
     var timestamp = detail.timestamp ? new Date(detail.timestamp) : new Date();
@@ -335,6 +343,7 @@ var NotificationScreen = {
     time.dataset.timestamp = timestamp;
     time.textContent = this.prettyDate(timestamp);
     titleContainer.appendChild(time);
+    console.log('@@ [Notification] add time: ' + time.textContent);
 
     notificationNode.appendChild(titleContainer);
 
@@ -344,14 +353,17 @@ var NotificationScreen = {
     message.lang = detail.lang;
     message.dir = dir;
     notificationNode.appendChild(message);
+    console.log('@@ [Notification] add message: ' + detail.text);
 
     var notifSelector = '[data-notification-id="' + detail.id + '"]';
     var oldNotif = this.container.querySelector(notifSelector);
+    console.log('@@ [Notification] get old notification');
     if (oldNotif) {
       // The whole node cannot be replaced because CSS animations are re-started
       oldNotif.replaceChild(titleContainer,
         oldNotif.querySelector('.title-container'));
       oldNotif.replaceChild(message, oldNotif.querySelector('.detail'));
+      console.log('@@ [Notification] has oldNotif, replace it');
       var oldIcon = oldNotif.querySelector('img');
       if (icon) {
         oldIcon ? oldIcon.src = icon.src : oldNotif.insertBefore(icon,
@@ -364,7 +376,9 @@ var NotificationScreen = {
     } else {
       this.container.insertBefore(notificationNode,
           this.container.firstElementChild);
+      console.log('@@ [Notification] no oldNotif, insert new one');
     }
+    console.log('@@ [Notification] after insert notificationNode');
 
     var event = document.createEvent('CustomEvent');
     event.initCustomEvent('mozContentNotificationEvent', true, true, {
@@ -372,30 +386,38 @@ var NotificationScreen = {
       id: detail.id
     });
     window.dispatchEvent(event);
+    console.log('@@ [Notification] desktop-notification-show');
 
     new GestureDetector(notificationNode).startDetecting();
+    console.log('@@ [Notification] GestureDetector start detecting');
 
     // We turn the screen on if needed in order to let
     // the user see the notification toaster
     if (typeof(ScreenManager) !== 'undefined' &&
       !ScreenManager.screenEnabled) {
+      console.log('@@ [Notification] has ScreenManager and screen not enabled');
       // bug 915236: disable turning on the screen for email notifications
       // bug 1050023: disable turning on the screen for download notifications
       if (type.indexOf('download-notification-downloading') === -1 &&
           manifestURL.indexOf('email.gaiamobile.org') === -1) {
         ScreenManager.turnScreenOn();
+        console.log('@@ [Notification] ScreenManager turn screen on');
       }
     }
 
     this.updateStatusBarIcon(true);
+    console.log('@@ [Notification] updateStatusBarIcon');
 
     var notify = !('noNotify' in detail);
     // Notification toaster
     if (notify) {
+      console.log('@@ [Notification] has notify in detail');
       this.updateToaster(detail, type, dir);
+      console.log('@@ [Notification] updateToaster');
       if (this.lockscreenPreview || !window.lockScreen ||
           !window.lockScreen.locked) {
         this.toaster.classList.add('displayed');
+        console.log('@@ [Notification] _toasterGD: ' + this._toasterGD);
         this._toasterGD.startDetecting();
 
         if (this._toasterTimeout) {
@@ -412,28 +434,34 @@ var NotificationScreen = {
 
     // Adding it to the lockscreen if locked and the privacy setting
     // does not prevent it.
+    console.log('@@ [Notification] lockscreenPreview: ' + this.lockscreenPreview);
     if (typeof(window.lockScreen) !== 'undefined' &&
         window.lockScreen.locked && this.lockscreenPreview) {
+      console.log('@@ [Notification] add notificationNode to lockscreen');
       var lockScreenNode = notificationNode.cloneNode(true);
 
       // First we try and find an existing notification with the same id.
       // If we have one, we'll replace it. If not, we'll create a new node.
       var oldLockScreenNode =
         this.lockScreenContainer.querySelector(notifSelector);
+      console.log('@@ [Notification] get old lockScreenNode');
       if (oldLockScreenNode) {
         this.lockScreenContainer.replaceChild(
           lockScreenNode,
           oldLockScreenNode
         );
+        console.log('@@ [Notification] has oldLockScreenNode, replace it');
       }
       else {
         this.lockScreenContainer.insertBefore(
           lockScreenNode,
           this.lockScreenContainer.firstElementChild
         );
+        console.log('@@ [Notification] no oldLockScreenNode, insert new one');
       }
 
       window.lockScreenNotifications.showColoredMaskBG();
+      console.log('@@ [Notification] lockScreenNotifications showColoredMaskBG');
 
       // UX specifies that the container should scroll to top
       /* note two things:
@@ -449,18 +477,22 @@ var NotificationScreen = {
        *    only to be negated by st = 0 (waste of energy!).
        */
       window.lockScreenNotifications.scrollToTop();
+      console.log('@@ [Notification] lockScreenNotifications scrollToTop');
 
       // check if lockscreen notifications visual
       // hints (masks & arrow) need to show
       window.lockScreenNotifications.adjustContainerVisualHints();
+      console.log('@@ [Notification] lockScreenNotifications adjustContainerVisualHints');
     }
 
     if (notify && !this.isResending) {
+      console.log('@@ [Notification] needs to notify and not resend');
       if (!this.silent) {
         var ringtonePlayer = new Audio();
         ringtonePlayer.src = this._sound;
         ringtonePlayer.mozAudioChannelType = 'notification';
         ringtonePlayer.play();
+        console.log('@@ [Notification] play notification sound');
         window.setTimeout(function smsRingtoneEnder() {
           ringtonePlayer.pause();
           ringtonePlayer.removeAttribute('src');
@@ -469,22 +501,26 @@ var NotificationScreen = {
       }
 
       if (this.vibrates) {
+        console.log('@@ [Notification] needs to vibrate');
         if (document.hidden) {
           // bug 1050023: disable vibration for downloads when asleep
           if (type.indexOf('download-notification-downloading') === -1) {
             window.addEventListener('visibilitychange', function waitOn() {
               window.removeEventListener('visibilitychange', waitOn);
               navigator.vibrate([200, 200, 200, 200]);
+              console.log('@@ [Notification] vibrate after visibilitychange');
             });
           }
         } else {
           navigator.vibrate([200, 200, 200, 200]);
+          console.log('@@ [Notification] vibrate');
         }
       }
     }
 
     // must be at least one notification now
     this.clearAllButton.disabled = false;
+    console.log('@@ [Notification] enable clearAllButton');
 
     return notificationNode;
   },
@@ -593,9 +629,11 @@ var NotificationScreen = {
   },
 
   updateStatusBarIcon: function ns_updateStatusBarIcon(unread) {
+    console.log('@@ [Notification] updateStatusBarIcon()');
     var nbTotalNotif = this.container.children.length +
       this.externalNotificationsCount;
     StatusBar.updateNotification(nbTotalNotif);
+    console.log('@@ [Notification] StatusBar updateNotification');
 
     if (unread)
       StatusBar.updateNotificationUnread(true);

@@ -32,15 +32,22 @@ var CellBroadcastSystem = {
 
   show: function cbs_show(event) {
 
+    console.log('@@ [CBS] show()');
     // XXX: check bug-926169
     // this is used to keep all tests passing while introducing multi-sim APIs
     var conn = window.navigator.mozMobileConnection ||
       window.navigator.mozMobileConnections &&
         window.navigator.mozMobileConnections[0];
+    console.log('@@ [CBS] conn: ' + conn);
 
     var msg = event.message;
+    console.log('@@ [CBS] message: ' + msg);
+    console.log('@@ [CBS] message id: ' + msg.messageId);
+    console.log('@@ [CBS] message body: ' + msg.body);
+    console.log('@@ [CBS] message etws: ' + msg.etws);
 
     if (this._settingsDisabled) {
+      console.log('@@ [CBS] CBS disabled: ' + this._settingsDisabled);
       return;
     }
 
@@ -50,17 +57,21 @@ var CellBroadcastSystem = {
       var evt = new CustomEvent('cellbroadcastmsgchanged',
         { detail: msg.body });
       window.dispatchEvent(evt);
+      console.log('@@ [CBS] BRAZIL_MCC & BRAZIL_CELLBROADCAST_CHANNEL, cellbroadcastmsgchanged');
       return;
     }
 
     var body = msg.body;
+    console.log('@@ [CBS] body: ' + body);
 
     // XXX: 'undefined' test until bug-1021177 lands
     if (msg.etws && (!body || (body == 'undefined'))) {
       body = navigator.mozL10n.get('cb-etws-warningType-' +
         (msg.etws.warningType ? msg.etws.warningType : 'other'));
+      console.log('@@ [CBS]: XXX body: ' + body);
     }
 
+    console.log('@@ [CBS] CarrierInfoNotifier.show: ' + body);
     CarrierInfoNotifier.show(body,
       navigator.mozL10n.get('cb-channel', { channel: msg.messageId }));
   }

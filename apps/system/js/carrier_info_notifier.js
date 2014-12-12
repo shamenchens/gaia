@@ -26,6 +26,7 @@ var CarrierInfoNotifier = {
   },
 
   show: function cin_show(message, title) {
+    console.log('@@ [CIN] show(): ' + message + ', ' + title);
     var showDialog = function cin_showDialog() {
       ModalDialog.showWithPseudoEvent({
         title: title,
@@ -37,6 +38,7 @@ var CarrierInfoNotifier = {
     // If we are not inside the lockscreen, show the dialog
     // immediately, dispatch an event to hide
     if (!window.lockScreen || !window.lockScreen.locked) {
+      console.log('@@ [CIN] not in lockscreen');
       this.dispatchEvent('emergencyalert');
       this.playNotification();
       showDialog();
@@ -45,11 +47,13 @@ var CarrierInfoNotifier = {
 
     // If we are on the lock screen then create a notification
     // that invokes the dialog
+    console.log('@@ [CIN] before create notification');
     var notification = NotificationScreen.addNotification({
       id: ++this._notificationId,
       title: title,
       text: message
     });
+    console.log('@@ [CIN] after create notification');
     notification.addEventListener('tap', showDialog);
   },
 
