@@ -12,6 +12,19 @@ window.addEventListener('load', function startup() {
     HomescreenLauncher.init();
   }
 
+  function showAlertMessage() {
+    var _ = navigator.mozL10n.get;
+    var key = 'gaia.alertMessage';
+    var req = navigator.mozSettings.createLock().get(key);
+    req.onsuccess = function onSuccess() {
+      var result = req.result[key];
+      if (typeof(result) === 'undefined') {
+        navigator.mozSettings.createLock().set({'gaia.alertMessage': true});
+        icc.alert(_('updating_success_message'));
+      }
+    };
+  }
+
   if (Applications.ready) {
     safelyLaunchFTU();
   } else {
@@ -28,6 +41,7 @@ window.addEventListener('load', function startup() {
     lock.set({
       'gaia.system.checkForUpdates': true
     });
+    showAlertMessage();
   });
 
   SourceView.init();
