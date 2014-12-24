@@ -49,6 +49,7 @@
 
       window.addEventListener('home+sleep', this);
       window.addEventListener('mozChromeEvent', this);
+      window.addEventListener('desktop-notification-resend', this);
     },
 
     /**
@@ -82,6 +83,21 @@
           } else if (evt.detail.type === 'take-screenshot-error') {
             this._notify('screenshotFailed', evt.detail.error);
           }
+          break;
+
+        case 'desktop-notification-resend':
+          Notification.get().then(function(notifications) {
+            for (var i = 0; i < notifications.length; i++) {
+              var notification = notifications[i];
+              if (notification.tag === 'screenshot') {
+                setTimeout(function() {
+                  notification.addEventListener('click', function() {
+                    console.log('click on notification');
+                  });
+                }, 5000);
+              }
+            }
+          });
           break;
       }
     },
@@ -216,7 +232,8 @@
       body = body || navigator.mozL10n.get(bodyid);
       var notification = new window.Notification(title, {
         body: body,
-        icon: 'style/icons/Gallery.png'
+        icon: 'style/icons/Gallery.png',
+        tag: 'screenshot'
       });
 
       notification.onclick = function() {
