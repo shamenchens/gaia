@@ -1,8 +1,6 @@
 'use strict';
 /* global asyncStorage */
 /* global IccHelper */
-/* global ModalDialog */
-/* global AirplaneMode */
 
 (function(exports) {
 
@@ -140,7 +138,6 @@
      * @memberof InternetSharing.prototype
      */
     internetSharingSettingsChangeHanlder: function(evt) {
-      var _ = navigator.mozL10n.get;
       if (validCardState.indexOf(this._cardState) === -1) {
         return;
       }
@@ -148,29 +145,6 @@
       var type = (evt.settingName.indexOf('wifi') > -1) ? 'wifi' : 'usb';
       var cardId = (IccHelper.iccInfo && IccHelper.iccInfo.iccid) || 'absent';
 
-      if ('wifi' === type) {
-        var title;
-        var buttonText;
-        var message;
-
-        if (AirplaneMode.enabled && true === evt.settingValue) {
-          title = _('apmActivated');
-          buttonText = _('ok');
-          message = _('noHopspotWhenAPMisOn');
-
-          ModalDialog.alert(title, message, { title: buttonText });
-          settings.createLock().set({'tethering.wifi.enabled': false});
-          return;
-        } else if ('absent' === cardId && true === evt.settingValue) {
-          title = _('noSimCard');
-          buttonText = _('ok');
-          message = _('noSIMCardInHotspot');
-
-          ModalDialog.alert(title, message, { title: buttonText });
-          settings.createLock().set({'tethering.wifi.enabled': false});
-          return;
-        }
-      }
       asyncStorage.setItem('tethering.' + type + '.simstate.card-' + cardId,
                            evt.settingValue);
     },
