@@ -322,6 +322,14 @@ define(function(require) {
       // specified in a ISO 8601 string (YYYY-MM-DDTHH:MM)
       var newDate = new Date(pDate + 'T' + pTime);
       this._mozTime.set(newDate);
+
+      // XXX: Wake up clock to update alarm
+      navigator.mozApps.getSelf().onsuccess = function() {
+        var app = this.result;
+        app.connect('clock-wakeup').then(function(ports) {
+          ports[0].postMessage('clock-wakeup');
+        });
+      };
     },
 
     /**

@@ -20,6 +20,9 @@ define(function(require) {
     this.alertWindow = new ChildWindowManager(
       window.location.origin + '/onring.html');
 
+    // Handle IAC connection from settings app
+    navigator.mozSetMessageHandler('connection', this.onWakeup.bind(this));
+
     // Handle the system's alarm event.
     navigator.mozSetMessageHandler('alarm', this.onMozAlarm.bind(this));
     window.addEventListener('test-alarm', this.onMozAlarm.bind(this));
@@ -30,6 +33,15 @@ define(function(require) {
   }
 
   ActiveAlarm.prototype = {
+
+    onWakeup: function(request) {
+      var port = request.port;
+      port.onmessage = (function(event) {
+        if (request.keyword === 'clock-wakeup') {
+          return;
+        }
+      }).bind(this);
+    },
 
     /**
      * Fired when the system triggers an alarm. We acquire a wake lock
