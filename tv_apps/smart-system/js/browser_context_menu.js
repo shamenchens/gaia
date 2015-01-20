@@ -165,6 +165,26 @@
     this.scrollable.catchFocus();
   },
 
+  BrowserContextMenu.prototype._localizeElement = function(node, payload) {
+    if (typeof payload === 'string') {
+      node.setAttribute('data-l10n-id', payload);
+      return;
+    }
+
+    if (typeof payload === 'object') {
+      if (payload.id) {
+        navigator.mozL10n.setAttribute(node, payload.id, payload.args);
+        return;
+      }
+
+      if (payload.raw) {
+        node.removeAttribute('data-l10n-id');
+        node.textContent = payload.raw;
+        return;
+      }
+    }
+  },
+
   BrowserContextMenu.prototype.buildMenu = function(items) {
     var self = this;
     this.elements.list.innerHTML = '';
@@ -174,11 +194,8 @@
       var icon = document.createElement('div');
       action.dataset.id = item.id;
       action.dataset.value = item.value;
-      if (item.labelL10nId) {
-        action.setAttribute('data-l10n-id', item.labelL10nId);
-      } else {
-        action.textContent = item.label;
-      }
+      var l10nPayload = item.labelL10nId ? item.labelL10nId : {raw: item.label};
+      this._localizeElement(item, l10nPayload);
 
       action.className = self.ELEMENT_PREFIX + 'button';
 
