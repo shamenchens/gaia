@@ -1,6 +1,6 @@
 'use strict';
 
-/* global MozActivity, Applications */
+/* global MozActivity, Applications, SharedUtils */
 /* jshint nonew: false */
 
 (function(exports) {
@@ -121,31 +121,11 @@
       }
     },
 
-    _localizeElement: function cm_localizeElement(node, payload) {
-      if (typeof payload === 'string') {
-        node.setAttribute('data-l10n-id', payload);
-        return;
-      }
-
-      if (typeof payload === 'object') {
-        if (payload.id) {
-          navigator.mozL10n.setAttribute(node, payload.id, payload.args);
-          return;
-        }
-
-        if (payload.raw) {
-          node.removeAttribute('data-l10n-id');
-          node.textContent = payload.raw;
-          return;
-        }
-      }
-    },
-
     onFocusOnPinable: function cm_onFocusOnPinable(detail) {
       this._app = detail;
       var l10nPayload =
         (detail && detail.pinned) ? 'unpin-from-home' : 'pin-to-home';
-      this._localizeElement(this.pinToHomeElem, l10nPayload);
+      SharedUtils.localizeElement(this.pinToHomeElem, l10nPayload);
       if (detail.removable === false) {
         this.contextMenuElem.removeChild(this.removeElem);
       } else {
