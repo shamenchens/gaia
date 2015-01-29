@@ -8,6 +8,8 @@ var Homescreen = (function() {
   setLocale();
   var iconGrid = document.getElementById('icongrid');
 
+  console.log('[Home] homescreenStart@System');
+
   navigator.mozL10n.ready(function localize() {
     setLocale();
     GridManager.localize();

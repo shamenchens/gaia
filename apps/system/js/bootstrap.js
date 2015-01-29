@@ -24,6 +24,7 @@ window.addEventListener('load', function startup() {
 
   function safelyLaunchFTU() {
     window.addEventListener('homescreen-ready', function onHomescreenReady() {
+      console.log('[System] receive homescreen-ready');
       window.removeEventListener('homescreen-ready', onHomescreenReady);
       FtuLauncher.retrieve();
     });
@@ -89,6 +90,7 @@ window.addEventListener('load', function startup() {
       { bubbles: true, cancelable: false,
         detail: { type: 'system-message-listener-ready' } });
   window.dispatchEvent(evt);
+  console.log('[System] loadEnded');
 });
 
 window.storage = new Storage();

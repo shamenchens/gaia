@@ -203,6 +203,7 @@ var InitLogoHandler = {
     self.osLogo.addEventListener('transitionend', function transOsLogo() {
       self.osLogo.removeEventListener('transitionend', transOsLogo);
       self.osLogo.parentNode.removeChild(self.osLogo);
+      console.log('[System] osLogoEnd');
       if (callback) {
         callback();
       }
