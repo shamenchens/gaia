@@ -7,6 +7,7 @@
   const HIDDEN_ROLES = ['system', 'input', 'homescreen', 'theme'];
 
   function App() {
+    console.log('[VerticalHome] navigationLoaded');
     window.dispatchEvent(new CustomEvent('moz-chrome-dom-loaded'));
     this.grid = document.getElementById('icons');
 
@@ -32,6 +33,7 @@
     // and should be retried when/if we come online again.
     this._iconsToRetry = [];
 
+    console.log('[VerticalHome] navigationInteractive');
     window.dispatchEvent(new CustomEvent('moz-chrome-interactive'));
   }
 
@@ -97,7 +99,9 @@
           }.bind(this));
         }
 
+        console.log('[VerticalHome] visuallyLoaded');
         window.dispatchEvent(new CustomEvent('moz-app-visually-complete'));
+        console.log('[VerticalHome] contentInteractive');
         window.dispatchEvent(new CustomEvent('moz-content-interactive'));
 
         window.addEventListener('localized', this.onLocalized.bind(this));
@@ -105,6 +109,7 @@
                          'js/contextmenu_handler.js',
                          '/shared/js/homescreens/confirm_dialog_helper.js'],
           function() {
+            console.log('[VerticalHome] fullyLoaded');
             window.dispatchEvent(new CustomEvent('moz-app-loaded'));
           });
       }.bind(this));

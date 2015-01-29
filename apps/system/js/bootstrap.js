@@ -79,6 +79,7 @@ window.addEventListener('load', function startup() {
   function safelyLaunchFTU() {
     window.addEventListener('homescreen-ready', function onHomescreenReady() {
       window.removeEventListener('homescreen-ready', onHomescreenReady);
+      console.log('[System] receive homescreen-ready');
       FtuLauncher.retrieve();
     });
     /** @global */
@@ -209,6 +210,7 @@ window.addEventListener('load', function startup() {
       { bubbles: true, cancelable: false,
         detail: { type: 'system-message-listener-ready' } });
   window.dispatchEvent(evt);
+  console.log('[System] loadEnded');
 });
 
 window.usbStorage = new UsbStorage();
