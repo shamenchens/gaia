@@ -103,7 +103,7 @@ NODE_MODULES_SRC?=modules.tar
 # phone - default
 # tablet
 # tv
-GAIA_DEVICE_TYPE?=phone
+GAIA_DEVICE_TYPE?=tv
 
 TEST_AGENT_PORT?=8789
 GAIA_APP_TARGET?=engineering
@@ -155,7 +155,7 @@ ADB?=adb
 
 SCHEME=app://
 
-SYSTEM?=$(SCHEME)system.$(GAIA_DOMAIN)
+SYSTEM?=$(SCHEME)smart-system.$(GAIA_DOMAIN)
 
 BUILD_APP_NAME?=*
 ifneq ($(APP),)
