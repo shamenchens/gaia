@@ -103,7 +103,7 @@ NODE_MODULES_SRC?=modules.tar
 # phone - default
 # tablet
 # tv
-GAIA_DEVICE_TYPE?=phone
+GAIA_DEVICE_TYPE?=tv
 
 TEST_AGENT_PORT?=8789
 GAIA_APP_TARGET?=engineering
@@ -155,7 +155,7 @@ ADB?=adb
 
 SCHEME=app://
 
-SYSTEM?=$(SCHEME)system.$(GAIA_DOMAIN)
+SYSTEM?=$(SCHEME)smart-system.$(GAIA_DOMAIN)
 
 BUILD_APP_NAME?=*
 ifneq ($(APP),)
@@ -822,9 +822,10 @@ ifeq ($(BUILD_APP_NAME),*)
 	do \
 		parent="`dirname $$d`"; \
 		pathlen=`expr $${#parent} + 2`; \
-		find -L "$$d" -name '*_test.js' -path '*/test/unit/*' | awk '{print substr($$0,'$${pathlen}')}' >> /tmp/test-agent-config; \
+		find -L "$$d" -name '*_test.js' -path '*/_test/unit/*' | awk '{print substr($$0,'$${pathlen}')}' >> /tmp/test-agent-config; \
 	done;
 	@echo '{"tests": [' >> $(TEST_AGENT_CONFIG)
+	@cat /tmp/test-agent-config
 	@cat /tmp/test-agent-config |  \
 		sed 's:\(.*\):"\1":' | \
 		sed -e ':a' -e 'N' -e '$$!ba' -e 's/\n/,\
