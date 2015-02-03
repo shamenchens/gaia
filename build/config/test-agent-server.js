@@ -8,11 +8,9 @@ var Agent = TestAgent,
     Apps = Agent.server,
     Suite = Agent.Suite,
     suite = new Suite({
-      paths: [fsPath.resolve(__dirname + '/../../apps/'),
-              fsPath.resolve(__dirname + '/../../tv_apps/'),
-              fsPath.resolve(__dirname + '/../../dev_apps/')],
+      paths: [fsPath.resolve(__dirname + '/../../tv_apps/')],
       strictMode: false,
-      testDir: '/test/unit/',
+      testDir: '/_test/unit/',
       libDir: 'js/',
       testSuffix: '_test.js'
     });

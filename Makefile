@@ -103,7 +103,7 @@ NODE_MODULES_SRC?=modules.tar
 # phone - default
 # tablet
 # tv
-GAIA_DEVICE_TYPE?=phone
+GAIA_DEVICE_TYPE?=tv
 
 TEST_AGENT_PORT?=8789
 GAIA_APP_TARGET?=engineering
@@ -155,7 +155,7 @@ ADB?=adb
 
 SCHEME=app://
 
-SYSTEM?=$(SCHEME)system.$(GAIA_DOMAIN)
+SYSTEM?=$(SCHEME)smart-system.$(GAIA_DOMAIN)
 
 BUILD_APP_NAME?=*
 ifneq ($(APP),)
@@ -822,7 +822,7 @@ ifeq ($(BUILD_APP_NAME),*)
 	do \
 		parent="`dirname $$d`"; \
 		pathlen=`expr $${#parent} + 2`; \
-		find -L "$$d" -name '*_test.js' -path '*/test/unit/*' | awk '{print substr($$0,'$${pathlen}')}' >> /tmp/test-agent-config; \
+		find -L "$$d" -name '*_test.js' -path '*/_test/unit/*' | awk '{print substr($$0,'$${pathlen}')}' >> /tmp/test-agent-config; \
 	done;
 	@echo '{"tests": [' >> $(TEST_AGENT_CONFIG)
 	@cat /tmp/test-agent-config |  \
@@ -842,7 +842,7 @@ endif
 # Temp make file method until we can switch
 # over everything in test
 ifneq ($(strip $(APP)),)
-APP_TEST_LIST=$(shell find -L $(GAIA_DIR)$(SEP)apps$(SEP)$(APP) $(GAIA_DIR)$(SEP)dev_apps$(SEP)$(APP) $(GAIA_DIR)$(SEP)tv_apps$(SEP)$(APP) -name '*_test.js' 2> /dev/null | grep '/test/unit/')
+APP_TEST_LIST=$(shell find -L $(GAIA_DIR)$(SEP)apps$(SEP)$(APP) $(GAIA_DIR)$(SEP)dev_apps$(SEP)$(APP) $(GAIA_DIR)$(SEP)tv_apps$(SEP)$(APP) -name '*_test.js' 2> /dev/null | grep '/_test/unit/')
 endif
 .PHONY: test-agent-test
 test-agent-test: node_modules
