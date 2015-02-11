@@ -290,7 +290,7 @@
       case this.menuButton:
         this.showOverflowMenu();
         break;
-      
+
       case this.windowsButton:
         this.showWindows();
         break;
@@ -533,6 +533,7 @@
   };
 
   AppChrome.prototype.render = function() {
+    console.log('[System][AppChrome] will render app chrome');
     this.publish('willrender');
 
     var view = this.useCombinedChrome() ? this.combinedView() : this.view();
@@ -540,6 +541,7 @@
 
     this._fetchElements();
     this._registerEvents();
+    console.log('[System][AppChrome] app chrome rendered');
     this.publish('rendered');
   };
 

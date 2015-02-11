@@ -160,12 +160,6 @@
           // Hide keyboard immediately.
           KeyboardManager.hideKeyboardImmediately();
         }
-      } else if (rocketbar.active) {
-        // Wait for the rocketbar to close
-        window.addEventListener('rocketbar-overlayclosed', function onClose() {
-          window.removeEventListener('rocketbar-overlayclosed', onClose);
-          that.switchApp(appCurrent, appNext, switching);
-        });
       } else {
         this.sendStopRecordingRequest(function() {
           this.switchApp(appCurrent, appNext, switching,

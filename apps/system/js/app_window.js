@@ -545,6 +545,7 @@
      * Fired before this element is appended to the DOM tree.
      * @event AppWindow#appwillrender
      */
+    console.log('[System][AppWindow] will render app window');
     this.publish('willrender');
     this.containerElement.insertAdjacentHTML('beforeend', this.view());
     // window.open would offer the iframe so we don't need to generate.
@@ -607,6 +608,7 @@
      * Fired after the app window element is appended to the DOM tree.
      * @event AppWindow#apprendered
      */
+    console.log('[System][AppWindow] app window rendered');
     this.publish('rendered');
     this._rendered = true;
 

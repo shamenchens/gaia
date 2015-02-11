@@ -33,6 +33,7 @@
   // property of Browser or prefix them with underscores.
   function createFrame(config, frame) {
     var browser = frame || document.createElement('iframe');
+    console.log('[System][BrowserFrame] iframe created');
     browser.setAttribute('mozallowfullscreen', 'true');
 
     // Most apps currently need to be hosted in a special 'mozbrowser' iframe.
@@ -72,6 +73,7 @@
 
     if (config.url) {
       browser.src = config.url;
+      console.log('[System][BrowserFrame] assign iframe src = ' + config.url);
       // XXX: This one is for some failing python tests using
       // iframe[data-url*=XXX] to locate. But we shall change it later.
       browser.dataset.url = config.url;

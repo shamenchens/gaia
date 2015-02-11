@@ -169,7 +169,6 @@ window.addEventListener('load', function startup() {
   window.places = new Places();
   window.places.start();
   window.remoteDebugger = new RemoteDebugger();
-  window.rocketbar = new Rocketbar();
   window.shrinkingUI = new ShrinkingUI();
   window.shrinkingUI.start();
   window.sleepMenu = new SleepMenu();
