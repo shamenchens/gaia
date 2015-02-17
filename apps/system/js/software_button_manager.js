@@ -128,14 +128,12 @@
           this.overrideFlag = true;
 
           var lock = SettingsListener.getSettingsLock();
-          var req = lock.get('homegesture.enabled');
-          req.onsuccess = function sbm_getHomeGestureEnabled() {
-            var gestureEnabled = req.result['homegesture.enabled'];
+          SettingsCache.get('homegesture.enabled', function(gestureEnabled) {
             lock.set({'software-button.enabled': !gestureEnabled});
-          };
+          });
         }
 
-        SettingsListener.observe('software-button.enabled', false,
+        SettingsCache.observe('software-button.enabled', false,
           function onObserve(value) {
             // Default settings from build/settings.js will override the value
             // of 'software-button.enabled', so we set a flag to avoid it

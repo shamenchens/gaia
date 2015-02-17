@@ -39,40 +39,20 @@ var icc = {
 
     var self = this;
     // Update displayTextTimeout with settings parameter
-    var reqDisplayTimeout = window.navigator.mozSettings.createLock().get(
-      'icc.displayTextTimeout');
-    reqDisplayTimeout.onsuccess = function icc_getDisplayTimeout() {
-      self._displayTextTimeout =
-        reqDisplayTimeout.result['icc.displayTextTimeout'];
-    };
-    window.navigator.mozSettings.addObserver('icc.displayTextTimeout',
-      function(e) {
-        self._displayTextTimeout = e.settingValue;
-      }
-    );
+    SettingsCache.observe('icc.displayTextTimeout', 40000,
+      function onIccDisplayTextTimeoutChanged(value) {
+        self._displayTextTimeout = value;
+      });
     // Update inputTimeout with settings parameter
-    var reqInputTimeout = window.navigator.mozSettings.createLock().get(
-      'icc.inputTextTimeout');
-    reqInputTimeout.onsuccess = function icc_getInputTimeout() {
-      self._inputTimeout = reqInputTimeout.result['icc.inputTextTimeout'];
-    };
-    window.navigator.mozSettings.addObserver('icc.inputTextTimeout',
-      function(e) {
-        self._inputTimeout = e.settingValue;
-      }
-    );
+    SettingsCache.observe('icc.inputTextTimeout', 40000,
+      function onIccInputTextTimeoutChanged(value) {
+        self._displayTextTimeout = value;
+      });
     // Update toneDefaultTimeout with settings parameter
-    var reqToneDefaultTimeout = window.navigator.mozSettings.createLock().get(
-      'icc.toneDefaultTimeout');
-    reqToneDefaultTimeout.onsuccess = function icc_getToneDefaultTimeout() {
-      self._toneDefaultTimeout =
-        reqToneDefaultTimeout.result['icc.toneDefaultTimeout'];
-    };
-    window.navigator.mozSettings.addObserver('icc.toneDefaultTimeout',
-      function(e) {
-        self._toneDefaultTimeout = e.settingValue;
-      }
-    );
+    SettingsCache.observe('icc.toneDefaultTimeout', 5000,
+      function onIccDisplayToneDefaultTimeoutChanged(value) {
+        self._displayTextTimeout = value;
+      });
   },
 
   getIccInfo: function icc_getIccInfo() {

@@ -23,9 +23,9 @@ var EdgeSwipeDetector = {
     }, this);
     this._touchForwarder = new TouchForwarder();
 
-    SettingsListener.observe('edgesgesture.enabled', false,
+    SettingsCache.observe('edgesgesture.enabled', false,
                              this.settingUpdate.bind(this));
-    SettingsListener.observe('edgesgesture.debug', false,
+    SettingsCache.observe('edgesgesture.debug', false,
                              this.debugUpdate.bind(this));
   },
 

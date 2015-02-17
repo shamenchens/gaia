@@ -71,14 +71,14 @@
     }
     this._started = true;
 
-    SettingsListener.observe('audio.volume.notification', 7, function(value) {
+    SettingsCache.observe('audio.volume.notification', 7, function(value) {
       this._shouldRing = !!value;
       if (this._shouldRing && this._alerting) {
         this._player.play();
       }
     }.bind(this));
 
-    SettingsListener.observe('dialer.ringtone', '', function(value) {
+    SettingsCache.observe('dialer.ringtone', '', function(value) {
       var phoneSoundURL = new SettingsURL();
 
       this._player.pause();
@@ -101,7 +101,7 @@
       console.error('VersionHelper failed to lookup version settings.');
     });
 
-    SettingsListener.observe('vibration.enabled', true, function(value) {
+    SettingsCache.observe('vibration.enabled', true, function(value) {
       this._shouldVibrate = !!value;
     }.bind(this));
 

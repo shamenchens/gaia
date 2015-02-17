@@ -6,7 +6,7 @@ var SheetsTransition = {
   _new: null,
 
   init: function st_init() {
-    SettingsListener.observe('edgesgesture.enabled', false,
+    SettingsCache.observe('edgesgesture.enabled', false,
                              this._settingUpdate.bind(this));
   },
 

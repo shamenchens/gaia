@@ -70,9 +70,8 @@ var OperatorVariant = (function() {
    */
   function ov_ensureValueUnderKeyIsArray(key) {
     return new Promise(function(resolve, reject) {
-      var getReq = _settings.createLock().get(key);
-      getReq.onsuccess = function() {
-        var originalSetting = getReq.result[key];
+      SettingsCache.get(key, function(value) {
+        var originalSetting = value;
         var newSetting = null;
         if (!originalSetting) {
           newSetting = ['', ''];
@@ -90,8 +89,7 @@ var OperatorVariant = (function() {
         } else {
           resolve();
         }
-      };
-      getReq.onerror = resolve;
+      });
     });
   }
 

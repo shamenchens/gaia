@@ -24,7 +24,7 @@
       debug('taskstrip.enabled: '+ value);
       this.isTaskStrip = value;
     }.bind(this);
-    SettingsListener.observe('taskstrip.enabled', false,
+    SettingsCache.observe('taskstrip.enabled', false,
                              this.onTaskStripEnabled);
   }
 
@@ -149,16 +149,13 @@
       gd.startDetecting();
     }
 
+    var self = this;
     var previewSettingKey = this.SCREENSHOT_PREVIEWS_SETTING_KEY;
     // get initial setting value for screenshot previews
     // and watch for changes
-    var settingRequest = SettingsListener.getSettingsLock()
-                         .get(previewSettingKey);
-
-    settingRequest.onsuccess = function() {
-      var settingValue = settingRequest.result[previewSettingKey];
-      this.useAppScreenshotPreviews = settingValue;
-    }.bind(this);
+    SettingsCache.get(previewSettingKey, function(settingValue) {
+      self.useAppScreenshotPreviews = settingValue;
+    });
 
     this._registerEvents();
     this.stop = function() {
@@ -211,9 +208,9 @@
       this.useAppScreenshotPreviews = settingValue;
     }.bind(this);
 
-    SettingsListener.observe(this.SCREENSHOT_PREVIEWS_SETTING_KEY,
-                             this.useAppScreenshotPreviews,
-                             this.onPreviewSettingsChange);
+    SettingsCache.observe(this.SCREENSHOT_PREVIEWS_SETTING_KEY,
+                          this.useAppScreenshotPreviews,
+                          this.onPreviewSettingsChange);
   };
 
   TaskManager.prototype._unregisterEvents = function() {

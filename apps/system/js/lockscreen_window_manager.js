@@ -212,7 +212,7 @@
         }
       };
 
-      window.SettingsListener.observe('lockscreen.enabled',
+      window.SettingsCache.observe('lockscreen.enabled',
           true, enabledListener);
 
       // We are only interested in changes to the setting, rather
@@ -364,19 +364,16 @@
    */
   LockScreenWindowManager.prototype.initWindow =
     function lwm_initWindow() {
-      var req = window.SettingsListener.getSettingsLock()
-        .get('lockscreen.enabled');
-      req.onsuccess = () => {
-        this.states.ready = true;
-        if (true === req.result['lockscreen.enabled'] ||
-           'true' === req.result['lockscreen.enabled']) {
-          this.states.enabled = true;
-        } else if (false === req.result['lockscreen.enabled'] ||
-                   'false' === req.result['lockscreen.enabled']) {
-          this.states.enabled = false;
+      var self = this;
+      window.SettingsCache.get('lockscreen.enabled', function(value) {
+        self.states.ready = true;
+        if (true === value || 'true' === value) {
+          self.states.enabled = true;
+        } else if (false === value || 'false' === value) {
+          self.states.enabled = false;
         }
-        this.openApp();
-      };
+        self.openApp();
+      });
     };
 
   LockScreenWindowManager.prototype.responseUnlock =

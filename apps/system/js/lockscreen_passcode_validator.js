@@ -70,7 +70,7 @@
     // and then we can't unobserve it.
     this.observers.passcodeChanged =
       this.onPasscodeChanged.bind(this);
-    window.SettingsListener.observe(
+    window.SettingsCache.observe(
       'lockscreen.passcode-lock.code', '0000',
       this.observers.passcodeChanged);
   };

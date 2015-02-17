@@ -179,7 +179,7 @@
       }
     }.bind(this);
 
-    SettingsListener.observe(AUM.TELEMETRY_ENABLED_KEY,
+    SettingsCache.observe(AUM.TELEMETRY_ENABLED_KEY,
                              false, this.metricsEnabledListener);
   };
 

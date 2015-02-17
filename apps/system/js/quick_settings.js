@@ -94,7 +94,7 @@ var QuickSettings = {
        * monitor data setting
        * TODO prevent quickly tapping on it
        */
-      SettingsListener.observe('ril.data.enabled', true, function(value) {
+      SettingsCache.observe('ril.data.enabled', true, function(value) {
         if (value) {
           this.data.dataset.enabled = 'true';
         } else {
@@ -115,7 +115,7 @@ var QuickSettings = {
      */
     var self = this;
     var btFirstSet = true;
-    SettingsListener.observe('bluetooth.enabled', true, function(value) {
+    SettingsCache.observe('bluetooth.enabled', true, function(value) {
       // check self.bluetooth.dataset.enabled and value are identical
       if ((self.bluetooth.dataset.enabled && value) ||
           (self.bluetooth.dataset.enabled === undefined && !value)) {
@@ -151,7 +151,7 @@ var QuickSettings = {
      */
     var self = this;
     var wifiFirstSet = true;
-    SettingsListener.observe('wifi.enabled', true, function(value) {
+    SettingsCache.observe('wifi.enabled', true, function(value) {
       // check self.wifi.dataset.enabled and value are identical
       if ((self.wifi.dataset.enabled && value) ||
           (self.wifi.dataset.enabled === undefined && !value)) {
@@ -183,14 +183,14 @@ var QuickSettings = {
      * TODO prevent quickly tapping on it
      */
     var self = this;
-    SettingsListener.observe('geolocation.enabled', true, function(value) {
+    SettingsCache.observe('geolocation.enabled', true, function(value) {
       self.geolocationEnabled = value;
     });
   },
 
   monitorAirplaneModeChange: function() {
     var self = this;
-    SettingsListener.observe('airplaneMode.status', false, function(value) {
+    SettingsCache.observe('airplaneMode.status', false, function(value) {
       delete self.airplaneMode.dataset.enabling;
       delete self.airplaneMode.dataset.disabling;
 

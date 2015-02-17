@@ -13,23 +13,16 @@ var CellBroadcastSystem = {
       navigator.mozCellBroadcast.onreceived = this.show.bind(this);
     }
 
-    var settings = window.navigator.mozSettings;
-    var req = settings.createLock().get(this._settingsKey);
-    req.onsuccess = function() {
-      self._settingsDisabled = req.result[self._settingsKey];
-    };
+    var defaultSetting = [false, false];
+    SettingsCache.observe(this._settingsKey, defaultSetting,
+      function onCellbroadcastDisabledChanged(value) {
+        self._settingsDisabled = value;
 
-    settings.addObserver(
-      this._settingsKey, this.settingsChangedHandler.bind(this));
-  },
-
-  settingsChangedHandler: function cbs_settingsChangedHandler(event) {
-    this._settingsDisabled = event.settingValue;
-
-    if (this._hasCBSDisabled()) {
-      var evt = new CustomEvent('cellbroadcastmsgchanged', { detail: null });
-      window.dispatchEvent(evt);
-    }
+        if (self._hasCBSDisabled()) {
+          var evt = new CustomEvent('cellbroadcastmsgchanged', { detail: null });
+          window.dispatchEvent(evt);
+        }
+      });
   },
 
   show: function cbs_show(event) {

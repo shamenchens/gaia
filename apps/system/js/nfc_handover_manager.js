@@ -200,7 +200,7 @@ var NfcHandoverManager = {
         self.handleFileTransfer(msg.sessionToken, msg.blob, msg.requestId);
     });
 
-    SettingsListener.observe('nfc.debugging.enabled', false,
+    SettingsCache.observe('nfc.debugging.enabled', false,
                              (enabled) => { this.DEBUG = enabled; });
   },
 
