@@ -46,6 +46,7 @@
         callback(value);
       });
     }
+    window.asyncStorage.setItem('settingsCache', _settingsCache);
   };
 
   if (_settings) {
@@ -78,6 +79,14 @@
       _callbacks = [];
     },
 
+    updateCache: function sc_updateCache(cache) {
+      _settingsCache = cache;
+      var cbk;
+      while ((cbk = _pendingSettingsCallbacks.pop())) {
+        cbk(cache);
+      }
+    },
+
     get cache() {
       return _settingsCache;
     },
@@ -102,7 +111,14 @@
       }
 
       if (!_settingsCacheRequestSent && !_settingsCache) {
+        var self = this;
         _settingsCacheRequestSent = true;
+        window.asyncStorage.getItem('settingsCache', function(cache) {
+          // we only use asyncStorage cache within short-term
+          if (cache && _settingsCacheRequestSent) {
+            self.updateCache(cache);
+          }
+        });
         var lock = _settings.createLock();
         var request = lock.get('*');
         request.onsuccess = function(e) {
@@ -111,11 +127,8 @@
           for (var attr in result) {
             cachedResult[attr] = result[attr];
           }
-          _settingsCache = cachedResult;
-          var cbk;
-          while ((cbk = _pendingSettingsCallbacks.pop())) {
-            cbk(result);
-          }
+          window.asyncStorage.setItem('settingsCache', cachedResult);
+          self.updateCache(cachedResult);
         };
       }
       if (callback) {
