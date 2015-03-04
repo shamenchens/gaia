@@ -118,6 +118,8 @@
      */
     onFinish: function(msg) {
       this.migrating = this.iterating = false;
+      console.log('@@ Homescreen migrator: finish grid layout: ' +
+        JSON.stringify(this.grid));
       verticalPreferences.put('grid.layout', {
         grid: this.grid
       }).then(function saved() {

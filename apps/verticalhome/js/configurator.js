@@ -144,6 +144,8 @@
   }
 
   function onLoadInitJSON(loadedData) {
+    console.log('@@ Verticalhome configurator: loadedData: ' +
+      JSON.stringify(loadedData));
     conf = loadedData;
     setupColumns();
     window.dispatchEvent(new CustomEvent('configuration-ready'));
@@ -156,12 +158,29 @@
   function setupColumns() {
     var defaultCols = conf && conf.preferences &&
                           conf.preferences['grid.cols'] || undefined;
+    console.log('@@ Verticalhome configurator: defaultCols: ' + defaultCols);
 
     if (defaultCols) {
       verticalPreferences.get('grid.cols').then(function(cols) {
         // Set the number of cols by default in preference's datastore
         !cols && verticalPreferences.put('grid.cols', defaultCols);
       });
+    } else {
+      // If we don't have defaultCols, read number of cols from init.json
+      loadFile('js/init.json',
+        function onsuccess(initConf) {
+          var nextDefaultCols = initConf && initConf.preferences &&
+                                initConf.preferences['grid.cols'];
+          console.log('@@ Verticalhome configurator: nextDefaultCols: ' +
+            nextDefaultCols);
+          verticalPreferences.get('grid.cols').then(function(cols) {
+            console.log('@@ Verticalhome configurator: get grid.cols: ' + cols);
+            // Set the number of cols by default in preference's datastore
+            !cols && verticalPreferences.put('grid.cols', nextDefaultCols);
+          });
+        }, function onerror(e) {
+          console.error('Failed parsing homescreen configuration file:' + e);
+        });
     }
   }
 
@@ -187,11 +206,19 @@
     conf = {};
 
     VersionHelper.getVersionInfo().then(function(verInfo) {
+      console.log('@@ Verticalhome configurator: previous version: ' +
+        (verInfo.previous ? verInfo.previous.toString() : 'null') +
+        ', current version: ' + verInfo.current.toString());
       if (verInfo.isUpgrade()) {
+        console.log('@@ Verticalhome configurator: version upgrade!');
         verticalPreferences.get('grid.layout').then(function(grid) {
+          console.log('@@ Verticalhome configurator: get grid layout: ' +
+            JSON.stringify(grid));
           if (!grid) {
+            console.log('@@ Verticalhome configurator: wait for updated event');
             verticalPreferences.addEventListener('updated', handlerGridLayout);
           } else {
+            console.log('@@ Verticalhome configurator: load init json');
             onLoadInitJSON(grid);
           }
         });
