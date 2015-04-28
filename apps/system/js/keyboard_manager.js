@@ -352,6 +352,8 @@ window.KeyboardManager = {
           this._imeMenuCallback.bind(this, showedGroup));
 
         menu.start();
+      }).catch((err) => {
+        console.error(err);
       });
 
     }.bind(this));

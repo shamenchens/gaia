@@ -21,7 +21,9 @@
     LazyLoader.load([
       'shared/js/default_activity_helper.js',
       'shared/js/settings_helper.js'
-    ]);
+    ]).catch((err) => {
+      console.error(err);
+    });
     this.actionMenu = null;
   }
 
