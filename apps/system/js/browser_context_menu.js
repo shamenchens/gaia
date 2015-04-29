@@ -103,7 +103,6 @@
         return;
       }
 
-<<<<<<< HEAD
       this.contextMenuView.hide();
     },
 
@@ -115,15 +114,8 @@
           type: 'url',
           url: url,
           isPrivate: isPrivate
-=======
-    LazyLoader.load('shared/js/icons_helper.js').then(() => {
-      return IconsHelper.getIcon(url, null, {icons: favicons}).then(icon => {
-        if (icon) {
-          data.icon = icon;
->>>>>>> Part.3 Add final tests for promise chain
         }
       });
-<<<<<<< HEAD
     },
 
     shareUrl: function(url) {
@@ -133,74 +125,6 @@
         data: {
           type: 'url',
           url: url
-=======
-    }).catch((err) => {
-      console.error(err);
-    });
-  };
-
-  BrowserContextMenu.prototype.newWindow = function(manifest, isPrivate) {
-    // For private windows we create an empty private app window.
-    if (isPrivate) {
-      window.dispatchEvent(new CustomEvent('new-private-window'));
-      return;
-    }
-
-    // Else we open up the browser.
-    var newTabApp = applications.getByManifestURL(manifest);
-    newTabApp.launch();
-  };
-
-  BrowserContextMenu.prototype.showWindows = function(manifest) {
-    window.dispatchEvent(
-      new CustomEvent('taskmanagershow',
-                      { detail: { filter: 'browser-only' }})
-    );
-  };
-
-  BrowserContextMenu.prototype.generateSystemMenuItem = function(item) {
-    var nodeName = item.nodeName.toUpperCase();
-    var documentURI = item.data.documentURI;
-    var uri = item.data.uri;
-    var text = item.data.text;
-
-    switch (nodeName) {
-      case 'A':
-        return [{
-          id: 'open-in-new-window',
-          label: _('open-in-new-window'),
-          callback: this.openUrl.bind(this, uri)
-        }, {
-          id: 'open-in-new-private-window',
-          label: _('open-in-new-private-window'),
-          callback: this.openUrl.bind(this, uri, true)
-        }, {
-          id: 'bookmark-link',
-          label: _('add-link-to-home-screen'),
-          callback: this.bookmarkUrl.bind(this, uri, text)
-        }, {
-          id: 'save-link',
-          label: _('save-link'),
-          callback: this.app.browser.element.download.bind(
-            this.app.browser.element, uri, { referrer: documentURI })
-        }, {
-          id: 'share-link',
-          label: _('share-link'),
-          callback: this.shareUrl.bind(this, uri)
-        }];
-
-      case 'IMG':
-      case 'VIDEO':
-      case 'AUDIO':
-        var typeMap = {
-          'IMG': 'image',
-          'VIDEO': 'video',
-          'AUDIO': 'audio'
-        };
-        var type = typeMap[nodeName];
-        if (nodeName === 'VIDEO' && !item.data.hasVideo) {
-          type = 'audio';
->>>>>>> Part.3 Add final tests for promise chain
         }
       });
     },
