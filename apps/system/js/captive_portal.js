@@ -45,7 +45,7 @@ var CaptivePortal = {
           new BrowserFrame({url: url})
         );
         this.entrySheet.open();
-      }).catch((err) => {
+      }.bind(this)).catch((err) => {
         console.error(err);
       });
       return;
