@@ -211,6 +211,11 @@ ifeq ($(DOGFOOD), 1)
 GAIA_APP_TARGET=dogfood
 endif
 
+ifneq ($(STANDALONEAPP), "")
+SETTINGS_PATH=build/config/custom-standalone-settings.json
+GAIA_APP_TARGET=standalone
+endif
+
 ifdef NODE_MODULES_GIT_URL
 NODE_MODULES_SRC := git-gaia-node-modules
 endif

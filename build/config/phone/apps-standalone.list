@@ -1,0 +1,5 @@
+apps/clock
+apps/keyboard
+apps/system
+dev_apps/mockhome
+dev_apps/test-agent
