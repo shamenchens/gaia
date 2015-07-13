@@ -339,6 +339,12 @@ ifeq (,$(XULRUNNERSDK)$(findstring Darwin,$(SYS))$(findstring MINGW32_,$(SYS)))
 XULRUNNERSDK := LD_LIBRARY_PATH="$(dir $(XPCSHELLSDK))"
 endif
 
+ifneq ($(STANDALONEAPP),)
+SETTINGS_PATH=build/config/custom-standalone-settings.json
+GAIA_STANDALONE_APP_SRCDIRS=$(abspath $(GAIA_DIR)/..)
+GAIA_APP_TARGET=standalone
+endif
+
 # It's difficult to figure out XULRUNNERSDK in subprocesses; it's complex and
 # some builders may want to override our find logic (ex: TBPL).
 # So let's export these variables to external processes.
@@ -434,6 +440,13 @@ ifneq ($(GAIA_OUTOFTREE_APP_SRCDIRS),)
     $(foreach dir,$(GAIA_OUTOFTREE_APP_SRCDIRS),\
       $(foreach appdir,$(wildcard $(dir)/*),\
 	&& ln -sf $(appdir) outoftree_apps/)))
+endif
+
+ifneq ($(GAIA_STANDALONE_APP_SRCDIRS),)
+  # copy target standalone app source to `standalone_apps/{APP_NAME}` folder
+  # and ignore gaia folder to prevent recursive copy.
+  $(shell mkdir -p standalone_apps/$(STANDALONEAPP) \
+    && find ../ -mindepth 1 -maxdepth 1 -name 'gaia*' -o -exec cp -r {} standalone_apps/$(STANDALONEAPP) \;)
 endif
 
 GAIA_LOCALES_PATH?=locales

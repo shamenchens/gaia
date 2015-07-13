@@ -1,0 +1,23 @@
+{
+  "name": "Homescreen",
+  "description": "Homescreen",
+  "launch_path": "/index.html",
+  "developer": {
+    "name": "The Gaia Team",
+    "url": "https://github.com/mozilla-b2g/gaia"
+  },
+  "locales": {
+    "en-US": {
+      "name": "Homescreen",
+      "description": "Homescreen"
+    },
+    "zh-TW": {
+      "name": "Homescreen",
+      "description": "Homescreen"
+    }
+  },
+  "default_locale": "en-US",
+  "icons": {
+    "128": "/style/icons/Blank.png"
+  }
+}
