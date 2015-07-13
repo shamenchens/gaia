@@ -62,6 +62,7 @@ manifest.appcache
 
 /tools/xpcwindow/vendor/
 
+/standalone_apps/*
 /outoftree_apps/
 /distros/spark/outoftree_apps/
 
