@@ -443,11 +443,10 @@ ifneq ($(GAIA_OUTOFTREE_APP_SRCDIRS),)
 endif
 
 ifneq ($(GAIA_STANDALONE_APP_SRCDIRS),)
+  # copy target standalone app source to `standalone_apps/{APP_NAME}` folder
+  # and ignore gaia folder to prevent recursive copy.
   $(shell mkdir -p standalone_apps/$(STANDALONEAPP) \
-    $(foreach dir,$(GAIA_STANDALONE_APP_SRCDIRS),\
-      $(foreach appdir,$(wildcard $(dir)/*),\
-	&& ln -sf $(appdir) standalone_apps/$(STANDALONEAPP)/)))\
-  $(shell rm standalone_apps/$(STANDALONEAPP)/gaia)
+    && find ../ -mindepth 1 -maxdepth 1 -name 'gaia*' -o -exec cp -r {} standalone_apps/$(STANDALONEAPP) \;)
 endif
 
 GAIA_LOCALES_PATH?=locales
