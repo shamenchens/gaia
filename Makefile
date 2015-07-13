@@ -211,11 +211,6 @@ ifeq ($(DOGFOOD), 1)
 GAIA_APP_TARGET=dogfood
 endif
 
-ifneq ($(STANDALONEAPP), "")
-SETTINGS_PATH=build/config/custom-standalone-settings.json
-GAIA_APP_TARGET=standalone
-endif
-
 ifdef NODE_MODULES_GIT_URL
 NODE_MODULES_SRC := git-gaia-node-modules
 endif
@@ -344,6 +339,12 @@ ifeq (,$(XULRUNNERSDK)$(findstring Darwin,$(SYS))$(findstring MINGW32_,$(SYS)))
 XULRUNNERSDK := LD_LIBRARY_PATH="$(dir $(XPCSHELLSDK))"
 endif
 
+ifneq ($(STANDALONEAPP),)
+SETTINGS_PATH=build/config/custom-standalone-settings.json
+GAIA_STANDALONE_APP_SRCDIRS=$(abspath $(GAIA_DIR)/..)
+GAIA_APP_TARGET=standalone
+endif
+
 # It's difficult to figure out XULRUNNERSDK in subprocesses; it's complex and
 # some builders may want to override our find logic (ex: TBPL).
 # So let's export these variables to external processes.
@@ -439,6 +440,14 @@ ifneq ($(GAIA_OUTOFTREE_APP_SRCDIRS),)
     $(foreach dir,$(GAIA_OUTOFTREE_APP_SRCDIRS),\
       $(foreach appdir,$(wildcard $(dir)/*),\
 	&& ln -sf $(appdir) outoftree_apps/)))
+endif
+
+ifneq ($(GAIA_STANDALONE_APP_SRCDIRS),)
+  $(shell mkdir -p standalone_apps/$(STANDALONEAPP) \
+    $(foreach dir,$(GAIA_STANDALONE_APP_SRCDIRS),\
+      $(foreach appdir,$(wildcard $(dir)/*),\
+	&& ln -sf $(appdir) standalone_apps/$(STANDALONEAPP)/)))\
+  $(shell rm standalone_apps/$(STANDALONEAPP)/gaia)
 endif
 
 GAIA_LOCALES_PATH?=locales
