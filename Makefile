@@ -588,7 +588,7 @@ $(STAGE_DIR):
 LANG=POSIX # Avoiding sort order differences between OSes
 
 .PHONY: build-app
-build-app: app
+build-app: essential_apps shared_component app
 	@$(call $(BUILD_RUNNER),update-webapps-json)
 
 .PHONY: app
@@ -722,6 +722,29 @@ endif
 	@echo "Finished: Generating extensions"
 endif
 
+
+# Here we pull a temporary shared resources from another repo,
+# it should be removed when app maintains its shared resources by bower.
+SHARED_COMPONENT_GIT_URL=git@github.com:a-os/shared-component.git
+SHARED_COMPONENT_SRC?=git-shared-component
+git-shared-component:
+	if [ ! -d "$(SHARED_COMPONENT_SRC)" ] ; then \
+		git clone "$(SHARED_COMPONENT_GIT_URL)" "$(SHARED_COMPONENT_SRC)" ; \
+	fi
+	(cp -r "$(SHARED_COMPONENT_SRC)"/* shared)
+
+shared_component:
+	$(MAKE) $(SHARED_COMPONENT_SRC)
+
+KEYBOARD_APP_GIT_URL=git@github.com:alivedise/keyboard.git
+SYSTEM_APP_GIT_URL=git@github.com:alivedise/system.git
+essential_apps:
+	if [ ! -d "apps/keyboard" ] ; then \
+		git clone "$(KEYBOARD_APP_GIT_URL)" "apps/keyboard" ; \
+	fi
+	if [ ! -d "apps/system" ] ; then \
+		git clone "$(SYSTEM_APP_GIT_URL)" "apps/system" ; \
+	fi
 
 # this lists the programs we need in the Makefile and that are installed by npm
 
@@ -1070,8 +1093,14 @@ else
 endif
 	$(ADB) shell start b2g
 
+clean-shared:
+	rm -rf $(SHARED_COMPONENT_SRC) && cd shared && git clean -fd
+
+clean-essential:
+	rm -rf apps/system && rm -rf apps/keyboard
+
 # clean out build products
-clean:
+clean: clean-shared clean-essential
 	rm -rf profile profile-debug profile-test profile-gaia-test-b2g profile-gaia-test-firefox profile-raptor $(PROFILE_FOLDER) $(STAGE_DIR) docs minidumps
 
 # clean out build products and tools

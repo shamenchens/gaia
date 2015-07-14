@@ -74,6 +74,7 @@ ENV/
 modules.tar
 mozilla-b2g-gaia-node-modules-*
 /git-gaia-node-modules/
+/git-shared-component/
 /docs/
 /.cproject
 /.project
