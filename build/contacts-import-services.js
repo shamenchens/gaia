@@ -28,8 +28,7 @@ function generateServicesConfig(config) {
     importServices.live.applicationId = '00000000440F8B08';
   }
 
-  var resultFile = utils.resolve(utils.joinPath('shared', 'pages', 'import',
-    'js', 'parameters.js'), config.GAIA_DIR);
+  var resultFile = utils.resolve(utils.joinPath('shared', 'import_contacts', 'js', 'parameters.js'), config.GAIA_DIR);
   var jsPrefix =  'var oauthflow = this.oauthflow || {}; oauthflow.params = ';
   var content = jsPrefix + JSON.stringify(importServices) + ';';
 

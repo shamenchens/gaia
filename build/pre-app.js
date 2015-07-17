@@ -5,6 +5,8 @@ function execute(options) {
 
   require('./svoperapps').execute(options);
 
+  require('./webapp-dependency').execute(options);
+
   require('./webapp-manifests').execute(options);
 
   require('./contacts-import-services').execute(options);

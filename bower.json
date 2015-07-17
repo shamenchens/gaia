@@ -12,6 +12,7 @@
   ],
   "dependencies": {
     "resources": "git@github.com:alivedise/resources.git#~0.0.1",
-    "l10n": "git@github.com:alivedise/l10n.git#~0.0.1"
+    "l10n": "git@github.com:alivedise/l10n.git#~0.0.1",
+    "import_contacts": "git@github.com:alivedise/import_contacts.git#~0.0.2"
   }
 }
