@@ -50,6 +50,9 @@ function buildApps(options) {
     appOptions.APP_DIR = appDirFile.path;
     appOptions.STAGE_APP_DIR = stageAppDir.path;
 
+    // Install app dependency
+    require('./webapp-dependency').execute(appOptions);
+
     let buildFile = utils.getFile(appDir, 'build', 'build.js');
     // A workaround for bug 1093267
     if (buildFile.exists()) {

@@ -439,7 +439,9 @@ HTMLOptimizer.prototype.inlineCSSResources = function() {
   var styles = Array.prototype.slice.call(
     doc.querySelectorAll('link[rel="stylesheet"]'));
   styles.forEach(function(oldStyle) {
-    var cssPath = oldStyle.href.split('/').slice(0, -1).join('/');
+    // Need to verify it after we move shared folder into bower component.
+    var cssPath = oldStyle.href.indexOf('shared') < 0 ?
+      oldStyle.href.split('/').slice(0, -1).join('/') : 'shared';
     var newStyle = doc.createElement('style');
     newStyle.rel = 'stylesheet';
     newStyle.type = 'text/css';
