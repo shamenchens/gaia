@@ -592,7 +592,7 @@ build-app: app
 	@$(call $(BUILD_RUNNER),update-webapps-json)
 
 .PHONY: app
-app: b2g_sdk profile-dir
+app: repo b2g_sdk profile-dir
 	@$(call $(BUILD_RUNNER),app)
 
 .PHONY: pre-app
@@ -611,6 +611,11 @@ webapp-optimize: app
 
 .PHONY: webapp-zip
 webapp-zip: app
+
+.PHONY: repo
+repo:
+	./repo init -u https://github.com/alivedise/manifest.git
+	./repo sync
 
 # Get additional extensions
 $(STAGE_DIR)/additional-extensions/downloaded.json: build/config/additional-extensions.json $(wildcard .build/config/custom-extensions.json)

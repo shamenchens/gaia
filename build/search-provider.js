@@ -12,7 +12,7 @@ const OUT_FILE = 'search_providers.json';
 
 function generateSearchProviderJson(options) {
   var searchProviderJson =
-    utils.getJSON(utils.getFile(options.GAIA_DIR, 'shared', 'js', IN_FILE));
+    utils.getJSON(utils.getFile(options.GAIA_DIR, 'build', IN_FILE));
 
   if (options.VARIANT_PATH) {
     var variantJson = utils.getJSON(utils.getFile(options.VARIANT_PATH));
@@ -22,7 +22,7 @@ function generateSearchProviderJson(options) {
   }
 
   var content = JSON.stringify(searchProviderJson);
-  var resultFile = utils.getFile(options.GAIA_DIR, 'shared', 'js', OUT_FILE);
+  var resultFile = utils.getFile(options.GAIA_DIR, 'build', OUT_FILE);
 
   if (resultFile.exists()) {
     let prev = utils.getFileContent(resultFile);

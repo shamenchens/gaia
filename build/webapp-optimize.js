@@ -712,7 +712,7 @@ function loadOptimizeConfig(config) {
 // We throw a window mock for l10n.js, since they use a lot methods and objects
 // from window.navigator.
 function loadL10nScript(config, obj) {
-  var sharedL10n = utils.joinPath(config.GAIA_DIR, 'shared', 'js', 'l10n.js');
+  var sharedL10n = utils.joinPath(config.GAIA_DIR, 'shared', 'l10n', 'l10n.js');
   var buildL10n =  utils.joinPath(config.GAIA_DIR, 'build', 'l10n', 'l10n.js');
   utils.scriptLoader.load(sharedL10n, obj, true);
   utils.scriptLoader.load(buildL10n, obj, true);
