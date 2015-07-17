@@ -1,0 +1,17 @@
+{
+  "name": "gaia",
+  "version": "0.0.0",
+  "homepage": "https://github.com/alivedise/gaia",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "resources": "git@github.com:alivedise/resources.git#~0.0.1",
+    "l10n": "git@github.com:alivedise/l10n.git#~0.0.1"
+  }
+}
