@@ -13,6 +13,9 @@
   "dependencies": {
     "resources": "git@github.com:alivedise/resources.git#~0.0.1",
     "l10n": "git@github.com:alivedise/l10n.git#~0.0.1",
-    "import_contacts": "git@github.com:alivedise/import_contacts.git#~0.0.2"
+    "import_contacts": "git@github.com:alivedise/import_contacts.git#~0.0.2",
+    "test_integration": "git@github.com:alivedise/test_integration.git#~0.0.1",
+    "keyboard_symbols": "git@github.com:alivedise/keyboard_symbols.git#~0.0.1",
+    "gaia-icons": "git@github.com:alivedise/gaia-icons.git#~0.0.1"
   }
 }
